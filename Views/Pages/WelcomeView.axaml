@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Gestion_avion.Views.Pages.WelcomeView">
+
+    <!-- Arrière-plan global -->
+    <Grid Background="{DynamicResource AppBackgroundColor}">
+        
+        <StackPanel HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Spacing="20">
+            
+            <Border Width="120" 
+                    Height="120" 
+                    CornerRadius="60" 
+                    Background="{DynamicResource PrimaryColor}"
+                    HorizontalAlignment="Center">
+                
+                <TextBlock Text="logo" 
+                           FontSize="60" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"/>
+            </Border>
+
+            <TextBlock Text="Fast Travel" 
+                       FontSize="36" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource accentColor}" 
+                       HorizontalAlignment="Center"/>
+
+            <TextBlock Text="Gestion &amp; Réservation de vols" 
+                       FontSize="16" 
+                       Foreground="{DynamicResource sectionColor}" 
+                       HorizontalAlignment="Center"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>
