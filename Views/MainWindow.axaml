@@ -8,19 +8,93 @@
         Width="900" Height="600"
         WindowStartupLocation="CenterScreen">
 
+    <Window.Styles>
+    <!-- hover -->
+    <Style Selector="Button:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource hoverColor}"/> 
+        <Setter Property="Foreground" Value="white"/>     
+    </Style>
+</Window.Styles>
 
     <Grid>
-        <Grid IsVisible="{Binding !IsLoading}">
-            <TextBlock Text="menu de navigation"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontSize="20" />    
-                <!-- menu de navigation  -->
+        <!-- Interface principale  -->
+        <Grid IsVisible="{Binding !IsLoading}" Background="#A0AAA7">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- navigation-->
+            <StackPanel Grid.Row="0" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top" 
+                        Spacing="10" 
+                        Margin="0,15,20,0">
+
+                <Button Command="{Binding GoToDashboardCommand}"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="{DynamicResource secondColor}"
+                        Background="{DynamicResource accentColor}"
+                        Padding="9,5"
+                        CornerRadius="20">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="avares://Gestion_avion/Assets/icons8-disposition-du-tableau-de-bord-24.png" Width="16" Height="16" VerticalAlignment="Center"/>
+                            <TextBlock Text="Dashboard" VerticalAlignment="Center"/>
+                        </StackPanel>
+                </Button>
+
+                <Button Content="Operation" 
+                        Command="{Binding GoToOperationCommand}"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="{DynamicResource secondColor}"
+                        Background="{DynamicResource accentColor}"
+                        Padding="9,5"
+                        CornerRadius="20">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="avares://Gestion_avion/Assets/icons8-document-dans-le-dossier-24.png" Width="16" Height="16" VerticalAlignment="Center"/>
+                            <TextBlock Text="Gestion" VerticalAlignment="Center"/>
+                        </StackPanel>
+                </Button>
+
+                <Button Command="{Binding GoToVolsCommand}"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="{DynamicResource secondColor}"
+                        Background="{DynamicResource accentColor}"
+                        Padding="9,5"
+                        CornerRadius="20">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="avares://Gestion_avion/Assets/icons8-horaire-des-vols-24.png" Width="16" Height="16" VerticalAlignment="Center"/>
+                            <TextBlock Text="Vols" VerticalAlignment="Center"/>
+                        </StackPanel>
+                </Button>
+
+
+                <Button Command="{Binding GoToReservationCommand}"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="{DynamicResource secondColor}"
+                        Background="{DynamicResource accentColor}"
+                        Padding="9,5"
+                        CornerRadius="20">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Image Source="avares://Gestion_avion/Assets/icons8-ticket-24.png" Width="16" Height="16" VerticalAlignment="Center"/>
+                            <TextBlock Text="Resevation" VerticalAlignment="Center"/>
+                        </StackPanel>
+                </Button>
+
+
+            </StackPanel>
+
+            <!-- affichage des pages -->
+            <ContentControl Grid.Row="1" Content="{Binding CurrentPage}"/>
         </Grid>
 
         <!-- loading -->
-        <pages:WelcomeView />
-        
+        <pages:WelcomeView IsVisible="{Binding IsLoading}"/>
     </Grid>    
 
 </Window>

@@ -1,6 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Gestion_avion.Views.Pages.WelcomeView">
+             xmlns:vm="clr-namespace:Gestion_avion.ViewModels"
+             x:Class="Gestion_avion.Views.Pages.WelcomeView"
+             x:DataType="vm:MainViewModel"
+             >
 
     <UserControl.Styles>
         <!-- Animation logo-->
@@ -70,6 +73,13 @@
                            Foreground="{DynamicResource sectionColor}" 
                            HorizontalAlignment="Center"/>
             </StackPanel>
+
+            <TextBlock Text="{Binding LoadingMessage}" 
+                           FontSize="14" 
+                           Foreground="{DynamicResource sectionColor}" 
+                           HorizontalAlignment="Center"
+                           Margin="0,20,0,0"
+                           FontStyle="Italic"/>
 
         </StackPanel>
     </Grid>
