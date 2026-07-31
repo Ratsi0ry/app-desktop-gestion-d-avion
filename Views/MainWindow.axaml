@@ -1,12 +1,26 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Gestion_avion.ViewModels"
         xmlns:pages="using:Gestion_avion.Views.Pages"
         x:Class="Gestion_avion.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
         Title="Fast Travel"
         Width="900" Height="600"
         WindowStartupLocation="CenterScreen">
 
-    <!-- Appel de la vue WelcomeView via le préfixe pages -->
-    <pages:WelcomeView />
+
+    <Grid>
+        <Grid IsVisible="{Binding !IsLoading}">
+            <TextBlock Text="menu de navigation"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="20" />    
+                <!-- menu de navigation  -->
+        </Grid>
+
+        <!-- loading -->
+        <pages:WelcomeView />
+        
+    </Grid>    
 
 </Window>
