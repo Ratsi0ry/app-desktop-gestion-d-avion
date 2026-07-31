@@ -4,10 +4,13 @@ using Avalonia.Markup.Xaml;
 using Gestion_avion.ViewModels;
 using Gestion_avion.Views;
 
+
+
 namespace Gestion_avion;
 
 public partial class App : Application
 {
+    //activation du font awesome
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);

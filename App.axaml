@@ -2,6 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Gestion_avion.App"
              xmlns:local="using:Gestion_avion"
+             xmlns:ic="clr-namespace:Projektanker.Icons.Avalonia"
+             xmlns:icfa="clr-namespace:Projektanker.Icons.Avalonia.FontAwesome; assembly=Projektanker.Icons.Avalonia.FontAwesome"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
