@@ -2,35 +2,74 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Gestion_avion.Views.Pages.WelcomeView">
 
-    <!-- Arrière-plan global -->
+    <UserControl.Styles>
+        <!-- Animation logo-->
+        <Style Selector="Border.logo-anim">
+            <Style.Animations>
+                <Animation Duration="0:0:1.2" Easing="CubicEaseOut">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0" />
+                        <Setter Property="ScaleTransform.ScaleX" Value="0.5" />
+                        <Setter Property="ScaleTransform.ScaleY" Value="0.5" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1" />
+                        <Setter Property="ScaleTransform.ScaleX" Value="1.0" />
+                        <Setter Property="ScaleTransform.ScaleY" Value="1.0" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+
+        <!-- Animation texte -->
+        <Style Selector="StackPanel.text-anim">
+            <Style.Animations>
+                <Animation Duration="0:0:1.0" Delay="0:0:0.4" Easing="CubicEaseOut">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0" />
+                        <Setter Property="TranslateTransform.Y" Value="30" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </UserControl.Styles>
+
+    <!-- Layout -->
     <Grid Background="{DynamicResource AppBackgroundColor}">
-        
         <StackPanel HorizontalAlignment="Center" 
                     VerticalAlignment="Center" 
                     Spacing="20">
             
-            <Border Width="120" 
+            <!-- Logo -->
+            <Border Classes="logo-anim"
+                    Width="120" 
                     Height="120" 
                     CornerRadius="60" 
                     Background="{DynamicResource PrimaryColor}"
                     HorizontalAlignment="Center">
-                
                 <TextBlock Text="logo" 
                            FontSize="60" 
                            HorizontalAlignment="Center" 
                            VerticalAlignment="Center"/>
             </Border>
 
-            <TextBlock Text="Fast Travel" 
-                       FontSize="36" 
-                       FontWeight="Bold" 
-                       Foreground="{DynamicResource accentColor}" 
-                       HorizontalAlignment="Center"/>
+            <!-- texte -->
+            <StackPanel Classes="text-anim" Spacing="10">
+                <TextBlock Text="Fast Travel" 
+                           FontSize="38" 
+                           FontWeight="Bold" 
+                           Foreground="{DynamicResource accentColor}" 
+                           HorizontalAlignment="Center"/>
 
-            <TextBlock Text="Gestion &amp; Réservation de vols" 
-                       FontSize="16" 
-                       Foreground="{DynamicResource sectionColor}" 
-                       HorizontalAlignment="Center"/>
+                <TextBlock Text="Gestion &amp; Réservation de vols" 
+                           FontSize="16" 
+                           Foreground="{DynamicResource sectionColor}" 
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
 
         </StackPanel>
     </Grid>
