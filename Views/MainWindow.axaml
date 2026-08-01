@@ -18,7 +18,7 @@
 
     <Grid>
         <!-- Interface principale -->
-        <Grid IsVisible="{Binding !IsLoading}" Background="WhiteSmoke">
+        <Grid IsVisible="{Binding !IsLoading}" Background="{DynamicResource accentColor}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>

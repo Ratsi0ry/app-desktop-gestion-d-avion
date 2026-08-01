@@ -4,137 +4,180 @@
              x:Class="Gestion_avion.Views.DashboardView"
              x:DataType="vm:DashboardViewModel">
 
-    <Border Background="{DynamicResource accentColor}"
-            CornerRadius="15"
-            Margin="20,20,20,0"
-            Padding="15"
-            VerticalAlignment="Top"
-            HorizontalAlignment="Stretch">
-            
-        <Grid HorizontalAlignment="Stretch"
-              VerticalAlignment="Center">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>            
-        </Grid.ColumnDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="20" Margin="20">
 
-        <!-- nb de vol de la journee  -->
-        <Border Grid.Column="0"
-                Background="{DynamicResource secondColor}"
-                Margin="10,0"
-                CornerRadius="20"
-                Padding="15">
+            <!-- card -->
+            <Border Background="{DynamicResource accentColor}"
+                    CornerRadius="15"
+                    Padding="15"
+                    HorizontalAlignment="Stretch">
+                         
+                <StackPanel Spacing="15">
 
-            <StackPanel VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Spacing="5">
+                    <!--  date du jour -->
+                    <TextBlock Text="{Binding DateDuJour}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Left"
+                               Margin="10,0,0,0"/>
 
-                <TextBlock Text="Vols du jour"
-                            Foreground="{DynamicResource accentColor}"
-                            FontSize="20"
-                            HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding NbVolsJournee}" 
-                       FontSize="26" 
-                       FontWeight="Bold" 
-                       Foreground="{DynamicResource accentColor}" 
-                       HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Border>
+                    <Grid HorizontalAlignment="Stretch"
+                          VerticalAlignment="Center">
 
-        <!-- nb vols en cours  -->
-        <Border Grid.Column="1"
-                Background="{DynamicResource secondColor}"
-                Margin="10,0"
-                CornerRadius="20"
-                Padding="15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>            
+                        </Grid.ColumnDefinitions>
 
-            <StackPanel VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Spacing="5">
+                        <!-- Vols du jour -->
+                        <Border Grid.Column="0"
+                                Background="WhiteSmoke"
+                                Margin="10,0"
+                                CornerRadius="20"
+                                Padding="15"
+                                Height="260">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="5">
+                                <TextBlock Text="Vols du jour" Foreground="{DynamicResource accentColor}" FontSize="16" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding NbVolsJournee}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource accentColor}" HorizontalAlignment="Center"/>
+                                <Image Source="avares://Gestion_avion/Assets/icons8-avion-vue-de-face-100.png" Width="60" Height="60" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
 
-                <TextBlock Text="Vols en cours"
-                            Foreground="{DynamicResource accentColor}"
-                            FontSize="20"
-                            HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding NbVolsEnCours}" 
-                       FontSize="28" 
-                       FontWeight="Bold" 
-                       Foreground="{DynamicResource accentColor}" 
-                       HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Border>
-        
-        
-        <Border Grid.Column="2"
-                Background="{DynamicResource secondColor}"
-                Margin="10,0"
-                CornerRadius="20"
-                Padding="15">
+                        <!-- Vols en cours -->
+                        <Border Grid.Column="1"
+                                Background="WhiteSmoke"
+                                Margin="10,0"
+                                CornerRadius="20"
+                                Padding="15"
+                                Height="260">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="5">
+                                <TextBlock Text="Vols en cours" Foreground="{DynamicResource accentColor}" FontSize="16" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding NbVolsEnCours}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource accentColor}" HorizontalAlignment="Center"/>
+                                <Image Source="avares://Gestion_avion/Assets/icons8-decollage-d-avion-100.png" Width="60" Height="60" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- vols effectuer -->
+                        <Border Grid.Column="2"
+                                Background="WhiteSmoke"
+                                Margin="10,0"
+                                CornerRadius="20"
+                                Padding="15"
+                                Height="260">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="5">
+                                <TextBlock Text="Vols effectues" Foreground="{DynamicResource accentColor}" FontSize="16" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding NbVolsEffectues}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource accentColor}" HorizontalAlignment="Center"/>
+                                <Image Source="avares://Gestion_avion/Assets/icons8-atterrissage-d'avion-100.png" Width="60" Height="60" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
 
-            <StackPanel VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Spacing="5">
+                        <!-- vols anuller -->
+                        <Border Grid.Column="3"
+                                Background="WhiteSmoke"
+                                Margin="10,0"
+                                CornerRadius="20"
+                                Padding="15"
+                                Height="260">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="5">
+                                <TextBlock Text="Vols annuler" Foreground="{DynamicResource accentColor}" FontSize="16" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding NbVolsAnnuler}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource accentColor}" HorizontalAlignment="Center"/>
+                                <Image Source="avares://Gestion_avion/Assets/icons8-supprimer-la-vue-77.png" Width="60" Height="60" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
 
-                <TextBlock Text="Vols effectues"
-                            Foreground="{DynamicResource accentColor}"
-                            FontSize="20"
-                            HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding NbVolsEffectues}" 
-                       FontSize="28" 
-                       FontWeight="Bold" 
-                       Foreground="{DynamicResource accentColor}" 
-                       HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Border>
+                        <!-- meteo -->
+                        <Border Grid.Column="4"
+                                Background="WhiteSmoke"
+                                Margin="10,0"
+                                CornerRadius="20"
+                                Padding="15"
+                                Height="260">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="5">
+                                <TextBlock Text="Meteo" Foreground="{DynamicResource accentColor}" FontSize="16" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding MeteoDuJour}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource accentColor}" HorizontalAlignment="Center"/>
+                                <Image Source="avares://Gestion_avion/Assets/icons8-soleil-derriere-un-petit-nuage-100.png" Width="60" Height="60" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </Border>
 
-        <Border Grid.Column="3"
-                Background="{DynamicResource secondColor}"
-                Margin="10,0"
-                CornerRadius="20"
-                Padding="15">
+            <!-- div last actions-->
+            <Border Background="WhiteSmoke"
+                    CornerRadius="15"
+                    Padding="20"
+                    HorizontalAlignment="Stretch">
+                
+                <StackPanel Spacing="15">
 
-            <StackPanel VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Spacing="5">
+                    <TextBlock Text="Dernières actions"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource accentColor}"/>
 
-                <TextBlock Text="Vols Annuler"
-                            Foreground="{DynamicResource accentColor}"
-                            FontSize="20"
-                            HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding NbVolsAnnuler}" 
-                       FontSize="28" 
-                       FontWeight="Bold" 
-                       Foreground="{DynamicResource accentColor}" 
-                       HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="4"
-                Background="{DynamicResource secondColor}"
-                Margin="10,0"
-                CornerRadius="20"
-                Padding="15">
+                        <TextBlock Grid.Column="0" Text="N° Vol" FontWeight="Bold" Foreground="Gray"/>
+                        <TextBlock Grid.Column="1" Text="ID Avion" FontWeight="Bold" Foreground="Gray"/>
+                        <TextBlock Grid.Column="2" Text="Date Départ" FontWeight="Bold" Foreground="Gray"/>
+                        <TextBlock Grid.Column="3" Text="Arrivée" FontWeight="Bold" Foreground="Gray"/>
+                        <TextBlock Grid.Column="4" Text="Statut" FontWeight="Bold" Foreground="Gray"/>
+                    </Grid>
 
-            <StackPanel VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Spacing="5">
+                    <!-- Ligne de séparation -->
+                    <Rectangle Height="1" Fill="#DDDDDD"/>
 
-                <TextBlock Text="Meteo"
-                            Foreground="{DynamicResource accentColor}"
-                            FontSize="20"
-                            HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding MeteoDuJour}" 
-                       FontSize="24" 
-                       FontWeight="Bold" 
-                       Foreground="{DynamicResource accentColor}" 
-                       HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Border>
-    </Grid>
-    </Border>
+                    <!-- last action -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="FL-102" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="1" Text="AV-904" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="2" Text="01/08/2026 08:30" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="3" Text="Paris (CDG)" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="4" Text="En cours" Foreground="Green" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <!-- mock data -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="FL-105" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="1" Text="AV-302" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="2" Text="01/08/2026 10:15" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="3" Text="Londres (LHR)" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="4" Text="Effectué" Foreground="Blue" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </Grid>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
 
 </UserControl>
