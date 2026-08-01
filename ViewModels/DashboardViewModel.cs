@@ -17,7 +17,7 @@ public partial class DashboardViewModel : ViewModelBase
     private int _nbVolsAnnuler;
 
     [ObservableProperty]
-    private string _meteoDuJour;
+    private string _meteoDuJour, _dateDuJour;
 
     public DashboardViewModel()
     {
@@ -26,5 +26,6 @@ public partial class DashboardViewModel : ViewModelBase
         NbVolsEffectues = 3;
         NbVolsAnnuler = 0;
         MeteoDuJour = "Ciel degagé 24° C ";
+        DateDuJour = "01/08/26";
     }
 }
