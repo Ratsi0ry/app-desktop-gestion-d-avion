@@ -2,10 +2,139 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:Gestion_avion.ViewModels"
              x:Class="Gestion_avion.Views.DashboardView"
-             x:DataType="vm:MainViewModel">
+             x:DataType="vm:DashboardViewModel">
 
-    <Grid>
-        <TextBlock Text="Hello world"/>
+    <Border Background="{DynamicResource accentColor}"
+            CornerRadius="15"
+            Margin="20,20,20,0"
+            Padding="15"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Stretch">
+            
+        <Grid HorizontalAlignment="Stretch"
+              VerticalAlignment="Center">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>            
+        </Grid.ColumnDefinitions>
+
+        <!-- nb de vol de la journee  -->
+        <Border Grid.Column="0"
+                Background="{DynamicResource secondColor}"
+                Margin="10,0"
+                CornerRadius="20"
+                Padding="15">
+
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Spacing="5">
+
+                <TextBlock Text="Vols du jour"
+                            Foreground="{DynamicResource accentColor}"
+                            FontSize="20"
+                            HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding NbVolsJournee}" 
+                       FontSize="26" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource accentColor}" 
+                       HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- nb vols en cours  -->
+        <Border Grid.Column="1"
+                Background="{DynamicResource secondColor}"
+                Margin="10,0"
+                CornerRadius="20"
+                Padding="15">
+
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Spacing="5">
+
+                <TextBlock Text="Vols en cours"
+                            Foreground="{DynamicResource accentColor}"
+                            FontSize="20"
+                            HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding NbVolsEnCours}" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource accentColor}" 
+                       HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+        
+        
+        <Border Grid.Column="2"
+                Background="{DynamicResource secondColor}"
+                Margin="10,0"
+                CornerRadius="20"
+                Padding="15">
+
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Spacing="5">
+
+                <TextBlock Text="Vols effectues"
+                            Foreground="{DynamicResource accentColor}"
+                            FontSize="20"
+                            HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding NbVolsEffectues}" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource accentColor}" 
+                       HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="3"
+                Background="{DynamicResource secondColor}"
+                Margin="10,0"
+                CornerRadius="20"
+                Padding="15">
+
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Spacing="5">
+
+                <TextBlock Text="Vols Annuler"
+                            Foreground="{DynamicResource accentColor}"
+                            FontSize="20"
+                            HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding NbVolsAnnuler}" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource accentColor}" 
+                       HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="4"
+                Background="{DynamicResource secondColor}"
+                Margin="10,0"
+                CornerRadius="20"
+                Padding="15">
+
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Spacing="5">
+
+                <TextBlock Text="Meteo"
+                            Foreground="{DynamicResource accentColor}"
+                            FontSize="20"
+                            HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding MeteoDuJour}" 
+                       FontSize="24" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource accentColor}" 
+                       HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
     </Grid>
+    </Border>
 
 </UserControl>

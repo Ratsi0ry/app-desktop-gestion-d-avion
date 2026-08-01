@@ -7,6 +7,7 @@ namespace Gestion_avion.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
+    //initialisation
     [ObservableProperty]
     private ViewModelBase? _currentPage;
 
@@ -18,7 +19,7 @@ public partial class MainViewModel : ViewModelBase
 
     public MainViewModel() 
     {
-        _= InitializeAppAsync();
+        _ = InitializeAppAsync();
     }
 
     private async Task InitializeAppAsync()
@@ -37,9 +38,9 @@ public partial class MainViewModel : ViewModelBase
         IsLoading = false;
     }
 
+    //navigation entre les pages
     [RelayCommand]
     private void GoToDashboard() => CurrentPage = new DashboardViewModel();
-
 
     [RelayCommand]
     private void GoToOperation() => CurrentPage = new OperationViewModel();
@@ -49,4 +50,5 @@ public partial class MainViewModel : ViewModelBase
 
     [RelayCommand]
     private void GoToReservation() => CurrentPage = new RerservationViewModel();
+
 }
