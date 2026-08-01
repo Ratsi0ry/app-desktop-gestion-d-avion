@@ -1,0 +1,102 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Gestion_avion.Views.Pages.SignUpView">
+
+    <UserControl.Background>
+    	<ImageBrush Source = "avares://Gestion_avion/Assets/background.jpeg"
+    				Stretch = "UniformToFill"
+    		/>
+    </UserControl.Background>
+
+	<Panel>
+		<DockPanel Name="picker" ZIndex="3">
+			<StackPanel DockPanel.Dock = "Right"
+						HorizontalAlignment = "Right"
+						VerticalAlignment="Center"
+						Background="#50748B"
+						MinHeight="250"
+						Margin="20"
+						Opacity="80"
+						Orientation="Vertical"
+						
+						>
+				<TextBlock Text = "SIGN IN TO ACCOUNT"
+							Foreground = "Black"
+							TextAlignment="Center"
+							Margin="15"
+							DockPanel.Dock="Top"
+					/>
+
+				<WrapPanel Orientation="Vertical"
+							HorizontalAlignment="Center">
+
+					<StackPanel Orientation="Horizontal"
+							Margin="10"
+							>
+						<TextBlock Text="user1"/>
+						<Button Content="log in"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal"
+							Margin="10"
+							>
+						<TextBlock Text="user2"/>
+						<Button Content="log in" />
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal"
+							Margin="10"
+							>
+						<TextBlock Text="user3"/>
+						<Button Content="log in"/>
+					</StackPanel>
+
+				</WrapPanel>
+
+				<WrapPanel Orientation = "Horizontal"
+							VerticalAlignment="Bottom"
+							Margin="30">
+					<Button Content = "register" Classes="register" Click="register_Click" Opacity="90"
+							Foreground="Black"
+							Margin="10"
+							/>
+					<Button Content = "other account" Classes="other" Click="other_Click" Opacity="90"
+							Foreground="Black"
+							Margin="10"/>
+				</WrapPanel>
+			</StackPanel>
+		</DockPanel>
+
+		<StackPanel Name="new_user"
+					Orientation="Vertical"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					ZIndex="0">
+			<TextBlock Text="new user"
+					Foreground="Black"
+					Background="Green"
+              		/>
+
+			<WrapPanel Orientation="Horizontal">
+				<Button Content="already have an account" Classes="other" Click="other_Click" GotFocus="Button_GotFocus"/>
+				<Button Content="back" Classes="pick_account" Click="pick_Click"/>
+			</WrapPanel>
+		</StackPanel>
+
+		<DockPanel Name="other_accounts"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					ZIndex="1">
+			<TextBlock Text="other users"
+					Foreground="Black"
+					Background = "blue"
+					DockPanel.Dock="Top"
+					/>
+			<StackPanel Orientation="Horizontal">
+				<Button Content="register new account" Classes="other" Click="register_Click"/>
+				<Button Content="back" Classes="pick_account" Click="pick_Click"/>
+			</StackPanel>
+		</DockPanel>
+	</Panel>
+
+</UserControl>

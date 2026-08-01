@@ -7,6 +7,6 @@
         WindowStartupLocation="CenterScreen">
 
     <!-- Appel de la vue WelcomeView via le préfixe pages -->
-    <pages:WelcomeView />
+    <pages:SignUpView />
 
 </Window>
