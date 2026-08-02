@@ -260,7 +260,7 @@ public partial class ReservationViewModel : ViewModelBase
                     // Pied de page
                     page.Footer().AlignCenter().Text(x =>
                     {
-                        x.Span("30- Fast Travel").FontSize(9).FontColor(Colors.Grey.Darken1);
+                        x.Span("Fast Travel").FontSize(9).FontColor(Colors.Grey.Darken1);
                     });
                 });
             })

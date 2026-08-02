@@ -325,7 +325,7 @@
                                         Background="{DynamicResource accentColor}" 
                                         Foreground="White"/>
 
-                                <Button Content="Éco Premium" 
+                                <Button Content="Économique Premium" 
                                         Command="{Binding ChoisirClasseCommand}" 
                                         CommandParameter="Economique Premium"
                                         Margin="3" 
