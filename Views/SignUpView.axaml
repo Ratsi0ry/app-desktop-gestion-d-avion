@@ -1,0 +1,383 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Gestion_avion.Views.Pages.SignUpView">
+
+    <UserControl.Background>
+    	<ImageBrush Source = "avares://Gestion_avion/Assets/background.jpg"
+    				Stretch = "UniformToFill"
+    		/>
+    </UserControl.Background>
+	<Panel>
+		<DockPanel Name="picker" ZIndex="3">
+			<Border CornerRadius="20"
+					BorderThickness="1"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Right"
+					Opacity="80"
+					DockPanel.Dock="Right">
+					
+					<Border.Background>
+						<LinearGradientBrush StartPoint="100%,0%" EndPoint="0%,0%">
+							<GradientStop Offset="0" Color="#18445F"/>
+							<GradientStop Offset="100" Color="#006FA2F0"/>
+						</LinearGradientBrush>
+					</Border.Background>
+					
+					<StackPanel 
+								HorizontalAlignment = "Right"
+								VerticalAlignment="Center"
+								MinHeight="250"
+								Margin="20"
+								Orientation="Vertical"
+								>
+						<Border>
+							<Border.Effect>
+								<BlurEffect Radius="500" />
+							</Border.Effect>
+						</Border>
+						<TextBlock Text = "SIGN IN TO ACCOUNT"
+									Foreground = "Black"
+									TextAlignment="Center"
+									FontWeight="Heavy"
+									FontSize="20"
+									Margin="15"
+									DockPanel.Dock="Top"
+							/>
+		
+						<WrapPanel Orientation="Vertical"
+									HorizontalAlignment="Center">
+		
+							<Border CornerRadius="50"
+									Margin="0,5"
+									Background="{StaticResource hoverColor}">
+								<StackPanel Orientation="Horizontal"
+										Margin="10"
+										>
+									<Border Height="70"
+											Background="White"
+											Opacity="100"
+											CornerRadius="70"
+											Width="70">
+	
+									</Border>
+									<TextBlock 	Foreground="Black"
+												FontSize="15"
+												Padding="10,0,10,0"
+												Text="company1"/>
+									<Border CornerRadius="20"
+											Height="20"
+											Width="70">
+										<Button Padding="10,0,0,0"
+												Height="20"
+												Foreground="Black"
+												HorizontalContentAlignment="Center"
+												HorizontalAlignment="Center"
+												Background="{StaticResource PrimaryColor}"
+												Content="log in"/>
+									</Border>
+								</StackPanel>
+							</Border>
+							
+							<Border CornerRadius="50"
+									Margin="0,5"
+									Background="#82B9DA">
+								<StackPanel Orientation="Horizontal"
+										Margin="10"
+										>
+									<Border Height="70"
+											Background="White"
+											Opacity="100"
+											CornerRadius="70"
+											Width="70">
+	
+									</Border>
+									<TextBlock 	Foreground="Black"
+												FontSize="15"
+												Padding="10,0,10,0"
+												Text="company2"/>
+									<Border CornerRadius="20"
+											Height="20"
+											Width="70">
+										<Button Padding="10,0,0,0"
+												Height="20"
+												Foreground="Black"
+												HorizontalContentAlignment="Center"
+												HorizontalAlignment="Center"
+												Background="#26537E"
+												Content="log in"/>
+									</Border>
+								</StackPanel>
+							</Border>
+		
+							<Border CornerRadius="50"
+									Margin="0,5"
+									Background="{StaticResource hoverColor}">
+								<StackPanel Orientation="Horizontal"
+										Margin="10"
+										>
+									<Border Height="70"
+											Background="White"
+											Opacity="100"
+											CornerRadius="70"
+											Width="70">
+	
+									</Border>
+									<TextBlock 	Foreground="Black"
+												FontSize="15"
+												Padding="10,0,10,0"
+												Text="company3"/>
+									<Border CornerRadius="20"
+											Height="20"
+											Width="70">
+										<Button Padding="10,0,0,0"
+												Height="20"
+												Foreground="Black"
+												HorizontalContentAlignment="Center"
+												HorizontalAlignment="Center"
+												Background="{StaticResource PrimaryColor}"
+												Content="log in"/>
+									</Border>
+								</StackPanel>
+							</Border>
+		
+						</WrapPanel>
+		
+						<WrapPanel Orientation = "Horizontal"
+									VerticalAlignment="Bottom"
+									Margin="30">
+							<Button Content = "register" 
+									Classes="register" 
+									Click="register_Click" 
+									Opacity="90"
+									Foreground="Black"
+									Margin="10"
+									/>
+							<Button Content = "other account" 
+									Classes="other" Click="other_Click" 
+									Opacity="90"
+									Foreground="Black"
+									Margin="10"/>
+						</WrapPanel>
+					</StackPanel>
+			</Border>
+			<Panel>
+			</Panel>
+		</DockPanel>
+
+		<Border CornerRadius="30"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Center"
+				Opacity="50"
+				Background="#50748B">
+
+				<StackPanel Orientation="Vertical"
+							VerticalAlignment="Center"
+							Name="other_accounts"
+							HorizontalAlignment="Center"
+							MinWidth="300"
+							ZIndex="0">
+
+				<TextBlock  Text="OTHER ACCOUNT"
+							FontWeight="Heavy"
+							FontSize="20"
+							HorizontalAlignment="Center"
+							Foreground="Black"
+							Margin="20"
+							/>
+				
+				<TextBlock 	Foreground="Black"
+							HorizontalAlignment="Center"
+							Padding="20,5"
+							Text="Name"/>
+
+				<TextBox 	Background="#D22974B1"
+							Foreground="White"
+							Width="250"
+							MaxHeight="20"
+							Padding="10,5"
+							HorizontalAlignment="Center"
+							PlaceholderText="your company's name"/>
+
+				<TextBlock 	Foreground="Black"
+							HorizontalAlignment="Center"
+							Padding="20,5"
+							Text="password"/>
+
+				<TextBox 	PasswordChar="*"
+							Background="#D22974B1"
+							Foreground="White"
+							Width="250"
+							Padding="10,5"
+							MaxHeight="20"
+							HorizontalAlignment="Center"
+							PlaceholderText="your password"/>
+
+				<Border	Margin="10,20"
+						CornerRadius="10"
+						MinWidth="60"
+						BorderThickness="2,0,0,2">
+					<Border.Background>
+						<SolidColorBrush Color="Black" Opacity="20"></SolidColorBrush>
+					</Border.Background>
+					<Button Content="Confirm"
+							HorizontalAlignment="Center"
+							Background="{StaticResource hoverColor}"
+							Foreground="Black"
+							/>
+				</Border>
+
+				<WrapPanel 	Orientation="Horizontal"
+      				        HorizontalAlignment="Right">
+					<Button Content="register"
+							Foreground="Black"
+							Opacity="1000"
+							Background="Transparent"
+							Margin="10,20,10,5"
+							Classes="other" 
+							Click="register_Click"/>
+					<Button Content="back"
+							Foreground="Black"
+							Opacity="1000"
+							Background="Transparent"
+							Margin="10,20,10,5" 
+							Classes="pick_account" 
+							Click="pick_Click"/>
+				</WrapPanel>
+			</StackPanel>
+		</Border>
+
+		<Border CornerRadius="30"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Center"
+				Opacity="50"
+				Background="#50748B">
+
+			<StackPanel MinHeight="250"
+						Name="new_user"
+						Orientation="Horizontal">
+			
+				<Border>
+					<Border.Effect>
+						<BlurEffect Radius="20" />
+					</Border.Effect>
+				</Border>
+
+				<Border	CornerRadius="30,0,0,30"
+						Background="{StaticResource hoverColor}">
+
+					<StackPanel	Orientation="Vertical"
+								VerticalAlignment="Center"
+								MinWidth="200"
+								HorizontalAlignment="Center"
+								>
+	
+						<Border Height="70"
+								CornerRadius="70"
+								Background="White"
+								HorizontalAlignment="Center"
+								Width="70">
+						</Border>
+	
+						<TextBlock 	Padding="10,20,10,20"
+									HorizontalAlignment="Center"
+									Text="company picture"/>
+	
+					</StackPanel>
+				</Border>
+				
+				<DockPanel 	MinWidth="500">
+					<WrapPanel 	HorizontalAlignment="Right"
+								Margin="20,10,50,5"
+								VerticalAlignment="Bottom"
+								DockPanel.Dock="Bottom"
+								Orientation="Horizontal">
+						<Button Content="already have an account"
+								Foreground="Black"
+								Classes="other" 
+								Click="other_Click"
+								Background="Transparent"
+								Padding="10,0,10,0"
+								Opacity="1000"/>
+						<Button Content="back" 
+								Classes="pick_account" 
+								Foreground="Black"
+								Background="Transparent"
+								Padding="10,0,10,0"
+								Click="pick_Click"
+								Opacity="1000"/>
+					</WrapPanel>
+
+					<WrapPanel 	Orientation="Vertical" 
+								HorizontalAlignment="Center"
+								DockPanel.Dock="Right"
+								MinWidth="300">
+
+						<TextBlock 	Foreground="{StaticResource accentColor}"
+									HorizontalAlignment="Center"
+									FontSize="15"
+									FontWeight="Heavy"
+									Padding="20,5"
+									Text="Name"/>
+
+						<TextBox 	Background="#D22974B1"
+									Foreground="White"
+									Width="250"
+									MaxHeight="20"
+									Padding="10,5"
+									HorizontalAlignment="Right"
+									PlaceholderText="you're company's name"/>
+
+						<TextBlock 	Foreground="{StaticResource accentColor}"
+									HorizontalAlignment="Center"
+									Padding="20,5"
+									FontSize="15"
+									FontWeight="Heavy"
+									Text="password"/>
+
+						<TextBox 	PasswordChar="*"
+									Background="#D22974B1"
+									Foreground="White"
+									Width="250"
+									Padding="10,5"
+									MaxHeight="20"
+									HorizontalAlignment="Right"
+									PlaceholderText="your password"/>
+
+						<TextBlock 	Foreground="{StaticResource accentColor}"
+									Padding="20,5"
+									FontSize="15"
+									FontWeight="Heavy"
+									HorizontalAlignment="Center"
+									Text="Confirm password"/>
+
+						<TextBox 	PasswordChar="*"
+									HorizontalAlignment="Right"
+									MaxHeight="20"
+									Width="250"
+									Padding="10,5"
+									Background="#D22974B1"
+									Foreground="White"
+									PlaceholderText="verify your password"/>
+
+						<Border	Margin="10,20"
+								CornerRadius="10"
+								MinWidth="60"
+								BorderThickness="2,0,0,2">
+							<Border.Background>
+								<SolidColorBrush Color="Black" Opacity="20"></SolidColorBrush>
+							</Border.Background>
+							<Button Content="Confirm"
+									HorizontalAlignment="Center"
+									Background="{StaticResource hoverColor}"
+									Foreground="White"
+									/>
+						</Border>
+
+					</WrapPanel>
+
+				</DockPanel>
+			</StackPanel>
+		</Border >
+	</Panel>
+
+</UserControl>
