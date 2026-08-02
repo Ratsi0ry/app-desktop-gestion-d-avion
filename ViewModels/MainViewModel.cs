@@ -17,7 +17,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private string _loadingMessage = "Démarrage de Fast Travel...";
 
-    public MainViewModel() 
+    public MainViewModel()                                    
     {
         _ = InitializeAppAsync();
     }
@@ -49,6 +49,6 @@ public partial class MainViewModel : ViewModelBase
     private void GoToVols() => CurrentPage = new VolsViewModel();
 
     [RelayCommand]
-    private void GoToReservation() => CurrentPage = new RerservationViewModel();
+    private void GoToReservation() => CurrentPage = new ReservationViewModel();
 
 }
