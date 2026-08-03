@@ -151,7 +151,7 @@
                                      Foreground="Black"/>
                         </StackPanel>
 
-                        <!-- Boutons-->
+                        <!-- btn-->
                         <StackPanel Spacing="5">
                             <Grid ColumnSpacing="15">
                                 <Grid.ColumnDefinitions>
@@ -159,7 +159,7 @@
                                 <ColumnDefinition Width="1*"/> 
                             </Grid.ColumnDefinitions>
 
-                            <!-- Bouton reserver-->
+                            <!-- btn reserver-->
                             <Button Grid.Column="0" 
                                     Content="Reserver"
                                     Command="{Binding ReserverCommand}"
@@ -169,7 +169,7 @@
                                     Foreground="White"
                                     FontWeight="Bold"/>
 
-                            <!-- Bouton annuler -->
+                            <!-- btn annuler -->
                             <Button Grid.Column="1" 
                                     Content="Annuler"
                                     Command="{Binding AnnulerCommand}"
@@ -255,7 +255,7 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Date du vol -->
+                            <!-- date du vol -->
                             <StackPanel Grid.Column="0" Spacing="5">
                                 <TextBlock Text="Date" 
                                            FontWeight="SemiBold" 
@@ -275,7 +275,7 @@
                                        Margin="0,0,0,10"
                                        Foreground="{DynamicResource accentColor}"/>
 
-                            <!-- Heure du vol -->
+                            <!-- heure du vol -->
                             <StackPanel Grid.Column="2" Spacing="5">
                                 <TextBlock Text="Heure" 
                                            FontWeight="SemiBold" 
@@ -303,42 +303,11 @@
         
                     <ScrollViewer>
                         <StackPanel Spacing="15">
-                            <TextBlock Text="Siège"
+                            <TextBlock Text="{Binding ClasseAvion}"
                                        FontSize="18"
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource accentColor}"
                                        HorizontalAlignment="Center"/>
-
-                            <!-- Boutons selection de classe -->
-                            <WrapPanel HorizontalAlignment="Center" Margin="0,0,0,10">
-                                <Button Content="Première Classe" 
-                                        Command="{Binding ChoisirClasseCommand}" 
-                                        CommandParameter="Première Classe"
-                                        Margin="3" 
-                                        Background="{DynamicResource accentColor}" 
-                                        Foreground="White"/>
-
-                                <Button Content="Classe Affaire" 
-                                        Command="{Binding ChoisirClasseCommand}" 
-                                        CommandParameter="Classe Affaire"
-                                        Margin="3" 
-                                        Background="{DynamicResource accentColor}" 
-                                        Foreground="White"/>
-
-                                <Button Content="Économique Premium" 
-                                        Command="{Binding ChoisirClasseCommand}" 
-                                        CommandParameter="Economique Premium"
-                                        Margin="3" 
-                                        Background="{DynamicResource accentColor}" 
-                                        Foreground="White"/>
-
-                                <Button Content="Économique" 
-                                        Command="{Binding ChoisirClasseCommand}" 
-                                        CommandParameter="Economique"
-                                        Margin="3" 
-                                        Background="{DynamicResource accentColor}" 
-                                        Foreground="White"/>
-                            </WrapPanel>
 
                             <!-- 2. Vue avion -->
                             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
@@ -442,7 +411,7 @@
                     BoxShadow="0 10 30 0 #40000000">
                 
                 <StackPanel>
-                    <!-- En-tête billet -->
+                    <!-- en-tête billet -->
                     <Border Background="{DynamicResource accentColor}" 
                             CornerRadius="15,15,0,0" 
                             Padding="20">
@@ -459,7 +428,7 @@
                         </Grid>
                     </Border>
 
-                    <!-- Corps billet -->
+                    <!-- corps billet -->
                     <Border Padding="30">
                         <Grid ColumnSpacing="20">
                             <Grid.ColumnDefinitions>
@@ -467,7 +436,7 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Infos passager et vol -->
+                            <!-- infos passager et vol -->
                             <StackPanel Grid.Column="0" Spacing="15">
                                 <StackPanel>
                                     <TextBlock Text="PASSAGER" 
@@ -504,7 +473,7 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <!-- Infos siège et classe (Droite) -->
+                            <!-- infos siege et classe -->
                             <Border Grid.Column="1" 
                                     Background="WhiteSmoke" 
                                     CornerRadius="10" 
@@ -545,13 +514,32 @@
                     </Border>
 
                     <Border Background="WhiteSmoke" CornerRadius="0,0,15,15" Padding="20">
-                        <Button Content="Telecharger le ticket"
-                                Command="{Binding TelechargerEtFermerTicketCommand}"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center"
-                                Background="{DynamicResource accentColor}"
-                                Foreground="White"
-                                FontWeight="Bold"/>
+                        <Grid ColumnSpacing="15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Bouton fermer -->
+                            <Button Grid.Column="0" 
+                                    Content="Fermer"
+                                    Command="{Binding FermerTicketCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Background="#ADADAD"
+                                    Foreground="White"
+                                    FontWeight="Bold"/>
+
+                            <!-- Bouton telecharger et fermer -->
+                            <Button Grid.Column="1" 
+                                    Content="Télécharger le ticket"
+                                    Command="{Binding TelechargerEtFermerTicketCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Background="{DynamicResource accentColor}"
+                                    Foreground="White"
+                                    FontWeight="Bold"/>
+                        </Grid>
                     </Border>
                 </StackPanel>
             </Border>

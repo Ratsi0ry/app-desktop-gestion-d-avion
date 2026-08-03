@@ -1,6 +1,6 @@
 using System;
-using System.IO;
 using System.Collections.ObjectModel;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using QuestPDF.Fluent;
@@ -110,6 +110,15 @@ public partial class ReservationViewModel : ViewModelBase
             default:
                 GenererSieges(8, "M", "N", "O", "P");
                 break;
+        }
+    }
+
+    //affichage sieges selon classe choisi
+    partial void OnClasseAvionChanged(string value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            ChargerSieges(value);
         }
     }
 
