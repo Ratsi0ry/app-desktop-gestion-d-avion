@@ -16,6 +16,7 @@ namespace back.Models
         public string email_compagnie {get; set; } = string.Empty;
 
         public List<Avion> Avions {get; set; } = new();
+        public List<Repartir> Repartirs {get; set; } = new();
     }
     
     public class Avion
@@ -23,27 +24,27 @@ namespace back.Models
         public string id_avion {get; set; } = string.Empty;
         public required string nom_avion {get; set; } = string.Empty;
 
-        public string fk_code_modele {get; set; } = null!;
+       // public string fk_code_modele {get; set; } = null!;
         public string fk_id_compagnie {get; set; } = null!;
 
         public List<Vol> Vols {get; set; } = new();
         public List<Caracteriser> Caracterisers {get; set; } = new();
         public List<Posseder> Posseders {get; set; } = new();
         public Compagnie Compagnie {get; set; } = null!;
-        public Modele_avion Modele_avion {get; set; } = null!;
+       // public Modele_avion Modele_avion {get; set; } = null!;
     }
-    public class Modele_avion
+    /*public class Modele_avion
     {
         public string code_modele {get; set; } = string.Empty;
         public required string libelle_modele {get; set; } = string.Empty;
 
         public List<Avion> Avions {get; set; } = new();
-        public List<Classe> Classes {get; set; } = new();
+        //public List<Classe> Classes {get; set; } = new();
         public List<Diviser> Divisers {get; set; } = new();
 
-    }
+    }*/
 
-    public class Classe
+    /*public class Classe
     {
         public string code_classe {get; set; } = string.Empty;
         public required string libelle_classe {get; set; } = string.Empty;
@@ -52,16 +53,18 @@ namespace back.Models
         public List<Diviser> Divisers {get; set; } = new();
         public List<Regrouper> Regroupers {get; set; } = new();
         public Place Place {get; set; } = null!;
-    }
+    }*/
 
     public class Place
     {
         public string numero_place {get; set; } = string.Empty;
+        public required string classe_siege {get; set; } = string.Empty;
+        public required int occupee {get; set; } = 0;
 
         public List<Avion> Avions {get; set; } = new();
         public List<Reservation> Reservations {get; set; } = new();
         public List<Posseder> Posseders {get; set; } = new();
-        public List<Regrouper> Regroupers {get; set; } = new(); 
+        //public List<Regrouper> Regroupers {get; set; } = new(); 
     }
     
     public class Statut_avion
@@ -79,8 +82,10 @@ namespace back.Models
         public string id_vol {get; set; } = string.Empty;
 
         //le type de la date ???
-        public required string date_depart {get; set; } = string.Empty;
-        public string date_arrivee {get; set; } = string.Empty;
+        /*public required string date_depart {get; set; } = string.Empty;
+        public string date_arrivee {get; set; } = string.Empty;*/
+
+        public string fk_date_depart {get; set; } = string.Empty;
 
         public string fk_id_trajet {get; set; } = null!;
         public string fk_id_avion {get; set; } = null!;
@@ -88,9 +93,18 @@ namespace back.Models
         public List<Billet> Billets {get; set; } = new();
 
         public List<Affecter> Affecters {get; set; } = new();
+        public List<Reservation> Reservations {get; set; } = new();
         public Avion Avion {get; set; } = null!;
         public Trajet Trajet {get; set; } = null!;
+        public Date_vol Date_vol {get; set; } = null!;
 
+    }
+
+    public class Date_vol
+    {
+        public string date_depart {get; set; } = string.Empty;
+
+        public List<Vol> Vols {get; set; } = new();
     }
 
     public class Trajet
@@ -100,6 +114,7 @@ namespace back.Models
         public required string destination {get; set; } = string.Empty;
 
         public List<Vol> Vols {get; set; } = new(); 
+        public List<Repartir> Repartirs {get; set; } = new();
 
     }
 
@@ -134,9 +149,11 @@ namespace back.Models
 
         public string fk_numero_place {get; set; } = null!;
         public string fk_passeport {get; set; } = null!;
+        public string fk_id_vol {get; set; } = null!;
 
         public Place Place {get; set; } = null!;
         public Passager Passager {get; set; } = null!;
+        public Vol Vol {get; set; } = null!;
         //public Billet Billet {get; set; } = null!;
     }
 
@@ -187,21 +204,29 @@ namespace back.Models
 
     }
 
-    public class Diviser
+    /*public class Diviser
     {
         public string fk_code_modele {get; set; } = null!;
         public string fk_code_classe {get; set; } = null!;
 
-        public Modele_avion Modele_avion {get; set; } = null!;
-        public Classe Classe {get; set; } = null!;
-    }
+        //public Modele_avion Modele_avion {get; set; } = null!;
+       // public Classe Classe {get; set; } = null!;
+    }*/
 
-    public class Regrouper
+    /*public class Regrouper
     {
         public string fk_code_classe {get; set; } = null!;
         public string fk_numero_place {get; set; } = null!;
 
-        public Classe Classe {get; set; } = null!;
+       // public Classe Classe {get; set; } = null!;
         public Place Place {get; set; } = null!;
+    }*/
+    public class Repartir
+    {
+        public string fk_id_compagnie {get; set; } = string.Empty;
+        public string fk_id_trajet {get; set; } = string.Empty;
+
+        public Compagnie Compagnie {get; set; } = null!;
+        public Trajet Trajet {get; set; } = null!;
     }
 }

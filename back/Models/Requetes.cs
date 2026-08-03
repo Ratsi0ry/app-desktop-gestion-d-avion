@@ -2,17 +2,18 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using back.Data;
+using System.Linq.Expressions;
 namespace back.Models;
 
 public class Requetes<Table, Keytype> where Table : class
 {
 
     //lister tout le contenu de la table
-    public List<Table> Lister()
+    public async Task<List<Table>> Lister()
     {
         using (var bdd= new Contextedb())
         {
-            return bdd.Set<Table>().ToList();//besoin de Include()
+            return await bdd.Set<Table>().ToListAsync();
         }
     }
 
@@ -51,11 +52,12 @@ public class Requetes<Table, Keytype> where Table : class
         }
     }
 
-    public List<Table> Recherche(Func<Table, bool> propriete)
+    public async Task<List<Table>> Recherche(Expression<Func<Table, bool>> propriete)
     {
         using (var bdd = new Contextedb())
         {
-            return bdd.Set<Table>().Where(propriete).ToList();
+            return await bdd.Set<Table>().Where(propriete).ToListAsync();
         }
     }
 }
+

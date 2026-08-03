@@ -10,12 +10,13 @@ namespace back.Data; //emplacement actuel
 public class Contextedb : DbContext
 {
     //pilote de la table CLIENT cree precedemment dans Models
-    
+    public DbSet<Client> Client {get; set; } = null!;
     public DbSet<Vol> Vol {get; set; } = null!;
+    public DbSet<Date_vol> Date_vol {get; set; } = null!;
     public DbSet<Avion> Avion {get; set; } = null!;
-    public DbSet<Modele_avion> Modele_avion {get; set; } = null!;
+    //public DbSet<Modele_avion> Modele_avion {get; set; } = null!;
     public DbSet<Compagnie> Compagnie {get; set; } = null!;
-    public DbSet<Classe> Classe {get; set; } = null!;
+    //public DbSet<Classe> Classe {get; set; } = null!;
     public DbSet<Place> Place {get; set; } = null!;
     public DbSet<Statut_avion> Statut_avion {get; set; } = null!;
     public DbSet<Trajet> Trajet {get; set; } = null!;
@@ -26,8 +27,9 @@ public class Contextedb : DbContext
     public DbSet<Affecter> Affecter {get; set; } = null!;
     public DbSet<Caracteriser> Caracteriser {get; set; } = null!;
     public DbSet<Posseder> Posseder {get; set; } = null!;
-    public DbSet<Diviser> Diviser {get; set; } = null!;
-    public DbSet<Regrouper> Regrouper {get; set; } = null!;
+    /*public DbSet<Diviser> Diviser {get; set; } = null!;
+    public DbSet<Regrouper> Regrouper {get; set; } = null!;*/
+    public DbSet<Repartir> Repartir {get; set; } = null!;
 
     
 
@@ -59,17 +61,17 @@ public class Contextedb : DbContext
             .HasForeignKey(av => av.fk_id_compagnie)
             .HasConstraintName("fk_avion_compagnie");
 
-        modelBuilder.Entity<Avion>()
+       /* modelBuilder.Entity<Avion>()
             .HasOne(av => av.Modele_avion)
             .WithMany(mv => mv.Avions)
             .HasForeignKey(av => av.fk_code_modele)
             .HasConstraintName("fk_avion_modele");
         
-        modelBuilder.Entity<Modele_avion>()
+       modelBuilder.Entity<Modele_avion>()
             .HasKey(mv => mv.code_modele);
 
         modelBuilder.Entity<Classe>()
-            .HasKey(cl => cl.code_classe);
+            .HasKey(cl => cl.code_classe);*/
 
         modelBuilder.Entity<Place>()
             .HasKey(pl => pl.numero_place);
@@ -91,6 +93,15 @@ public class Contextedb : DbContext
             .WithMany(av => av.Vols)
             .HasForeignKey(v => v.fk_id_avion)
             .HasConstraintName("fk_vol_avion");
+
+        modelBuilder.Entity<Vol>()
+            .HasOne(v => v.Date_vol)
+            .WithMany(dat => dat.Vols)
+            .HasForeignKey(v => v.fk_date_depart)
+            .HasConstraintName("fk_vol_date_vol");
+
+        modelBuilder.Entity<Date_vol>().HasKey(dat => dat.date_depart);
+            
         
         modelBuilder.Entity<Trajet>()
             .HasKey(tr => tr.id_trajet);
@@ -115,6 +126,12 @@ public class Contextedb : DbContext
             .WithMany(pa => pa.Reservations)
             .HasForeignKey(re => re.fk_passeport)
             .HasConstraintName("fk_reservation_passager");
+
+        modelBuilder.Entity<Reservation>()
+            .HasOne(re => re.Vol)
+            .WithMany(v => v.Reservations)
+            .HasForeignKey(re => re.fk_id_vol)
+            .HasConstraintName("fk_reservation_vol");
 
 
         modelBuilder.Entity<Billet>()
@@ -185,7 +202,20 @@ public class Contextedb : DbContext
             .HasConstraintName("fk_posseder_place");
 
         });
-        modelBuilder.Entity<Diviser>(ent =>
+        modelBuilder.Entity<Repartir>(ent =>
+        {
+            ent.HasKey(rep => new {rep.fk_id_compagnie, rep.fk_id_trajet});
+            ent.HasOne(rep => rep.Compagnie)
+                .WithMany(co => co.Repartirs)
+                .HasForeignKey(rep => rep.fk_id_compagnie)
+                .HasConstraintName("fk_repartir_compagnie");
+
+            ent.HasOne(rep => rep.Trajet)
+                .WithMany(tr => tr.Repartirs)
+                .HasForeignKey(rep => rep.fk_id_trajet)
+                .HasConstraintName("fk_repartir_trajet");
+        });
+       /* modelBuilder.Entity<Diviser>(ent =>
         {
             ent.HasKey(div => new{div.fk_code_modele, div.fk_code_classe} );
 
@@ -199,9 +229,9 @@ public class Contextedb : DbContext
             .HasForeignKey(div => div.fk_code_classe)
             .HasConstraintName("fk_diviser_classe");
 
-        });
+        });*/
 
-         modelBuilder.Entity<Regrouper>(ent =>
+         /*modelBuilder.Entity<Regrouper>(ent =>
         {
             ent.HasKey(reg => new{reg.fk_code_classe, reg.fk_numero_place} );
 
@@ -215,7 +245,7 @@ public class Contextedb : DbContext
             .HasForeignKey(reg => reg.fk_code_classe)
             .HasConstraintName("fk_regrouper_place");
 
-        });
+        });*/
         
         
         
