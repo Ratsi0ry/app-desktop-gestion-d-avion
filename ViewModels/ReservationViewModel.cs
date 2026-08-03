@@ -33,7 +33,7 @@ public partial class ReservationViewModel : ViewModelBase
     private ObservableCollection<string> _categoriePersonneDispo = new() { "Adulte", "Enfant", "Bébé" };
 
     [ObservableProperty]
-    private ObservableCollection<string> _classeAvionDispo = new() { "Economique", "Economique Premium", "classe Affaire", "Première classe" };
+    private ObservableCollection<string> _classeAvionDispo = new() { "Economique", "Economique Premium", "Classe Affaire", "Première Classe" };
 
     [ObservableProperty]
     private ObservableCollection<string> _compagnieAerienneDispo = new() { "Madagascar Airlines", "Ethiopian Airlines", "Air France", "Air Mauritius" };
@@ -78,7 +78,10 @@ public partial class ReservationViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void ChoisirClasse(string classe) => ChargerSieges(classe);
+    private void ChoisirClasse(string classe)
+    {
+        ClasseAvion = classe;
+    }
 
     [RelayCommand]
     private void SelectionnerSiege(Siege siege)
@@ -292,4 +295,4 @@ public partial class Siege : ObservableObject
 
     [ObservableProperty]
     private bool _estReserve, _estSelectionne, _isEspace;
-}
+}   
