@@ -5,19 +5,11 @@ namespace Gestion_avion.ViewModels;
 public partial class DashboardViewModel : ViewModelBase
 {
     [ObservableProperty]
-    private int _nbVolsJournee;
+    private int _nbVolsJournee, _nbVolsEnCours, _nbVolsEffectues, _nbVolsAnnuler;
+
 
     [ObservableProperty]
-    private int _nbVolsEnCours;
-
-    [ObservableProperty]
-    private int _nbVolsEffectues;
-
-    [ObservableProperty]
-    private int _nbVolsAnnuler;
-
-    [ObservableProperty]
-    private string _meteoDuJour;
+    private string _meteoDuJour, _dateDuJour;
 
     public DashboardViewModel()
     {
@@ -26,5 +18,6 @@ public partial class DashboardViewModel : ViewModelBase
         NbVolsEffectues = 3;
         NbVolsAnnuler = 0;
         MeteoDuJour = "Ciel degagé 24° C ";
+        DateDuJour = "01/08/26";
     }
 }

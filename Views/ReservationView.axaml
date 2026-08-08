@@ -1,0 +1,550 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Gestion_avion.ViewModels"
+             xmlns:conv="clr-namespace:Gestion_avion.Converters"
+             x:Class="Gestion_avion.Views.ReservationView"
+             x:DataType="vm:ReservationViewModel">
+
+    <!-- couleur place  -->
+    <UserControl.Resources>
+        <conv:BoolToColorConverter x:Key="BoolToColorConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+
+        <!-- hover-->
+        <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="{DynamicResource secondColor}"/> 
+            <Setter Property="BorderBrush" Value="{DynamicResource secondColor}"/> 
+        </Style>
+
+        <!-- focus-->
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="{DynamicResource secondColor}"/> 
+            <Setter Property="BorderBrush" Value="{DynamicResource hoverColor}"/> 
+        </Style>
+
+        <!-- while writing -->
+        <Style Selector="TextBox:focus">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        
+    </UserControl.Styles>
+
+    <Grid>
+
+        <Grid Margin="20" ColumnSpacing="20">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1.5*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- gauche  -->
+            <ScrollViewer Grid.Column="0">
+
+                <Border Background="WhiteSmoke"
+                        CornerRadius="16"
+                        Padding="20"
+                        VerticalAlignment="Stretch">
+                
+                    <StackPanel Spacing="15">
+
+                        <TextBlock Text="Reservation"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource accentColor}"/>
+
+                        <!-- ID passeport -->
+                         <StackPanel Spacing="5">
+                            <TextBlock Text="ID Passeport"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource accentColor}"/>
+                            <TextBox Text="{Binding IdPasseport, Mode=TwoWay}"
+                                     CornerRadius="10"
+                                     Background="{DynamicResource secondColor}"
+                                     Foreground="Black"/>
+                        </StackPanel>
+
+                        <!-- nom  -->
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Nom"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource accentColor}"/>
+                            <TextBox Text="{Binding Nom, Mode=TwoWay}"
+                                     CornerRadius="10"
+                                     Background="{DynamicResource secondColor}"
+                                     Foreground="Black"/>
+                        </StackPanel>
+
+                        <!-- prenom  -->
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Prenom"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource accentColor}"/>
+                            <TextBox Text="{Binding Prenom, Mode=TwoWay}"
+                                     CornerRadius="10"
+                                     Background="{DynamicResource secondColor}"
+                                     Foreground="Black"/>
+                        </StackPanel>
+
+                        <!-- categorie personne  -->
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Categorie personne"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource accentColor}"/>
+                            <ComboBox HorizontalAlignment="Stretch"
+                                      PlaceholderText="Selectionner..."
+                                      Foreground="White"
+                                      FontWeight="Bold"
+                                      ItemsSource="{Binding CategoriePersonneDispo}"
+                                      SelectedItem="{Binding CategoriePersonne, Mode=TwoWay}"/>
+                        </StackPanel>
+
+                        <!-- classe  -->
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Classe"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource accentColor}"/>
+                            <ComboBox HorizontalAlignment="Stretch"
+                                      PlaceholderText="Selectionner..."
+                                      Foreground="White"
+                                      FontWeight="Bold"
+                                      ItemsSource="{Binding ClasseAvionDispo}"
+                                      SelectedItem="{Binding ClasseAvion, Mode=TwoWay}"/>
+                        </StackPanel>
+
+                        <!-- compagnie aerienne  -->
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Compagnie Aerienne"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource accentColor}"/>
+                            <ComboBox HorizontalAlignment="Stretch"
+                                      PlaceholderText="Selectionner..."
+                                      Foreground="White"
+                                      FontWeight="Bold"
+                                      ItemsSource="{Binding CompagnieAerienneDispo}"
+                                      SelectedItem="{Binding CompagnieAerienne, Mode=TwoWay}"/>
+                        </StackPanel>
+
+                        <!-- type de vol  -->
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Type de vol"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource accentColor}"/>
+                            <ComboBox HorizontalAlignment="Stretch"
+                                      PlaceholderText="Selectionner..."
+                                      Foreground="White"
+                                      FontWeight="Bold"
+                                      ItemsSource="{Binding TypeVolDispo}"
+                                      SelectedItem="{Binding TypeVol, Mode=TwoWay}"/>
+                        </StackPanel>
+
+                        <!-- sejour  -->
+                        <StackPanel Spacing="5" IsVisible="{Binding IsSejourVisible}">
+                            <TextBlock Text="Sejour"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource accentColor}"/>
+                            <TextBox Text="{Binding Sejour, Mode=TwoWay}"
+                                     CornerRadius="10"
+                                     Background="{DynamicResource secondColor}"
+                                     Foreground="Black"/>
+                        </StackPanel>
+
+                        <!-- btn-->
+                        <StackPanel Spacing="5">
+                            <Grid ColumnSpacing="15">
+                                <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/> 
+                            </Grid.ColumnDefinitions>
+
+                            <!-- btn reserver-->
+                            <Button Grid.Column="0" 
+                                    Content="Reserver"
+                                    Command="{Binding ReserverCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Background="{DynamicResource accentColor}"
+                                    Foreground="White"
+                                    FontWeight="Bold"/>
+
+                            <!-- btn annuler -->
+                            <Button Grid.Column="1" 
+                                    Content="Annuler"
+                                    Command="{Binding AnnulerCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Background="#ADADAD"
+                                    Foreground="White"
+                                    FontWeight="Bold"/>
+                            </Grid>
+                        </StackPanel>
+
+                    </StackPanel>          
+                </Border>
+            </ScrollViewer>
+
+
+            <!-- droite  -->
+            <Grid Grid.Column="1" RowSpacing="20">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> 
+                    <RowDefinition Height="*"/>    
+                </Grid.RowDefinitions>
+                
+                <!-- pt1  -->
+                <Border Grid.Row="0" 
+                        Background="WhiteSmoke"
+                        CornerRadius="15"
+                        Padding="20">
+                        
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Voyagé de"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource accentColor}"/>
+
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- ville de depart  -->
+                            <StackPanel Grid.Column="0" Spacing="5">
+                                <TextBlock Text="Depart"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource accentColor}"/>
+                                <ComboBox HorizontalAlignment="Stretch"
+                                          PlaceholderText="Selectionner..."
+                                          Foreground="White"
+                                          FontWeight="Bold"
+                                          ItemsSource="{Binding VilleDepartDispo}"
+                                          SelectedItem="{Binding VilleDepart, Mode=TwoWay}"/>
+                            </StackPanel>
+                            
+                            <TextBlock Grid.Column="1" 
+                                       Text="➔" 
+                                       FontSize="18" 
+                                       VerticalAlignment="Bottom" 
+                                       Margin="0,0,0,10"
+                                       Foreground="{DynamicResource accentColor}"/>
+
+                            <!-- destination  -->
+                            <StackPanel Grid.Column="2" Spacing="5">
+                                <TextBlock Text="Destination"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource accentColor}"/>
+                                <ComboBox HorizontalAlignment="Stretch"
+                                          PlaceholderText="Selectionner..."
+                                          Foreground="White"
+                                          FontWeight="Bold"
+                                          ItemsSource="{Binding VilleDispo}"
+                                          SelectedItem="{Binding VilleArrivee, Mode=TwoWay}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- date et heure  -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- date du vol -->
+                            <StackPanel Grid.Column="0" Spacing="5">
+                                <TextBlock Text="Date" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="{DynamicResource accentColor}"/>
+                                <ComboBox HorizontalAlignment="Stretch"
+                                          PlaceholderText="Selectionner..."
+                                          Foreground="White"
+                                          FontWeight="Bold"
+                                          ItemsSource="{Binding DateVolDispo}"
+                                          SelectedItem="{Binding DateVol, Mode=TwoWay}"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Column="1" 
+                                       Text="à" 
+                                       FontSize="14" 
+                                       VerticalAlignment="Bottom" 
+                                       Margin="0,0,0,10"
+                                       Foreground="{DynamicResource accentColor}"/>
+
+                            <!-- heure du vol -->
+                            <StackPanel Grid.Column="2" Spacing="5">
+                                <TextBlock Text="Heure" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="{DynamicResource accentColor}"/>
+                                <ComboBox HorizontalAlignment="Stretch"
+                                          PlaceholderText="Selectionner..."
+                                          Foreground="White"
+                                          FontWeight="Bold"
+                                          ItemsSource="{Binding HeureVolDispo}"
+                                          SelectedItem="{Binding HeureVol, Mode=TwoWay}"/>
+                            </StackPanel>
+
+                        </Grid>
+
+                    </StackPanel>
+
+                </Border>
+
+                <!-- sièges -->
+                <Border Grid.Row="1"    
+                        Background="WhiteSmoke"
+                        CornerRadius="15"
+                        Padding="20"
+                        VerticalAlignment="Stretch">
+        
+                    <ScrollViewer>
+                        <StackPanel Spacing="15">
+                            <TextBlock Text="{Binding ClasseAvion}"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource accentColor}"
+                                       HorizontalAlignment="Center"/>
+
+                            <!-- 2. Vue avion -->
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                <Border Background="White" 
+                                        BorderBrush="#CCCCCC" 
+                                        BorderThickness="3"
+                                        CornerRadius="80,15,15,80" 
+                                        Padding="30,15,20,15"
+                                        HorizontalAlignment="Center"
+                                        Margin="10">
+                                    
+                                    <StackPanel Orientation="Horizontal" Spacing="15">
+                                        
+                                        <!-- forme Cockpit -->
+                                        <Border Width="50" 
+                                                Background="#E0E6ED" 
+                                                CornerRadius="40,0,0,40"
+                                                VerticalAlignment="Stretch">
+                                            <LayoutTransformControl HorizontalAlignment="Center" 
+                                                                   VerticalAlignment="Center">
+                                                <LayoutTransformControl.LayoutTransform>
+                                                    <RotateTransform Angle="-90"/>
+                                                </LayoutTransformControl.LayoutTransform>
+                                                <TextBlock Text="Cockpit" 
+                                                           Foreground="#78909C" 
+                                                           FontSize="11"
+                                                           FontWeight="Bold"/>
+                                            </LayoutTransformControl>
+                                        </Border>
+
+                                        <!-- couloir avion -->
+                                        <ItemsControl ItemsSource="{Binding ListeSieges}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Rows="{Binding NbLignesGrille}"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <!-- couleur place reserver -->
+                                                    <Panel Width="45" Height="45">
+                                                       <Button Content="{Binding Numero}"
+                                                                Width="40" Height="40"
+                                                                CornerRadius="6"
+                                                                HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                Foreground="White"
+                                                                Background="{DynamicResource accentColor}"
+                                                                IsVisible="{Binding !IsEspace}"
+                                                                IsEnabled="{Binding !EstReserve}"
+                                                                Classes.selected="{Binding EstSelectionne}"
+                                                                Command="{Binding $parent[UserControl].DataContext.SelectionnerSiegeCommand}"
+                                                                CommandParameter="{Binding}">
+                                                        <Button.Styles>
+                                                            <!-- Style appliqué uniquement lorsque le siège est sélectionné -->
+                                                            <Style Selector="Button.selected">
+                                                                <Setter Property="Opacity" Value="0.35"/>
+                                                                <Setter Property="Background" Value="#1E293B"/> <!-- Couleur plus sombre/estompée -->
+                                                            </Style>
+                                                        </Button.Styles>
+                                                        </Button>
+                                                    </Panel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                    </StackPanel>
+                                </Border>
+                            </ScrollViewer>
+
+                            <!-- place choisie-->
+                            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center" Margin="0,10,0,0">
+                                <TextBlock Text="Siège choisi :" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                <Border Background="{DynamicResource accentColor}" CornerRadius="6" Padding="10,4">
+                                    <TextBlock Text="{Binding SiegeSelectionne.Numero, FallbackValue='Aucun'}" 
+                                               Foreground="White" 
+                                               FontWeight="Bold"/>
+                                </Border>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+            </Grid>
+
+        </Grid>
+
+
+        <!-- ticket  -->
+        <Border Background="#99000000" 
+                IsVisible="{Binding IsTicketVisible}"
+                ZIndex="100">
+            
+            <Border Background="White"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="15"
+                    Width="600"
+                    BoxShadow="0 10 30 0 #40000000">
+                
+                <StackPanel>
+                    <!-- en-tête billet -->
+                    <Border Background="{DynamicResource accentColor}" 
+                            CornerRadius="15,15,0,0" 
+                            Padding="20">
+                        <Grid>
+                            <TextBlock Text="Ticket " 
+                                        Foreground="White" 
+                                        FontWeight="Bold" 
+                                        FontSize="20"/>
+                            <TextBlock Text="{Binding TicketCompagnie}" 
+                                        Foreground="White"
+                                        FontWeight="Bold" 
+                                        HorizontalAlignment="Right" 
+                                        VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- corps billet -->
+                    <Border Padding="30">
+                        <Grid ColumnSpacing="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- infos passager et vol -->
+                            <StackPanel Grid.Column="0" Spacing="15">
+                                <StackPanel>
+                                    <TextBlock Text="PASSAGER" 
+                                                FontSize="10" 
+                                                Foreground="{DynamicResource accentColor}" 
+                                                FontWeight="Bold"/>
+
+                                    <TextBlock Text="{Binding TicketNom}" 
+                                                FontSize="18" 
+                                                FontWeight="Bold"
+                                                Foreground="Black"/>
+                                </StackPanel>
+
+                                <StackPanel>
+                                    <TextBlock Text="VOL / TRAJET" 
+                                                FontSize="10" 
+                                                Foreground="{DynamicResource accentColor}" 
+                                                FontWeight="Bold"/>
+
+                                    <TextBlock Text="{Binding TicketTrajet}" 
+                                                FontSize="16" 
+                                                FontWeight="SemiBold"
+                                                Foreground="Black"/>
+                                </StackPanel>
+
+                                <StackPanel>
+                                    <TextBlock Text="DATE ET HEURE" 
+                                                FontSize="10" 
+                                                Foreground="{DynamicResource accentColor}" 
+                                                FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding TicketDateHeure}" 
+                                                FontSize="14"
+                                                Foreground="Black"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- infos siege et classe -->
+                            <Border Grid.Column="1" 
+                                    Background="WhiteSmoke" 
+                                    CornerRadius="10" 
+                                    Padding="15">
+
+                                <StackPanel Spacing="15" 
+                                            VerticalAlignment="Center" 
+                                            HorizontalAlignment="Center">
+
+                                    <StackPanel HorizontalAlignment="Center">
+
+                                        <TextBlock Text="CLASSE" 
+                                                    FontSize="10" 
+                                                    Foreground="{DynamicResource accentColor}" 
+                                                    FontWeight="Bold" 
+                                                    HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding TicketClasse}" 
+                                                    FontSize="14" FontWeight="Bold"  
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="Black"/>
+                                    </StackPanel>
+
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="SIÈGE" 
+                                                    FontSize="10" 
+                                                    Foreground="{DynamicResource accentColor}" 
+                                                    FontWeight="Bold" 
+                                                    HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding TicketSiege}" 
+                                                    FontSize="28" 
+                                                    FontWeight="Black"  
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="Black"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <Border Background="WhiteSmoke" CornerRadius="0,0,15,15" Padding="20">
+                        <Grid ColumnSpacing="15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Bouton fermer -->
+                            <Button Grid.Column="0" 
+                                    Content="Fermer"
+                                    Command="{Binding FermerTicketCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Background="#ADADAD"
+                                    Foreground="White"
+                                    FontWeight="Bold"/>
+
+                            <!-- Bouton telecharger et fermer -->
+                            <Button Grid.Column="1" 
+                                    Content="Télécharger le ticket"
+                                    Command="{Binding TelechargerEtFermerTicketCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Background="{DynamicResource accentColor}"
+                                    Foreground="White"
+                                    FontWeight="Bold"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Border>
+
+    </Grid>
+
+</UserControl>
