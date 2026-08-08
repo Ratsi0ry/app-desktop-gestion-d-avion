@@ -10,7 +10,7 @@ namespace back.Data; //emplacement actuel
 public class Contextedb : DbContext
 {
     //pilote de la table CLIENT cree precedemment dans Models
-    public DbSet<Client> Client {get; set; } = null!;
+    //public DbSet<Client> Client {get; set; } = null!;
     public DbSet<Vol> Vol {get; set; } = null!;
     public DbSet<Date_vol> Date_vol {get; set; } = null!;
     public DbSet<Avion> Avion {get; set; } = null!;
