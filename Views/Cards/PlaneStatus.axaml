@@ -1,0 +1,180 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Gestion_avion.ViewModels"
+             x:DataType="vm:PlaneStatusViewModel"
+             x:Class="Gestion_avion.Views.Cards.PlaneStatus">
+    
+    <!--base layout-->
+    <Grid RowDefinitions="1*,3*,6*"
+          IsVisible="{Binding !IsDefault}">
+        
+        <!--general info-->
+        <Border HorizontalAlignment="Center">
+            <StackPanel Grid.Row="0"
+                        Margin="0,0,10,0"
+                        Orientation="Horizontal">
+                <TextBlock  FontSize="18"
+                            Padding="10,0,20,0"
+                            FontWeight="Bold"
+                            Foreground="{StaticResource accentColor}"
+                            Text="name :"/>
+                <TextBlock  Name="plane_name"
+                            FontSize="16"
+                            Foreground="Black"
+                            Text="{Binding PlaneName}"/>
+                
+                <TextBlock  FontSize="18"
+                            Padding="10,0,20,0"
+                            FontWeight="Bold"
+                            Foreground="{StaticResource accentColor}"
+                            Text="id :"/>
+                <TextBlock  Name="Plane_id"
+                            Foreground="Black"
+                            FontSize="16"
+                            Text="{Binding PlaneId}"/>
+                
+                <TextBlock  Padding="10,0,20,0"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="{StaticResource accentColor}"
+                            Text="companie proprietaire :"/>
+                <TextBlock  Name="owningCompany"
+                            Foreground="Black"
+                            FontSize="16"
+                            Text="{Binding Owner}"/>
+            </StackPanel>
+        </Border>
+
+        <!--plane view-->
+        <Border Padding="10"
+                Grid.Row="1"
+                CornerRadius="20">
+            <Image  MaxHeight="450"
+                    Source="{Binding ImageSourcePath}"/>
+        </Border>
+
+        <!--Status-->
+        <Border Padding="20" 
+                Grid.Row="2">
+            <Grid ColumnDefinitions="0.25*,0.25*,0.25*,0.25*">
+
+                <!--places-->
+                <StackPanel Grid.Column="0"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="10"
+                            Orientation="Vertical">
+                    <TextBlock  HorizontalAlignment="Center"
+                                Padding="10"
+                                FontSize="18"
+                                Foreground="{StaticResource accentColor}"
+                                FontWeight="Bold"
+                                Text="nombre de place"/>
+
+                    <TextBlock  FontSize="16"
+                                Padding="0,10,0,0"
+                                Text="Nombdre de place total :"/>
+                    <TextBlock  FontSize="14"
+                                Padding="5,5,0,0"
+                                HorizontalAlignment="Left"
+                                Text="216"/>
+
+                    <TextBlock  FontSize="16"
+                                Padding="0,8,0,0"
+                                Text="Classe eco :"/>
+                    <TextBlock  FontSize="14"
+                                Padding="5,5,0,0"
+                                HorizontalAlignment="Left"
+                                Text="50"/>
+                            
+                </StackPanel>
+
+                <!--flight-->
+                <StackPanel Grid.Column="1"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="10"
+                            Orientation="Vertical">
+                    <TextBlock  HorizontalAlignment="Center"
+                                Padding="10"
+                                FontSize="18"
+                                Foreground="{StaticResource accentColor}"
+                                FontWeight="Bold"
+                                Text="Vols"/>
+                    <TextBlock  FontSize="16"
+                                Text="nombre total de vol :"/>
+                    <TextBlock  FontSize="14"
+                                Text="10"/>
+                    <TextBlock  FontSize="16"
+                                Text="aeroport visite : "/>
+                    <TextBlock  FontSize="14"
+                                Text="3"/>
+                    <TextBlock  FontSize="14"
+                                Text="Tana, fianarantsoa, toamasina"/>
+
+                </StackPanel>
+
+                <!--status per date-->
+                <StackPanel Grid.Column="2"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="10"
+                            Orientation="Vertical">
+
+                    <TextBlock  HorizontalAlignment="Center"
+                                Padding="10"
+                                FontSize="18"
+                                Foreground="{StaticResource accentColor}"
+                                FontWeight="Bold"
+                                Text="Status du"/>
+                    <TextBlock  FontSize="16"
+                                Text="{Binding ViewDate}"/>
+
+                    <TextBlock  FontSize="16"
+                                Text="en vol"/>
+
+                    <TextBlock  FontSize="16"
+                                FontWeight="Bold"
+                                Padding="5,10"
+                                Text="de :"/>
+                    <TextBlock  FontSize="14"
+                                Text="fianarantsoa"/>
+
+                    <TextBlock  FontSize="16"
+                                Padding="5,0,5,5"
+                                FontWeight="Bold"
+                                Text="a :"/>
+                    <TextBlock  FontSize="14"
+                                Text="Tana"/>
+                </StackPanel>
+
+                <!--linked country-->
+                <StackPanel Grid.Column="3"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="10"
+                            Orientation="Vertical">
+                    <TextBlock  HorizontalAlignment="Center"
+                                Padding="10"
+                                FontSize="18"
+                                Foreground="{StaticResource accentColor}"
+                                FontWeight="Bold"
+                                Text="Aeroport reliee"/>
+                    <TextBlock  Foreground="{StaticResource hoverColor}"
+                                FontSize="16"
+                                Text="{Binding PointA}"/>
+
+                    <TextBlock  Text="et :"
+                                FontWeight="Bold"
+                                Padding="10,5"
+                                Foreground="{StaticResource accentColor}"
+                                FontSize="18"/>
+                    <TextBlock  Foreground="{StaticResource hoverColor}"
+                                FontSize="16"
+                                Text="{Binding PointB}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+
+</UserControl>

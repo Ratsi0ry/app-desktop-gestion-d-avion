@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Gestion_avion.ViewModels"
+             x:DataType="vm:CardViewModel"
+             x:Class="Gestion_avion.Views.Cards.FlightCard">
+
+
+    <Border Background="{StaticResource secondColor}"
+            CornerRadius="15">
+        <Grid RowDefinitions="7*,3*">
+            <!--plane status-->
+            <StackPanel Orientation="Horizontal">
+                <!--plane image-->
+                <Border Height="70"
+                        Width="70"
+                        CornerRadius="70"
+                        Background="Aqua"/>
+            </StackPanel>
+            
+            <!--flight details-->
+            <StackPanel Orientation="Vertical">
+
+            </StackPanel>
+        </Grid>
+    </Border>
+            
+</UserControl>

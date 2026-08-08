@@ -1,15 +1,17 @@
-using System.Threading.Tasks;
+
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
-// using Gestion_avion.ViewModels;
+using Gestion_avion.ViewModels;
 
 namespace Gestion_avion.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    //initialisation
+    //interface handling
     [ObservableProperty]
-    private ViewModelBase? _currentPage;
+    private ViewModelBase? _currentInterface;
 
     [ObservableProperty]
     private bool _isLoading = true;
@@ -23,32 +25,46 @@ public partial class MainViewModel : ViewModelBase
     }
 
     private async Task InitializeAppAsync()
+{
+    LoadingMessage = "Connexion à la base de données...";
+    await Task.Delay(1000);
+
+    LoadingMessage = "Chargement de la liste des vols...";
+    await Task.Delay(1000);
+
+    LoadingMessage = "Préparation de l'interface...";
+    await Task.Delay(500);
+
+    var signUpVM = new SignUpViewModel();
+    CurrentInterface = signUpVM;
+    IsLoading = false;
+
+    
+    var logTask = new TaskCompletionSource<bool>();
+
+    // 3. S'abonner au changement de propriété
+    System.ComponentModel.PropertyChangedEventHandler handler = null!;
+    handler = (s, e) =>
     {
-        LoadingMessage = "Connexion à la base de données...";
-        await Task.Delay(1000);
+        // Remplacer "IsLogged" par le nom exact de votre propriété dans SignUpViewModel
+        if (e.PropertyName == nameof(SignUpViewModel.IsLogged) && signUpVM.IsLogged)
+        {
+            signUpVM.PropertyChanged -= handler; // Se désabonner pour éviter les fuites de mémoire
+            logTask.SetResult(true);                // Débloquer l'attente
+        }
+    };
 
-        LoadingMessage = "Chargement de la liste des vols...";
-        await Task.Delay(1000);
+    signUpVM.PropertyChanged += handler;
 
-        LoadingMessage = "Préparation de l'interface...";
-        await Task.Delay(500);
+    await logTask.Task;
 
-        CurrentPage = new DashboardViewModel();
+    IsLoading = true;
 
-        IsLoading = false;
-    }
+    LoadingMessage = "Préparation de l'interface...";
+    await Task.Delay(500);
 
-    //navigation entre les pages
-    [RelayCommand]
-    private void GoToDashboard() => CurrentPage = new DashboardViewModel();
-
-    [RelayCommand]
-    private void GoToOperation() => CurrentPage = new OperationViewModel();
-
-    [RelayCommand]
-    private void GoToVols() => CurrentPage = new VolsViewModel();
-
-    [RelayCommand]
-    private void GoToReservation() => CurrentPage = new ReservationViewModel();
+    CurrentInterface = new InterfaceViewModel();
+    IsLoading = false;
+}
 
 }

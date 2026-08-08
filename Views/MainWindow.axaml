@@ -1,9 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:Gestion_avion.ViewModels"
         xmlns:pages="using:Gestion_avion.Views.Pages"
-        x:Class="Gestion_avion.Views.MainWindow"
+        xmlns:vm="using:Gestion_avion.ViewModels"
         x:DataType="vm:MainViewModel"
+        x:Class="Gestion_avion.Views.MainWindow"
         Title="Fast Travel"
         Width="900" Height="600"
         WindowStartupLocation="CenterScreen">
@@ -15,116 +15,12 @@
             <Setter Property="Background" Value="{DynamicResource secondColor}"/> 
         </Style>
     </Window.Styles>
-
+    
     <Grid>
-        <!-- Interface principale -->
-        <Grid IsVisible="{Binding !IsLoading}" Background="{DynamicResource accentColor}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- En-tête -->
-            <Grid Grid.Row="0" Margin="20,20,20,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Logo -->
-                <Border Grid.Column="0" 
-                        Background="{DynamicResource secondColor}"
-                        CornerRadius="20" 
-                        Padding="12,6" 
-                        VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                        <Image Source="avares://Gestion_avion/Assets/icons8-utilisateur-32.png"  
-                               Width="20" Height="20" 
-                               VerticalAlignment="Center"/>
-                        <TextBlock Text="Fast Travel" 
-                                   FontSize="16" 
-                                   FontWeight="Bold"
-                                   FontFamily="Segoe UI" 
-                                   Foreground="{DynamicResource accentColor}"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <!-- Navigation -->
-                <StackPanel Grid.Column="2" 
-                            Orientation="Horizontal" 
-                            VerticalAlignment="Center" 
-                            Spacing="10">
-
-                    <Button Command="{Binding GoToDashboardCommand}"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Foreground="{DynamicResource accentColor}"
-                            Background="{DynamicResource secondColor}"
-                            Padding="9,10"
-                            CornerRadius="20">
-                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                            <TextBlock Text="Dashboard" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Command="{Binding GoToOperationCommand}"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Foreground="{DynamicResource accentColor}"
-                            Background="{DynamicResource secondColor}"
-                            Padding="9,10"
-                            CornerRadius="20">
-                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                            <TextBlock Text="Gestion" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Command="{Binding GoToVolsCommand}"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Foreground="{DynamicResource accentColor}"
-                            Background="{DynamicResource secondColor}"
-                            Padding="9,10"
-                            CornerRadius="20">
-                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                            <TextBlock Text="Vols" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Command="{Binding GoToReservationCommand}"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Foreground="{DynamicResource accentColor}"
-                            Background="{DynamicResource secondColor}"
-                            Padding="9,10"
-                            CornerRadius="20">
-                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                            <TextBlock Text="Resevation" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Command="{Binding GoToReservationCommand}"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Foreground="{DynamicResource accentColor}"
-                            Background="{DynamicResource secondColor}"
-                            Padding="9,10"
-                            CornerRadius="20">
-                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                            <Image Source="avares://Gestion_avion/Assets/icons8-utilisateur-32.png" Width="20" Height="20" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                </StackPanel>
-            </Grid>
-
-            <!-- Affichage de page -->
-            <ContentControl Grid.Row="1" Content="{Binding CurrentPage}" Margin="0,15,0,0"/>
-        </Grid>
+        <!--toogle interface for login-->
+        <ContentControl  IsVisible="{Binding !IsLoading}" Content="{Binding CurrentInterface}"/>
 
         <!-- Loading -->
         <pages:WelcomeView IsVisible="{Binding IsLoading}"/>
-    </Grid>    
+    </Grid>
 </Window>

@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Gestion_avion.ViewModels"
+             x:DataType="vm:CardViewModel"
+             x:Class="Gestion_avion.Views.Cards.UserCard">
+
+    <Border CornerRadius="50"
+            Margin="0,5"
+            Background="{StaticResource hoverColor}">
+        <StackPanel Orientation="Horizontal"
+                Margin="10"
+                >
+            <Border Height="70"
+                    Background="White"
+                    Opacity="100"
+                    CornerRadius="70"
+                    Width="70">
+                <Image  HorizontalAlignment="Center"
+                        Source="avares://Gestion_avion/Assets/icons8-utilisateur-32.png"/>
+            </Border>
+            <TextBlock 	Foreground="Black"
+                        FontSize="15"
+                        Padding="10,0,10,0"
+                        Text="{Binding ItemName}"/>
+            
+            <Button Padding="10,0,0,0"
+                    Width="50"
+                    Height="50"
+                    CornerRadius="50"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding actionCommand}"
+                    HorizontalAlignment="Center"
+                    Background="Transparent">
+                <Image  HorizontalAlignment="Center"
+                        Source="avares://Gestion_avion/Assets/connection.png"/>
+            </Button>
+        </StackPanel>
+    </Border>
+    
+</UserControl>
