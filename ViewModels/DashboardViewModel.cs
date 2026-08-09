@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Gestion_avion.ViewModels;
 
@@ -19,5 +20,11 @@ public partial class DashboardViewModel : ViewModelBase
         NbVolsAnnuler = 0;
         MeteoDuJour = "Ciel degagé 24° C ";
         DateDuJour = "01/08/26";
+    }
+
+    [RelayCommand]
+    public void OnLoaded()
+    {
+        DateDuJour = "02/08/26" ;  
     }
 }

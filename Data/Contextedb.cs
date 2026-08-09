@@ -40,7 +40,7 @@ public class Contextedb : DbContext
             //Base.OnConfiguring(optionsBuilder);
 
             //EF Core cree la Base si elle n'existe pas encore
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=gestion_vol04;Username=pilote;Password=csharp");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=gestion_vol04;Username=root;Password=Hasambarana36");
         }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)

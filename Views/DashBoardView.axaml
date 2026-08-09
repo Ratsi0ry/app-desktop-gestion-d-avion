@@ -4,7 +4,6 @@
              x:Class="Gestion_avion.Views.DashboardView"
              x:DataType="vm:DashboardViewModel">
 
-
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Spacing="20" Margin="20">
 
