@@ -14,9 +14,9 @@ public class Volfunc
         using (var bdd = new Contextedb())
         {
             return await bdd.Vol
-                .Include(v => v.fk_date_depart)
-                .Include(v => v.fk_id_avion)
-                .Include(v => v.fk_id_trajet)
+                .Include(v => v.Date_vol)
+                .Include(v => v.Avion)
+                .Include(v => v.Trajet)
                 .ToListAsync();
         }
     }
@@ -25,9 +25,9 @@ public class Volfunc
         using (var bdd = new Contextedb())
         {
             return await  bdd.Vol
-            .Include(v => v.fk_date_depart)
-            .Include(v => v.fk_id_avion)
-            .Include(v => v.fk_id_trajet)
+            .Include(v => v.Date_vol)
+            .Include(v => v.Avion)
+            .Include(v => v.Trajet)
             .Where(propriete)
             .ToListAsync();
         }
