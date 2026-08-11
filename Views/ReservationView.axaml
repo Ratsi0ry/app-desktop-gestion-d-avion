@@ -24,7 +24,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource hoverColor}"/> 
         </Style>
 
-        <!-- while writing -->
+        <!-- while writing --> 
         <Style Selector="TextBox:focus">
             <Setter Property="Foreground" Value="Black"/>
         </Style>
@@ -50,11 +50,13 @@
                 
                     <StackPanel Spacing="15">
 
-                        <TextBlock Text="Reservation"
-                                   FontSize="18"
-                                   FontWeight="Bold"
-                                   Foreground="{DynamicResource accentColor}"/>
-
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Reservation"
+                                       FontWeight="Bold"
+                                       FontSize="18"
+                                       Foreground="{DynamicResource accentColor}"/>
+                            
+                        </StackPanel>
                         <!-- ID passeport -->
                          <StackPanel Spacing="5">
                             <TextBlock Text="ID Passeport"
@@ -155,9 +157,9 @@
                         <StackPanel Spacing="5">
                             <Grid ColumnSpacing="15">
                                 <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/> 
-                            </Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/> 
+                                </Grid.ColumnDefinitions>
 
                             <!-- btn reserver-->
                             <Button Grid.Column="0" 
@@ -180,7 +182,6 @@
                                     FontWeight="Bold"/>
                             </Grid>
                         </StackPanel>
-
                     </StackPanel>          
                 </Border>
             </ScrollViewer>
@@ -363,7 +364,7 @@
                                                                 Command="{Binding $parent[UserControl].DataContext.SelectionnerSiegeCommand}"
                                                                 CommandParameter="{Binding}">
                                                         <Button.Styles>
-                                                            <!-- Style appliqué uniquement lorsque le siège est sélectionné -->
+                                                            <!-- Style appliqué au selection siege -->
                                                             <Style Selector="Button.selected">
                                                                 <Setter Property="Opacity" Value="0.35"/>
                                                                 <Setter Property="Background" Value="#1E293B"/> <!-- Couleur plus sombre/estompée -->
