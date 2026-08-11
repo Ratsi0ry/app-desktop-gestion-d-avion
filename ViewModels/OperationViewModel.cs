@@ -25,11 +25,10 @@ public partial class OperationViewModel: ViewModelBase
     
     class Plane
     {
-        public string Name, Model, Id, TotalPlace, PointA, PointB;
-        public Plane(string name, string model, string id, string places, string A, string B)
+        public string Name, Id, TotalPlace, PointA, PointB;
+        public Plane(string name,string id, string places, string A, string B)
         {
             Name = name;
-            Model = model;
             Id = id;
             TotalPlace = places;
             PointA = A;
@@ -38,10 +37,10 @@ public partial class OperationViewModel: ViewModelBase
     }
 
     List<Plane> RegisteredPlane = [
-        new Plane("asterio", "Boeing737Max", "p222", "222", "tana", "fianarantsoa"),
-        new Plane("alaal", "Boeing737Max", "p222", "222", "tana", "fianarantsoa"),
-        new Plane("poopsocpa", "Boeign787Dreamliner", "p222", "222", "tana", "fianarantsoa"),
-        new Plane("bIAWUBh", "AirbusA320", "p222", "222", "tana", "fianarantsoa")
+        new Plane("asterio", "p222", "222", "tana", "fianarantsoa"),
+        new Plane("alaal", "p222", "222", "tana", "fianarantsoa"),
+        new Plane("poopsocpa", "p222", "222", "tana", "fianarantsoa"),
+        new Plane("bIAWUBh", "p222", "222", "tana", "fianarantsoa")
     ];
 
     public ObservableCollection<CardViewModel> PlaneList { get; set; }
@@ -65,10 +64,9 @@ public partial class OperationViewModel: ViewModelBase
         {
             if (p.Name == SelectedPlaneName && p.Id == SelectedPlaneId)
             {
-                string model = p.Model;
                 depart = p.PointA;
                 arrivee = p.PointB;
-                ViewPlane = new PlaneStatusViewModel(false, model ,SelectedPlaneName, SelectedPlaneId, depart, arrivee, "sora", DateTime.Now.ToString("yyyy-MM-dd"));
+                ViewPlane = new PlaneStatusViewModel(false, SelectedPlaneName, SelectedPlaneId, depart, arrivee, "sora", DateTime.Now.ToString("yyyy-MM-dd"));
                 break;
             } else
             {

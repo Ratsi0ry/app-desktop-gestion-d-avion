@@ -15,6 +15,7 @@
                         Margin="0,0,10,0"
                         Orientation="Vertical">
                 <StackPanel Margin="10"
+                            HorizontalAlignment="Center"
                             Orientation="Horizontal">
                     <TextBlock  FontSize="18"
                                 Padding="10,0,0,0"
@@ -38,17 +39,8 @@
                 </StackPanel>
 
                 <StackPanel Margin="10"
+                            HorizontalAlignment="Center"
                             Orientation="Horizontal">
-                    <TextBlock  FontSize="18"
-                                Padding="10,0,0,0"
-                                FontWeight="Bold"
-                                Foreground="{StaticResource accentColor}"
-                                Text="model :"/>
-                    <TextBlock  Name="plane_model"
-                                FontSize="16"
-                                Foreground="Black"
-                                Text="{Binding Model}"/>
-    
                     
                     <TextBlock  Padding="10,0,0,0"
                                 FontSize="18"
@@ -68,7 +60,7 @@
                 Grid.Row="1"
                 CornerRadius="20">
             <Image  MaxHeight="450"
-                    Source="{Binding ModelImage}"/>
+                    Source="avares://Gestion_avion/Assets/AirbusA320.png"/>
         </Border>
 
         <!--Status-->

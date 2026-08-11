@@ -29,6 +29,11 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
 
+        <!--foreground-->
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
     </UserControl.Styles>
 
     <Grid ColumnDefinitions="2*, 4*, 4*">
@@ -71,6 +76,10 @@
                                     Text="en attente"/>
                         <TextBlock  HorizontalAlignment="Center"
                                     Text="10"/>
+                        <Image Source="avares://Gestion_avion/Assets/delay.png"
+                                Width="60" 
+                                Height="60" 
+                                HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Border>
 
@@ -90,21 +99,6 @@
                                 Width="60" 
                                 Height="60" 
                                 HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <!--delaied-->
-                <Border CornerRadius="20"
-                        Padding="10,20,5,20"
-                        Background="WhiteSmoke">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock  HorizontalAlignment="Center"
-                                    FontSize="20"
-                                    FontWeight="Bold"
-                                    Foreground="Black"
-                                    Text="retardes"/>
-                        <TextBlock HorizontalAlignment="Center"
-                                    Text="2"/>
                     </StackPanel>
                 </Border>
 
@@ -138,8 +132,11 @@
                 <StackPanel HorizontalAlignment="Stretch"
                             Orientation="Vertical">
                     <!--contents-->
-                    <TextBlock Text="for :"/>
-                    <DatePicker/>
+                    <TextBlock  HorizontalAlignment="Center"
+                                Text="vol du :"
+                                FontWeight="Bold"
+                                FontSize="20"/>
+                    <DatePicker HorizontalAlignment="Center"/>
 
                     <ScrollViewer   Padding="20"
                                     HorizontalAlignment="Stretch">
@@ -173,8 +170,14 @@
                     Background="WhiteSmoke">
                 <StackPanel HorizontalAlignment="Stretch"
                             Orientation="Vertical">
+                    <TextBlock Text="plannification de vol"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               FontSize="20"/>
+                    
                     <!--point a-->
-                    <TextBlock Text="ville de depart"/>
+                    <TextBlock  Padding="0,10,0,0"
+                                Text="ville de depart"/>
                     <ComboBox PlaceholderText="aeroport de"/>
 
                     <!--point b-->
@@ -188,6 +191,12 @@
                     <!--date and time-->
                     <TextBlock Text="date et heure de depart"/>
                     <DatePicker/>
+
+                    <Button Margin="20"
+                            CornerRadius="10"
+                            Foreground="Black"
+                            HorizontalAlignment="Center"
+                            Content="Confirmer"/>
                 </StackPanel>
             </Border>
         </ScrollViewer>
