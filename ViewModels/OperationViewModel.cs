@@ -22,51 +22,36 @@ public partial class OperationViewModel: ViewModelBase
     
     [ObservableProperty]
     private string? _selectedPlaneId;
-
-    Dictionary<string, Object>[] RegisteredPlane = new Dictionary<string, Object>[]
-    {
-        new Dictionary<string, Object>
-        {
-            { "Name", "flying_bitch" },
-            { "Model", planeModel.Airbus350},
-            { "Id", "p001" },
-            { "Place_total", 250},
-            { "PointA", "Tamatave" },
-            { "PointB", "Antananarivo"},
-            { "Classes", new Dictionary<string, Object>
-                        {
-                            { "economique", 180},
-                            { "vip", 40 },
-                            { "vvip", 30 }
-                        }
-            }
-        },
-        new Dictionary<string, Object>
-        {
-            { "Name", "fritz" },
-            { "Model", planeModel.Boeign787Dreamliner},
-            { "Id", "p002" },
-            { "place_total", 300 },
-            { "PointA", "Fianarantsoa"},
-            { "PointB", "Antananarivo"},
-            { "Classes", new Dictionary<string, Object>
-                        {
-                            { "economique", 230},
-                            { "vip", 40 },
-                            { "vvip", 30 }
-                        }
-            }
-        }
-    };
     
+    class Plane
+    {
+        public string Name, Model, Id, TotalPlace, PointA, PointB;
+        public Plane(string name, string model, string id, string places, string A, string B)
+        {
+            Name = name;
+            Model = model;
+            Id = id;
+            TotalPlace = places;
+            PointA = A;
+            PointB = B;
+        }
+    }
+
+    List<Plane> RegisteredPlane = [
+        new Plane("asterio", "Boeing737Max", "p222", "222", "tana", "fianarantsoa"),
+        new Plane("alaal", "Boeing737Max", "p222", "222", "tana", "fianarantsoa"),
+        new Plane("poopsocpa", "Boeign787Dreamliner", "p222", "222", "tana", "fianarantsoa"),
+        new Plane("bIAWUBh", "AirbusA320", "p222", "222", "tana", "fianarantsoa")
+    ];
+
     public ObservableCollection<CardViewModel> PlaneList { get; set; }
 
     public OperationViewModel()
     {
         PlaneList = new ObservableCollection<CardViewModel>();
-        for (int i = 0; i < RegisteredPlane.Length; i++)
+        foreach (Plane p in RegisteredPlane)
         {
-            PlaneList.Add(new CardViewModel(RegisteredPlane[i]["Name"].ToString(), RegisteredPlane[i]["Id"].ToString(), "plane", OnPlaneSelected));
+            PlaneList.Add(new CardViewModel(p.Name, p.Id, "plane", OnPlaneSelected));
         }
         ViewPlane = new PlaneStatusViewModel(true);
     }
@@ -76,13 +61,13 @@ public partial class OperationViewModel: ViewModelBase
         SelectedPlaneName = clickedCard.ItemName;
         SelectedPlaneId = clickedCard.ItemId;
         string arrivee, depart;
-        for (int i = 0; i < RegisteredPlane.Length; i++)
+        foreach (Plane p in RegisteredPlane)
         {
-            if (RegisteredPlane[i]["Name"].ToString() == SelectedPlaneName && RegisteredPlane[i]["Id"].ToString() == SelectedPlaneId)
+            if (p.Name == SelectedPlaneName && p.Id == SelectedPlaneId)
             {
-                planeModel model = planeModel.Airbus350;
-                depart = RegisteredPlane[i]["PointA"].ToString();
-                arrivee = RegisteredPlane[i]["PointB"].ToString();
+                string model = p.Model;
+                depart = p.PointA;
+                arrivee = p.PointB;
                 ViewPlane = new PlaneStatusViewModel(false, model ,SelectedPlaneName, SelectedPlaneId, depart, arrivee, "sora", DateTime.Now.ToString("yyyy-MM-dd"));
                 break;
             } else

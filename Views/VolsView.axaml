@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:Gestion_avion.ViewModels"
+             xmlns:Cards="using:Gestion_avion.Views.Cards"
              x:Class="Gestion_avion.Views.VolsView"
              x:DataType="vm:VolsViewModel">
 
@@ -11,6 +12,11 @@
             <Setter Property="Background" Value="{DynamicResource secondColor}"/> 
             <Setter Property="BorderBrush" Value="{DynamicResource secondColor}"/> 
         </Style>
+
+        <!-- black foreground-->
+         <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="Black"/>
+         </Style>
 
         <!-- focus-->
         <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
@@ -43,7 +49,12 @@
                                     FontWeight="Bold"
                                     Foreground="Black"
                                     Text="en cours"/>
-                        <TextBlock Text="10"/>
+                        <TextBlock  HorizontalAlignment="Center"
+                                    Text="10"/>
+                        <Image  Source="avares://Gestion_avion/Assets/icons8-decollage-d-avion-100.png" 
+                                Width="60" 
+                                Height="60" 
+                                HorizontalAlignment="Center"/>
                     </StackPanel>
 
                 </Border>
@@ -58,7 +69,8 @@
                                     FontWeight="Bold"
                                     Foreground="Black"
                                     Text="en attente"/>
-                        <TextBlock Text="10"/>
+                        <TextBlock  HorizontalAlignment="Center"
+                                    Text="10"/>
                     </StackPanel>
                 </Border>
 
@@ -72,7 +84,12 @@
                                     FontWeight="Bold"
                                     Foreground="Black"
                                     Text="annulee"/>
-                        <TextBlock Text="10"/>
+                        <TextBlock  HorizontalAlignment="Center"
+                                    Text="10"/>
+                        <Image Source="avares://Gestion_avion/Assets/icons8-supprimer-la-vue-77.png" 
+                                Width="60" 
+                                Height="60" 
+                                HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Border>
 
@@ -86,23 +103,64 @@
                                     FontWeight="Bold"
                                     Foreground="Black"
                                     Text="retardes"/>
-                        <TextBlock Text="2"/>
+                        <TextBlock HorizontalAlignment="Center"
+                                    Text="2"/>
+                    </StackPanel>
+                </Border>
+
+                <!--done-->
+                <Border CornerRadius="20"
+                        Padding="10,20,5,20"
+                        Background="WhiteSmoke">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock  HorizontalAlignment="Center"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="Black"
+                                    Text="effectuees"/>
+                        <TextBlock HorizontalAlignment="Center"
+                                    Text="2"/>
+                        <Image  Source="avares://Gestion_avion/Assets/icons8-atterrissage-d'avion-100.png"
+                                Width="60" 
+                                Height="60" 
+                                HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Border>
             </WrapPanel>
         </ScrollViewer>
 
         <!--flight list-->
-        <ScrollViewer   Padding="20"
+        <ScrollViewer   Padding="0,20,20,20"
                         Grid.Column="1">
             <Border Padding="20"
                     CornerRadius="20"
                     Background="WhiteSmoke">
-                <StackPanel HorizontalAlignment="Center"
+                <StackPanel HorizontalAlignment="Stretch"
                             Orientation="Vertical">
                     <!--contents-->
                     <TextBlock Text="for :"/>
                     <DatePicker/>
+
+                    <ScrollViewer   Padding="20"
+                                    HorizontalAlignment="Stretch">
+
+                        <ItemsControl HorizontalAlignment="Stretch"
+                                      ItemsSource="{Binding FlightList}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="20"
+                                                Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.DataTemplates>
+                                <DataTemplate DataType="{x:Type vm:FlightCardViewModel}">
+                                    <Cards:FlightCard/>
+                                </DataTemplate>
+                            </ItemsControl.DataTemplates>
+                        </ItemsControl>
+
+                    </ScrollViewer>
+
                 </StackPanel>
             </Border>
         </ScrollViewer>

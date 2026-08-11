@@ -11,37 +11,55 @@
         <!--general info-->
         <Border HorizontalAlignment="Center">
             <StackPanel Grid.Row="0"
+                        Spacing="5"
                         Margin="0,0,10,0"
-                        Orientation="Horizontal">
-                <TextBlock  FontSize="18"
-                            Padding="10,0,20,0"
-                            FontWeight="Bold"
-                            Foreground="{StaticResource accentColor}"
-                            Text="name :"/>
-                <TextBlock  Name="plane_name"
-                            FontSize="16"
-                            Foreground="Black"
-                            Text="{Binding PlaneName}"/>
-                
-                <TextBlock  FontSize="18"
-                            Padding="10,0,20,0"
-                            FontWeight="Bold"
-                            Foreground="{StaticResource accentColor}"
-                            Text="id :"/>
-                <TextBlock  Name="Plane_id"
-                            Foreground="Black"
-                            FontSize="16"
-                            Text="{Binding PlaneId}"/>
-                
-                <TextBlock  Padding="10,0,20,0"
-                            FontSize="18"
-                            FontWeight="Bold"
-                            Foreground="{StaticResource accentColor}"
-                            Text="companie proprietaire :"/>
-                <TextBlock  Name="owningCompany"
-                            Foreground="Black"
-                            FontSize="16"
-                            Text="{Binding Owner}"/>
+                        Orientation="Vertical">
+                <StackPanel Margin="10"
+                            Orientation="Horizontal">
+                    <TextBlock  FontSize="18"
+                                Padding="10,0,0,0"
+                                FontWeight="Bold"
+                                Foreground="{StaticResource accentColor}"
+                                Text="name :"/>
+                    <TextBlock  Name="plane_name"
+                                FontSize="16"
+                                Foreground="Black"
+                                Text="{Binding PlaneName}"/>
+                    
+                    <TextBlock  FontSize="18"
+                                Padding="10,0,0,0"
+                                FontWeight="Bold"
+                                Foreground="{StaticResource accentColor}"
+                                Text="id :"/>
+                    <TextBlock  Name="Plane_id"
+                                Foreground="Black"
+                                FontSize="16"
+                                Text="{Binding PlaneId}"/>
+                </StackPanel>
+
+                <StackPanel Margin="10"
+                            Orientation="Horizontal">
+                    <TextBlock  FontSize="18"
+                                Padding="10,0,0,0"
+                                FontWeight="Bold"
+                                Foreground="{StaticResource accentColor}"
+                                Text="model :"/>
+                    <TextBlock  Name="plane_model"
+                                FontSize="16"
+                                Foreground="Black"
+                                Text="{Binding Model}"/>
+    
+                    
+                    <TextBlock  Padding="10,0,0,0"
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Foreground="{StaticResource accentColor}"
+                                Text="companie proprietaire :"/>
+                    <TextBlock  Name="owningCompany"
+                                Foreground="Black"
+                                FontSize="16"
+                                Text="{Binding Owner}"/>
+                </StackPanel>
             </StackPanel>
         </Border>
 
@@ -50,7 +68,7 @@
                 Grid.Row="1"
                 CornerRadius="20">
             <Image  MaxHeight="450"
-                    Source="{Binding ImageSourcePath}"/>
+                    Source="{Binding ModelImage}"/>
         </Border>
 
         <!--Status-->
