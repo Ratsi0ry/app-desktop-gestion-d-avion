@@ -9,78 +9,84 @@
             Background="{StaticResource secondColor}"
             BorderThickness="3"
             CornerRadius="15">
-        <Grid ColumnDefinitions="8*,2*"
-              Background="WhiteSmoke"
-              RowDefinitions="7*,3*">
-            <!--plane status-->
-            <StackPanel Grid.Column="0"
-                        Grid.Row="0"
-                        Orientation="Horizontal">
-                <!--plane image-->
-                <Border Height="70"
-                        Padding="10"
-                        Width="70"
-                        CornerRadius="70"
-                        Background="{StaticResource secondColor}">
-                    <Image  Height="60"
-                            Width="60"
-                            HorizontalAlignment="Center"
-                            Source="avares://Gestion_avion/Assets/icons8-atterrissage-d'avion-100.png"/>
-                </Border>
-
-                <!--plane name and owning company-->
-                <StackPanel Orientation="Vertical"
-                            Spacing="5"
-                            Margin="10">
-                    <TextBlock Text="{Binding Plane}"/>
-                    <TextBlock Text="{Binding Company}"/>
-                </StackPanel>
-            </StackPanel>
+        <Border Background="WhiteSmoke"
+                CornerRadius="13">
+            
+            <Grid ColumnDefinitions="8*,2*"
+                  RowDefinitions="7*,3*">
+                <!--plane status-->
+                <StackPanel Grid.Column="0"
+                            Grid.Row="0"
+                            Orientation="Horizontal">
+                    <!--plane image-->
+                    <Border Height="70"
+                            Padding="10"
+                            Width="70"
+                            CornerRadius="70"
+                            Background="{StaticResource secondColor}">
+                        <Image  Height="60"
+                                Width="60"
+                                HorizontalAlignment="Center"
+                                Source="avares://Gestion_avion/Assets/icons8-atterrissage-d'avion-100.png"/>
+                    </Border>
     
-            <!--flight details-->
-            <StackPanel Margin="10"
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Orientation="Vertical">
-
-                <!--linked ports-->
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="voyage de :"
-                               FontWeight="Bold"/>
-                    <TextBlock Text="{Binding PortA}"/>
-                    <TextBlock  Padding="8,0"
-                                Text=" a"
-                                FontWeight="Bold"/>
-                    <TextBlock Text="{Binding PortB}"/>
+                    <!--plane name and owning company-->
+                    <StackPanel Orientation="Vertical"
+                                Spacing="5"
+                                Margin="10">
+                        <TextBlock Text="{Binding Plane}"/>
+                        <TextBlock Text="{Binding Company}"/>
+                    </StackPanel>
                 </StackPanel>
-
-                <!--departure time-->
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="depart prevue pour:"
-                               FontWeight="Bold"/>
-                    <TextBlock Text="{Binding Depart}"/>
+        
+                <!--flight details-->
+                <StackPanel Margin="10"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Orientation="Vertical">
+    
+                    <!--linked ports-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="voyage de :"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="{Binding PortA}"/>
+                        <TextBlock  Padding="8,0"
+                                    Text=" a"
+                                    FontWeight="Bold"/>
+                        <TextBlock Text="{Binding PortB}"/>
+                    </StackPanel>
+    
+                    <!--departure time-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="depart prevue pour: "
+                                   FontWeight="Bold"/>
+                        <TextBlock  Padding="5,0"
+                                    Text="{Binding Depart}"/>
+                    </StackPanel>
+                    <!--status-->
+                    <TextBlock Text="en vol"/>
                 </StackPanel>
-                <!--status-->
-                <TextBlock Text="en vol"/>
-            </StackPanel>
-
-            <!--actions-->
-            <StackPanel Grid.Column="1"
-                        Grid.RowSpan="2"
-                        VerticalAlignment="Center"
-                        Orientation="Vertical">
-                <Button CornerRadius="20">
-                    <Image  Width="40"
-                            Height="40"
-                            Source="avares://Gestion_avion/Assets/icons8-supprimer-la-vue-77.png"/>
-                </Button>
-                <Button CornerRadius="40">
-                    <Image  Width="40"
-                            Height="40"
-                            Source="avares://Gestion_avion/Assets/delay.png"/>
-                </Button>
-            </StackPanel>
-        </Grid>
+    
+                <!--actions-->
+                <StackPanel Grid.Column="1"
+                            Grid.RowSpan="2"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <Button CornerRadius="20"
+                            Command="{Binding DeleteCommand}">
+                        <Image  Width="40"
+                                Height="40"
+                                Source="avares://Gestion_avion/Assets/icons8-supprimer-la-vue-77.png"/>
+                    </Button>
+                    <Button CornerRadius="40"
+                            Command="{Binding DelayCommand}">
+                        <Image  Width="40"
+                                Height="40"
+                                Source="avares://Gestion_avion/Assets/delay.png"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Border>
             
 </UserControl>
