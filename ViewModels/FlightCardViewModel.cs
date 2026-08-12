@@ -9,17 +9,21 @@ namespace Gestion_avion.ViewModels;
 public partial class FlightCardViewModel : ViewModelBase
 {
     [ObservableProperty]
-    public string _plane, _company, _portA, _portB, _depart;
+    public string _plane, _company, _portA, _portB, _date_depart;
+
+    [ObservableProperty]
+    private DateTime _depart;
 
     private readonly Action<FlightCardViewModel> _delayed;
     private readonly Action<FlightCardViewModel> _delete;
-    public FlightCardViewModel(string plane, string company, string portA, string portB, string depart, Action<FlightCardViewModel> delay, Action<FlightCardViewModel> remove)
+    public FlightCardViewModel(string plane, string company, string portA, string portB, DateTime depart, Action<FlightCardViewModel> delay, Action<FlightCardViewModel> remove)
     {
         _plane = plane;
         _company = company;
         _portA = portA;
         _portB = portB;
         _depart = depart;
+        _date_depart = _depart.ToString("yyyy-MM-dd");
         _delayed = delay;
         _delete = remove;
     }

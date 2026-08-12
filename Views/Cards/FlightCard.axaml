@@ -61,7 +61,7 @@
                         <TextBlock Text="depart prevue pour: "
                                    FontWeight="Bold"/>
                         <TextBlock  Padding="5,0"
-                                    Text="{Binding Depart}"/>
+                                    Text="{Binding Date_depart}"/>
                     </StackPanel>
                     <!--status-->
                     <TextBlock Text="en vol"/>
@@ -74,15 +74,21 @@
                             Orientation="Vertical">
                     <Button CornerRadius="20"
                             Command="{Binding DeleteCommand}">
+                        <ToolTip.Tip>
+                            <TextBlock Foreground="White" Text="cancel the flight"/>
+                        </ToolTip.Tip>
                         <Image  Width="40"
                                 Height="40"
-                                Source="avares://Gestion_avion/Assets/icons8-supprimer-la-vue-77.png"/>
+                                Source="avares://Gestion_avion/Assets/icons8-cancel-50.png"/>
                     </Button>
                     <Button CornerRadius="40"
                             Command="{Binding DelayCommand}">
-                        <Image  Width="40"
-                                Height="40"
-                                Source="avares://Gestion_avion/Assets/delay.png"/>
+                        <ToolTip.Tip>
+                            <TextBlock Foreground="White" Text="delay the flight"/>
+                        </ToolTip.Tip>
+                        <Image  Width="35"
+                                Height="35"
+                                Source="avares://Gestion_avion/Assets/icons8-period-of-time-78.png"/>
                     </Button>
                 </StackPanel>
             </Grid>

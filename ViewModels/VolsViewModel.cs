@@ -3,13 +3,23 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System;
+using System.Numerics;
+using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
+using Tmds.DBus.Protocol;
 
 namespace Gestion_avion.ViewModels;
 
 public partial class VolsViewModel : ViewModelBase
 {
+    private Flight? SelectedFlight;
+    private DateTime dt;
+
     [ObservableProperty]
-    private string? _plane_, _d, _a, _conf;
+    private bool _notify = false;
+
+    [ObservableProperty]
+    private string? _plane_, _d, _a, _conf, _message;
 
     [ObservableProperty]
     private bool _sure;
@@ -41,6 +51,7 @@ public partial class VolsViewModel : ViewModelBase
         "A5"
     };
 
+    private bool IsEditing = false;
     class Flight
     {
         public string Plane, Company, PortA, PortB;
@@ -65,23 +76,27 @@ public partial class VolsViewModel : ViewModelBase
     ];
 
     public ObservableCollection<FlightCardViewModel> FlightList{get; set;}
-    public VolsViewModel()
+    private void Refresh(List<Flight> flights)
     {
-        FlightList = new ObservableCollection<FlightCardViewModel>();
-        Conf = "confirmer l'ajout";
-        Sure = false;
-        CurrentView = (DateTimeOffset)DateTime.Now;
-        foreach (Flight f in allFlights)
+        FlightList.Clear();
+        foreach (Flight f in flights)
         {
             FlightList.Add(new FlightCardViewModel( f.Plane,
                                                     f.Company,
                                                     f.PortA,
                                                     f.PortB,
-                                                    f.Departure.ToString("HH:mm"),
+                                                    f.Departure,
                                                     OnDelay,
                                                     OnDelete
                                                     ));
         }
+    }
+    public VolsViewModel()
+    {
+        FlightList = new ObservableCollection<FlightCardViewModel>();
+        Conf = "confirmer l'ajout";
+        Sure = false;
+        Refresh(allFlights);
     }
 
     private void OnDelay(FlightCardViewModel currflight)
@@ -98,13 +113,25 @@ public partial class VolsViewModel : ViewModelBase
                 Conf = "Confirmer les modifications";
             }
         }
+        IsEditing = true;
     }
 
     private void OnDelete(FlightCardViewModel currFlight)
     {
         Sure = true;
+        IsEditing = false;
+        SelectedFlight = new Flight(currFlight.Plane, currFlight.Company, currFlight.Depart, currFlight.PortA, currFlight.PortB);
     }
     
+    private async Task NotificationAsync(string mess)
+    {
+        Notify = true;
+        Message = mess;
+        await Task.Delay(2000);
+        Message = "";
+        Notify = false;
+    }
+
     [RelayCommand]
     private void Reset()
     {
@@ -115,6 +142,57 @@ public partial class VolsViewModel : ViewModelBase
         DepartureTime = null;
         Conf = "confirmer l'ajout";
         Sure = false;
+        IsEditing = false;
     }
 
+    [RelayCommand]
+    private async Task Confirm()
+    {
+        if (!IsEditing)
+        {
+            if (Plane_ != null && A != null && D !=null)
+            {
+                allFlights.Add(new Flight(Plane_, "me", DateTime.Now, A, D));
+            }
+            await NotificationAsync("insertion effectuee");
+        } else
+        {
+            if (SelectedFlight != null && DepartureDate != null && DepartureTime != null && A != null && D != null)
+            {
+                dt = (DepartureDate?.Add(DepartureTime ??  TimeSpan.Zero))?.DateTime ?? DateTime.Now;
+                for (int i = 0; i < allFlights.Count; i++)
+                {
+                    if (allFlights[i].Plane == SelectedFlight.Plane)
+                    {
+                        allFlights.Add(new Flight(SelectedFlight.Plane, SelectedFlight.Company, dt,D,A));
+                        allFlights.RemoveAt(i);
+                        await NotificationAsync("modification effectuee");
+                        break;
+                    }
+                }
+            }
+        }
+        Refresh(allFlights);
+        Reset();
+    }
+
+    [RelayCommand]
+    private async Task DelConfirm()
+    {
+        if (SelectedFlight != null)
+        {
+            for (int i = 0; i < allFlights.Count; i++)
+            {
+                if (allFlights[i].Plane == SelectedFlight.Plane &&
+                    allFlights[i].Departure == SelectedFlight.Departure)
+                {
+                    allFlights.RemoveAt(i);
+                }
+            }
+        }
+        Refresh(allFlights);
+        Reset();
+        await NotificationAsync("suppression reussie");
+
+    }
 }

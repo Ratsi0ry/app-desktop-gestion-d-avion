@@ -221,6 +221,7 @@
                                     CornerRadius="10"
                                     Background="{StaticResource secondColor}"
                                     HorizontalAlignment="Center"
+                                    Command="{Binding ConfirmCommand}"
                                     Content="{Binding Conf}"/>
                             <Button Foreground="Black"
                                     Background="{StaticResource secondColor}"
@@ -234,7 +235,7 @@
                         <!--notification and status-->
                         <Border Background="Aqua"
                                 VerticalAlignment="Bottom"
-                                IsVisible="False"
+                                IsVisible="{Binding Notify}"
                                 BorderThickness="3"
                                 CornerRadius="15">
                             <Border CornerRadius="12"
@@ -262,7 +263,7 @@
                                                 HorizontalAlignment="Center"/>
                                         <TextBlock Padding="10"
                                                 HorizontalAlignment="Left"
-                                                Text="information ........."/>
+                                                Text="{Binding Message}"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -284,18 +285,30 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 CornerRadius="20"
-                Padding="30"
+                Padding="0,0,0,10"
                 Background="WhiteSmoke">
-            <Grid RowDefinitions="8*,2*">
-                <TextBlock Text="confirmer la suppression"
-                            FontSize="30"
+            <Grid RowDefinitions="2*,6*,2*">
+                <Border Background="{DynamicResource accentColor}"
+                        CornerRadius="18,18,0,0"
+                        Margin="0,0,0,10"
+                        Grid.Row="0">
+                        <TextBlock Text="Attention"
+                                    FontSize="20"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="10"
+                                    FontWeight="Bold"/>
+                </Border>
+                <TextBlock  Text="confirmer l'annulation du vol??"
+                            FontSize="15"
+                            HorizontalAlignment="Center"
                             Margin="10"
-                            FontWeight="Bold"
-                           Grid.Row="0"/>
+                            Grid.Row="1"/>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center"
-                            Grid.Row="1">
+                            Grid.Row="2">
                     <Button Content="confirmer"
+                            Command="{Binding DelConfirmCommand}"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Center"
                             Background="{DynamicResource accentColor}"
