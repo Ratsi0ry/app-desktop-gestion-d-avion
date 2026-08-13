@@ -3,19 +3,23 @@ using System.Collections.ObjectModel;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Gestion_avion.Messages;
+using Gestion_avion.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace Gestion_avion.ViewModels;
 
-public partial class ReservationViewModel : ViewModelBase
+public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeModificationClientMessage>
 {
     // --- input 
     [ObservableProperty]
     private string _villeDepart = "", _villeArrivee = "", _dateVol = "", 
-                   _heureVol = "", _nom = "", _prenom = "", _idPasseport = "", 
-                   _categoriePersonne = "", _classeAvion = "", _compagnieAerienne = "";
+                   _heureVol = "", _nom = "", _prenom = "", _idPasseport = "",
+                   _categoriePersonne = "", _classeAvion = "", _compagnieAerienne = "",
+                   _RechercheId = "";
 
     // affichage sejour
     [ObservableProperty]
@@ -26,7 +30,6 @@ public partial class ReservationViewModel : ViewModelBase
     private short _age, _nbPersonne, _sejour;
 
     public bool IsSejourVisible => TypeVol == "Aller-retour";
-
 
     // liste choix
     [ObservableProperty]
@@ -53,7 +56,6 @@ public partial class ReservationViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<string> _heureVolDispo = new() { "03:00", "14:30", "22:15" };
 
-
     // siege
     [ObservableProperty]
     private int _nbLignesGrille; 
@@ -75,6 +77,27 @@ public partial class ReservationViewModel : ViewModelBase
     public ReservationViewModel()
     {
         ChargerSieges("Classe Affaire");   
+        
+        // Enregistrement pour la réception du message
+        WeakReferenceMessenger.Default.Register(this);
+    }
+
+    // Méthode de réception des données du client à modifier
+    public void Receive(DemandeModificationClientMessage message)
+    {
+        var client = message.Value;
+
+        IdPasseport = client.IdPasseport;
+        Nom = client.Nom;
+        Prenom = client.Prenom;
+        CategoriePersonne = client.Categorie;
+        ClasseAvion = client.Classe;
+        CompagnieAerienne = client.Compagnie;
+        TypeVol = client.TypeVol;
+        VilleDepart = client.Depart;
+        VilleArrivee = client.Destination;
+        DateVol = client.Date;
+        HeureVol = client.Heure;
     }
 
     [RelayCommand]
@@ -286,6 +309,24 @@ public partial class ReservationViewModel : ViewModelBase
         IsTicketVisible = false;
         Annuler();
     }
+
+    public void ChargerClient(ClientModel client)
+    {
+        if (client == null) return;
+
+        IdPasseport = client.IdPasseport;
+        Nom = client.Nom;
+        Prenom = client.Prenom;
+        CategoriePersonne = client.Categorie;
+        ClasseAvion = client.Classe;
+        CompagnieAerienne = client.Compagnie;
+        TypeVol = client.TypeVol;
+        VilleDepart = client.Depart;
+        VilleArrivee = client.Destination;
+        DateVol = client.Date;
+        HeureVol = client.Heure;
+
+    }
 }
 
 public partial class Siege : ObservableObject
@@ -295,4 +336,4 @@ public partial class Siege : ObservableObject
 
     [ObservableProperty]
     private bool _estReserve, _estSelectionne, _isEspace;
-}   
+}

@@ -53,11 +53,16 @@
                     Height="120" 
                     CornerRadius="60" 
                     Background="{DynamicResource PrimaryColor}"
-                    HorizontalAlignment="Center">
-                <TextBlock Text="logo" 
-                           FontSize="60" 
-                           HorizontalAlignment="Center" 
-                           VerticalAlignment="Center"/>
+                    HorizontalAlignment="Center"
+                    ClipToBounds="True"> 
+        
+            <Image Source="avares://Gestion_avion/Assets/icons8-decollage-d'avion-60.png"  
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center" 
+                    Width="70" 
+                    Height="70" 
+                    Stretch="Uniform" 
+                RenderOptions.BitmapInterpolationMode="HighQuality"/> 
             </Border>
 
             <!-- texte -->
