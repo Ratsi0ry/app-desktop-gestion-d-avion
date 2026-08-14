@@ -37,17 +37,24 @@
                             FontSize="10"
                             Text="{Binding ItemId}"/>
             </StackPanel>
-            <Border CornerRadius="20"
-                    Height="70"
+            <Border CornerRadius="50"
+                    Height="50"
                     Grid.Column="2"
-                    Width="70">
+                    Width="50">
                 <Button Padding="10,0,0,0"
                         Foreground="Black"
+                        Height="50"
+                        Width="50"
+                        CornerRadius="50"
                         HorizontalContentAlignment="Center"
+                        VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Command="{Binding actionCommand}"
                         Background="{StaticResource PrimaryColor}">
-                    <Image Source="avares://Gestion_avion/Assets/connection.png"/>
+                    <Image Source="avares://Gestion_avion/Assets/connection.png"
+                           Width="50"
+                           Height="50"
+                           HorizontalAlignment="Center"/>
                 </Button>
             </Border>
         </Grid>

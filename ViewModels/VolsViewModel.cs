@@ -67,13 +67,14 @@ public partial class VolsViewModel : ViewModelBase
         }
     }
 
-    List<Flight> allFlights = [
-      new Flight("A1", "azaa", DateTime.Now,"Antananarivo", "Toamasina"),
-      new Flight("A2", "azaa", DateTime.Now,"France", "Toamasina"),
-      new Flight("A3", "azaa", DateTime.Now,"Antananarivo", "Allemagne"),
-      new Flight("A4", "azaa", DateTime.Now,"Sambava", "Toamasina"),
-      new Flight("A5", "azaa", DateTime.Now,"Fianarantsoa", "Toamasina"),
-    ];
+        List<Flight> allFlights = new List<Flight>
+        {
+                new Flight("A1", "azaa", DateTime.Now, "Antananarivo", "Toamasina"),
+                new Flight("A2", "azaa", DateTime.Now, "France", "Toamasina"),
+                new Flight("A3", "azaa", DateTime.Now, "Antananarivo", "Allemagne"),
+                new Flight("A4", "azaa", DateTime.Now, "Sambava", "Toamasina"),
+                new Flight("A5", "azaa", DateTime.Now, "Fianarantsoa", "Toamasina"),
+        };
 
     public ObservableCollection<FlightCardViewModel> FlightList{get; set;}
     private void Refresh(List<Flight> flights)
@@ -159,7 +160,17 @@ public partial class VolsViewModel : ViewModelBase
         {
             if (SelectedFlight != null && DepartureDate != null && DepartureTime != null && A != null && D != null)
             {
-                dt = (DepartureDate?.Add(DepartureTime ??  TimeSpan.Zero))?.DateTime ?? DateTime.Now;
+                // combine DateTimeOffset and TimeSpan into DateTime
+                if (DepartureDate.HasValue)
+                {
+                    var date = DepartureDate.Value.Date; // DateTime at 00:00
+                    var time = DepartureTime ?? TimeSpan.Zero;
+                    dt = date.Add(time);
+                }
+                else
+                {
+                    dt = DateTime.Now;
+                }
                 for (int i = 0; i < allFlights.Count; i++)
                 {
                     if (allFlights[i].Plane == SelectedFlight.Plane)
