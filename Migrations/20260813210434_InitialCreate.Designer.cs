@@ -8,11 +8,11 @@ using back.Data;
 
 #nullable disable
 
-namespace back.Migrations
+namespace Gestion_avion.Migrations
 {
     [DbContext(typeof(Contextedb))]
-    [Migration("20260801130919_essai04")]
-    partial class essai04
+    [Migration("20260813210434_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,21 +23,6 @@ namespace back.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ClasseModele_avion", b =>
-                {
-                    b.Property<string>("Classescode_classe")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Modele_Avionscode_modele")
-                        .HasColumnType("text");
-
-                    b.HasKey("Classescode_classe", "Modele_Avionscode_modele");
-
-                    b.HasIndex("Modele_Avionscode_modele");
-
-                    b.ToTable("ClasseModele_avion");
-                });
 
             modelBuilder.Entity("back.Models.Affecter", b =>
                 {
@@ -65,10 +50,6 @@ namespace back.Migrations
                     b.Property<string>("Statut_avioncode_statut")
                         .HasColumnType("text");
 
-                    b.Property<string>("fk_code_modele")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("fk_id_compagnie")
                         .IsRequired()
                         .HasColumnType("text");
@@ -82,8 +63,6 @@ namespace back.Migrations
                     b.HasIndex("Placenumero_place");
 
                     b.HasIndex("Statut_avioncode_statut");
-
-                    b.HasIndex("fk_code_modele");
 
                     b.HasIndex("fk_id_compagnie");
 
@@ -130,26 +109,6 @@ namespace back.Migrations
                     b.ToTable("Caracteriser");
                 });
 
-            modelBuilder.Entity("back.Models.Classe", b =>
-                {
-                    b.Property<string>("code_classe")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Placenumero_place")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("libelle_classe")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("code_classe");
-
-                    b.HasIndex("Placenumero_place");
-
-                    b.ToTable("Classe");
-                });
-
             modelBuilder.Entity("back.Models.Compagnie", b =>
                 {
                     b.Property<string>("id_compagnie")
@@ -172,33 +131,14 @@ namespace back.Migrations
                     b.ToTable("Compagnie");
                 });
 
-            modelBuilder.Entity("back.Models.Diviser", b =>
+            modelBuilder.Entity("back.Models.Date_vol", b =>
                 {
-                    b.Property<string>("fk_code_modele")
+                    b.Property<string>("date_depart")
                         .HasColumnType("text");
 
-                    b.Property<string>("fk_code_classe")
-                        .HasColumnType("text");
+                    b.HasKey("date_depart");
 
-                    b.HasKey("fk_code_modele", "fk_code_classe");
-
-                    b.HasIndex("fk_code_classe");
-
-                    b.ToTable("Diviser");
-                });
-
-            modelBuilder.Entity("back.Models.Modele_avion", b =>
-                {
-                    b.Property<string>("code_modele")
-                        .HasColumnType("text");
-
-                    b.Property<string>("libelle_modele")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("code_modele");
-
-                    b.ToTable("Modele_avion");
+                    b.ToTable("Date_vol");
                 });
 
             modelBuilder.Entity("back.Models.Passager", b =>
@@ -254,6 +194,13 @@ namespace back.Migrations
                     b.Property<string>("numero_place")
                         .HasColumnType("text");
 
+                    b.Property<string>("classe_siege")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("occupee")
+                        .HasColumnType("integer");
+
                     b.HasKey("numero_place");
 
                     b.ToTable("Place");
@@ -274,17 +221,19 @@ namespace back.Migrations
                     b.ToTable("Posseder");
                 });
 
-            modelBuilder.Entity("back.Models.Regrouper", b =>
+            modelBuilder.Entity("back.Models.Repartir", b =>
                 {
-                    b.Property<string>("fk_code_classe")
+                    b.Property<string>("fk_id_compagnie")
                         .HasColumnType("text");
 
-                    b.Property<string>("fk_numero_place")
+                    b.Property<string>("fk_id_trajet")
                         .HasColumnType("text");
 
-                    b.HasKey("fk_code_classe", "fk_numero_place");
+                    b.HasKey("fk_id_compagnie", "fk_id_trajet");
 
-                    b.ToTable("Regrouper");
+                    b.HasIndex("fk_id_trajet");
+
+                    b.ToTable("Repartir");
                 });
 
             modelBuilder.Entity("back.Models.Reservation", b =>
@@ -293,6 +242,10 @@ namespace back.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("date_reservation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("fk_id_vol")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -308,6 +261,8 @@ namespace back.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("id_reservation");
+
+                    b.HasIndex("fk_id_vol");
 
                     b.HasIndex("fk_numero_place");
 
@@ -353,11 +308,7 @@ namespace back.Migrations
                     b.Property<string>("id_vol")
                         .HasColumnType("text");
 
-                    b.Property<string>("date_arrivee")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("date_depart")
+                    b.Property<string>("fk_date_depart")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -369,28 +320,19 @@ namespace back.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("status_vol")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("id_vol");
+
+                    b.HasIndex("fk_date_depart");
 
                     b.HasIndex("fk_id_avion");
 
                     b.HasIndex("fk_id_trajet");
 
                     b.ToTable("Vol");
-                });
-
-            modelBuilder.Entity("ClasseModele_avion", b =>
-                {
-                    b.HasOne("back.Models.Classe", null)
-                        .WithMany()
-                        .HasForeignKey("Classescode_classe")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("back.Models.Modele_avion", null)
-                        .WithMany()
-                        .HasForeignKey("Modele_Avionscode_modele")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("back.Models.Affecter", b =>
@@ -424,13 +366,6 @@ namespace back.Migrations
                         .WithMany("Avions")
                         .HasForeignKey("Statut_avioncode_statut");
 
-                    b.HasOne("back.Models.Modele_avion", "Modele_avion")
-                        .WithMany("Avions")
-                        .HasForeignKey("fk_code_modele")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_avion_modele");
-
                     b.HasOne("back.Models.Compagnie", "Compagnie")
                         .WithMany("Avions")
                         .HasForeignKey("fk_id_compagnie")
@@ -439,8 +374,6 @@ namespace back.Migrations
                         .HasConstraintName("fk_avion_compagnie");
 
                     b.Navigation("Compagnie");
-
-                    b.Navigation("Modele_avion");
                 });
 
             modelBuilder.Entity("back.Models.Billet", b =>
@@ -485,38 +418,6 @@ namespace back.Migrations
                     b.Navigation("Statut_avion");
                 });
 
-            modelBuilder.Entity("back.Models.Classe", b =>
-                {
-                    b.HasOne("back.Models.Place", "Place")
-                        .WithMany()
-                        .HasForeignKey("Placenumero_place")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Place");
-                });
-
-            modelBuilder.Entity("back.Models.Diviser", b =>
-                {
-                    b.HasOne("back.Models.Classe", "Classe")
-                        .WithMany("Divisers")
-                        .HasForeignKey("fk_code_classe")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_diviser_classe");
-
-                    b.HasOne("back.Models.Modele_avion", "Modele_avion")
-                        .WithMany("Divisers")
-                        .HasForeignKey("fk_code_modele")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_diviser_modele_avion");
-
-                    b.Navigation("Classe");
-
-                    b.Navigation("Modele_avion");
-                });
-
             modelBuilder.Entity("back.Models.Posseder", b =>
                 {
                     b.HasOne("back.Models.Avion", "Avion")
@@ -538,29 +439,36 @@ namespace back.Migrations
                     b.Navigation("Place");
                 });
 
-            modelBuilder.Entity("back.Models.Regrouper", b =>
+            modelBuilder.Entity("back.Models.Repartir", b =>
                 {
-                    b.HasOne("back.Models.Classe", "Classe")
-                        .WithMany("Regroupers")
-                        .HasForeignKey("fk_code_classe")
+                    b.HasOne("back.Models.Compagnie", "Compagnie")
+                        .WithMany("Repartirs")
+                        .HasForeignKey("fk_id_compagnie")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_regrouper_classe");
+                        .HasConstraintName("fk_repartir_compagnie");
 
-                    b.HasOne("back.Models.Place", "Place")
-                        .WithMany("Regroupers")
-                        .HasForeignKey("fk_code_classe")
+                    b.HasOne("back.Models.Trajet", "Trajet")
+                        .WithMany("Repartirs")
+                        .HasForeignKey("fk_id_trajet")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_regrouper_place");
+                        .HasConstraintName("fk_repartir_trajet");
 
-                    b.Navigation("Classe");
+                    b.Navigation("Compagnie");
 
-                    b.Navigation("Place");
+                    b.Navigation("Trajet");
                 });
 
             modelBuilder.Entity("back.Models.Reservation", b =>
                 {
+                    b.HasOne("back.Models.Vol", "Vol")
+                        .WithMany("Reservations")
+                        .HasForeignKey("fk_id_vol")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_reservation_vol");
+
                     b.HasOne("back.Models.Place", "Place")
                         .WithMany("Reservations")
                         .HasForeignKey("fk_numero_place")
@@ -578,10 +486,19 @@ namespace back.Migrations
                     b.Navigation("Passager");
 
                     b.Navigation("Place");
+
+                    b.Navigation("Vol");
                 });
 
             modelBuilder.Entity("back.Models.Vol", b =>
                 {
+                    b.HasOne("back.Models.Date_vol", "Date_vol")
+                        .WithMany("Vols")
+                        .HasForeignKey("fk_date_depart")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_vol_date_vol");
+
                     b.HasOne("back.Models.Avion", "Avion")
                         .WithMany("Vols")
                         .HasForeignKey("fk_id_avion")
@@ -598,6 +515,8 @@ namespace back.Migrations
 
                     b.Navigation("Avion");
 
+                    b.Navigation("Date_vol");
+
                     b.Navigation("Trajet");
                 });
 
@@ -610,23 +529,16 @@ namespace back.Migrations
                     b.Navigation("Vols");
                 });
 
-            modelBuilder.Entity("back.Models.Classe", b =>
-                {
-                    b.Navigation("Divisers");
-
-                    b.Navigation("Regroupers");
-                });
-
             modelBuilder.Entity("back.Models.Compagnie", b =>
                 {
                     b.Navigation("Avions");
+
+                    b.Navigation("Repartirs");
                 });
 
-            modelBuilder.Entity("back.Models.Modele_avion", b =>
+            modelBuilder.Entity("back.Models.Date_vol", b =>
                 {
-                    b.Navigation("Avions");
-
-                    b.Navigation("Divisers");
+                    b.Navigation("Vols");
                 });
 
             modelBuilder.Entity("back.Models.Passager", b =>
@@ -647,8 +559,6 @@ namespace back.Migrations
 
                     b.Navigation("Posseders");
 
-                    b.Navigation("Regroupers");
-
                     b.Navigation("Reservations");
                 });
 
@@ -661,6 +571,8 @@ namespace back.Migrations
 
             modelBuilder.Entity("back.Models.Trajet", b =>
                 {
+                    b.Navigation("Repartirs");
+
                     b.Navigation("Vols");
                 });
 
@@ -669,6 +581,8 @@ namespace back.Migrations
                     b.Navigation("Affecters");
 
                     b.Navigation("Billets");
+
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

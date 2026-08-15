@@ -241,6 +241,23 @@
 								DockPanel.Dock="Right"
 								MinWidth="300">
 
+
+						<TextBlock 	Foreground="{StaticResource accentColor}"
+									Padding="20,5"
+									FontSize="15"
+									FontWeight="Heavy"
+									HorizontalAlignment="Center"
+									Text="code"/>
+
+						<TextBox 	HorizontalAlignment="Right"
+									MaxHeight="20"
+									Width="250"
+									Padding="10,5"
+									Background="#D22974B1"
+									Foreground="White"
+									PlaceholderText="company code"
+									Text="{Binding RegisterCompanyCode}"/>
+
 						<TextBlock 	Foreground="{StaticResource accentColor}"
 									HorizontalAlignment="Center"
 									FontSize="15"
@@ -254,7 +271,8 @@
 									MaxHeight="20"
 									Padding="10,5"
 									HorizontalAlignment="Right"
-									PlaceholderText="you're company's name"/>
+									PlaceholderText="you're company's name"
+									Text="{Binding RegisterCompanyName}"/>
 
 						<TextBlock 	Foreground="{StaticResource accentColor}"
 									HorizontalAlignment="Center"
@@ -270,7 +288,8 @@
 									Padding="10,5"
 									MaxHeight="20"
 									HorizontalAlignment="Right"
-									PlaceholderText="your password"/>
+									PlaceholderText="your password"
+									Text="{Binding RegisterCompanyPassword}" />
 
 						<TextBlock 	Foreground="{StaticResource accentColor}"
 									Padding="20,5"
@@ -286,7 +305,40 @@
 									Padding="10,5"
 									Background="#D22974B1"
 									Foreground="White"
-									PlaceholderText="verify your password"/>
+									PlaceholderText="verify your password"
+									Text="{Binding RegisterCompanyConfirmPassword}"/>
+
+						<TextBlock 	Foreground="{StaticResource accentColor}"
+									Padding="20,5"
+									FontSize="15"
+									FontWeight="Heavy"
+									HorizontalAlignment="Center"
+									Text="Email"/>
+
+						<TextBox 	HorizontalAlignment="Right"
+									MaxHeight="20"
+									Width="250"
+									Padding="10,5"
+									Background="#D22974B1"
+									Foreground="White"
+									PlaceholderText="email"
+									Text="{Binding RegisterCompanyEmail}"/>
+
+						<TextBlock 	Foreground="{StaticResource accentColor}"
+									Padding="20,5"
+									FontSize="15"
+									FontWeight="Heavy"
+									HorizontalAlignment="Center"
+									Text="Cell contact"/>
+
+						<TextBox    HorizontalAlignment="Right"
+									MaxHeight="20"
+									Width="250"
+									Padding="10,5"
+									Background="#D22974B1"
+									Foreground="White"
+									PlaceholderText="+261340000000"
+									Text="{Binding RegisterCompanyCellContact, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
 						<Border	Margin="10,20"
 								CornerRadius="10"
@@ -301,7 +353,7 @@
 									Background="{StaticResource hoverColor}"
 									Foreground="White"
 									Click="register_Click"
-									/>
+									Command="{Binding ConfirmRegisterCommand}"/>
 						</Border>
 
 					</WrapPanel>

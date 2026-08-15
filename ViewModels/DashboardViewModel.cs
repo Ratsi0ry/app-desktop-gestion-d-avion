@@ -6,6 +6,7 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using back.Models;
+using Gestion_avion.state;
 
 namespace Gestion_avion.ViewModels;
 
@@ -13,6 +14,8 @@ public partial class DashboardViewModel : ViewModelBase
 {
     // Initialise les fonctions pour les vols
     private Volfunc _volfunc = new Volfunc();
+
+    private readonly AppState _appstate;
 
     [ObservableProperty]
     private int _nbVolsJournee, _nbVolsEnCours, _nbVolsEffectues, _nbVolsAnnuler;
@@ -23,10 +26,10 @@ public partial class DashboardViewModel : ViewModelBase
     [ObservableProperty]
     private string _meteoDuJour, _dateDuJour;
 
-    public DashboardViewModel()
+    public DashboardViewModel(AppState appState)
     {
+        _appstate = appState;
         DateDuJour = "";
-
         NbVolsEnCours = 7;
         NbVolsEffectues = 3;
         NbVolsAnnuler = 0;
@@ -57,7 +60,13 @@ public partial class DashboardViewModel : ViewModelBase
         String date = now.ToString("dd");
         String annee = now.ToString("yyyy");
 
-        DateDuJour = $"{jour}, {date} {mois} {annee}";
+        String compagnieName = "";
+
+        if(_appstate.currentCompanie != null) {
+            compagnieName = _appstate.currentCompanie.nom_compagnie + " ,";
+        }
+
+        DateDuJour = $"{compagnieName}{jour}, {date} {mois} {annee}";
     }
 
     /**

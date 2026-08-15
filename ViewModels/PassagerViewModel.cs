@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Gestion_avion.Models;
 using Gestion_avion.Messages;
+using Gestion_avion.state;
 
 namespace Gestion_avion.ViewModels;
 
@@ -13,6 +14,8 @@ public partial class PassagerViewModel : ViewModelBase
 {
     // Source de données originale pour conserver l'état complet
     private readonly List<ClientModel> _tousLesClients = new();
+
+    private readonly AppState _appState;
 
     [ObservableProperty]
     private string _rechercheId = "";
@@ -45,8 +48,11 @@ public partial class PassagerViewModel : ViewModelBase
     private ObservableCollection<string> _heureVolDispo = new() { "03:00", "14:30", "22:15" };
 
 
-    public PassagerViewModel()
+    public PassagerViewModel(AppState appState)
     {
+
+        _appState = appState;
+
         // Chargement des données dans la liste maîtresse
         _tousLesClients.Add(new ClientModel 
         { 

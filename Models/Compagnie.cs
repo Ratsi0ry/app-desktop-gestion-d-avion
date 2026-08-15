@@ -81,20 +81,17 @@ namespace back.Models
     public class Vol
     {
         public string id_vol {get; set; } = string.Empty;
-
+        public string status_vol { get; set; } = "Prevu";
         //le type de la date ???
-        /*public required string date_depart {get; set; } = string.Empty;
-        public string date_arrivee {get; set; } = string.Empty;*/
 
         public string fk_date_depart {get; set; } = string.Empty;
-
         public string fk_id_trajet {get; set; } = null!;
         public string fk_id_avion {get; set; } = null!;
 
         public List<Billet> Billets {get; set; } = new();
-
         public List<Affecter> Affecters {get; set; } = new();
         public List<Reservation> Reservations {get; set; } = new();
+
         public Avion Avion {get; set; } = null!;
         public Trajet Trajet {get; set; } = null!;
         public Date_vol Date_vol {get; set; } = null!;

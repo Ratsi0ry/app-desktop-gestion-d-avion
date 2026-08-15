@@ -140,7 +140,7 @@
                                     FontWeight="Bold"
                                     FontSize="20"/>
                         <DatePicker HorizontalAlignment="Center"
-                                    SelectedDate="{Binding CurrentView}"/>
+                                    SelectedDate="{Binding DepartureDate}"/>
 
                         <ScrollViewer   Padding="20"
                                         HorizontalAlignment="Stretch">

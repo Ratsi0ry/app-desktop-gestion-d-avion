@@ -6,11 +6,14 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System;
 using System.Numerics;
+using Gestion_avion.state;
 
 namespace Gestion_avion.ViewModels;
 
 public partial class OperationViewModel: ViewModelBase
 {
+    private readonly AppState _appState;
+
     [ObservableProperty]
     private DateTime? _selectedDate;
 
@@ -45,12 +48,13 @@ public partial class OperationViewModel: ViewModelBase
 
     public ObservableCollection<CardViewModel> PlaneList { get; set; }
 
-    public OperationViewModel()
+    public OperationViewModel(AppState appState)
     {
+        _appState = appState;
         PlaneList = new ObservableCollection<CardViewModel>();
         foreach (Plane p in RegisteredPlane)
         {
-            PlaneList.Add(new CardViewModel(p.Name, p.Id, "plane", OnPlaneSelected));
+            PlaneList.Add(new CardViewModel(p.Name, p.Id, "", "", "plane", OnPlaneSelected, appState));
         }
         ViewPlane = new PlaneStatusViewModel(true);
     }

@@ -14,6 +14,8 @@ public partial class FlightCardViewModel : ViewModelBase
     [ObservableProperty]
     private DateTime _depart;
 
+    public object? Tag { get; set; }
+
     private readonly Action<FlightCardViewModel> _delayed;
     private readonly Action<FlightCardViewModel> _delete;
     public FlightCardViewModel(string plane, string company, string portA, string portB, DateTime depart, Action<FlightCardViewModel> delay, Action<FlightCardViewModel> remove)
