@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Gestion_avion.ViewModels"
+             x:DataType="vm:CardViewModel"
+             x:Class="Gestion_avion.Views.Cards.PlaneCard">
+    
+    <Border CornerRadius="50"
+            Margin="5,5"
+            BorderThickness="2,0,0,2"
+            Background="{StaticResource PrimaryColor}">
+        <Grid Margin="10"
+              ColumnDefinitions="2*,6*,2*">
+            <Border Height="70"
+                    Grid.Column="0"
+                    Background="White"
+                    Opacity="100"
+                    CornerRadius="70"
+                    Width="70">
+                <Image  Source="avares://Gestion_avion/Assets/icons8-avion-vue-de-face-100.png" 
+                        Width="60" 
+                        Height="60" 
+                        HorizontalAlignment="Center"/>
+            </Border>
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        MinWidth="60"
+                        Margin="10"
+                        Grid.Column="1"
+                        Orientation="Vertical">
+                <TextBlock 	Foreground="Black"
+                            FontSize="15"
+                            Name="PlaneName"
+                            Padding="10,5,10,0"
+                            Text="{Binding ItemName}"/>
+                <TextBlock  Name="PlaneId"
+                            VerticalAlignment="Center"
+                            FontSize="10"
+                            Text="{Binding ItemId}"/>
+            </StackPanel>
+            <Border CornerRadius="20"
+                    Height="70"
+                    Grid.Column="2"
+                    Width="70">
+                <Button Padding="10,0,0,0"
+                        Foreground="Black"
+                        HorizontalContentAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Command="{Binding actionCommand}"
+                        Background="{StaticResource PrimaryColor}">
+                    <Image Source="avares://Gestion_avion/Assets/connection.png"/>
+                </Button>
+            </Border>
+        </Grid>
+    </Border>
+
+</UserControl>

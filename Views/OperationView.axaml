@@ -1,0 +1,202 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Gestion_avion.ViewModels"
+             x:Class="Gestion_avion.Views.OperationView"
+             xmlns:cards="using:Gestion_avion.Views.Cards"
+			 xmlns:selectors="using:Gestion_avion.Selectors"
+             x:DataType="vm:OperationViewModel">
+
+    <UserControl.Styles>
+
+        <!-- hover-->
+        <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="{DynamicResource secondColor}"/> 
+            <Setter Property="BorderBrush" Value="{DynamicResource secondColor}"/> 
+        </Style>
+
+        <!-- focus-->
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="{DynamicResource secondColor}"/> 
+            <Setter Property="BorderBrush" Value="{DynamicResource hoverColor}"/> 
+        </Style>
+
+        <!-- while writing -->
+        <Style Selector="TextBox:focus">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+    </UserControl.Styles>
+
+    <UserControl.Resources>
+		<selectors:TemplateFilter x:Key="TemplateFilter"/>
+	</UserControl.Resources>
+    
+    <!--main-->
+    <DockPanel Margin="20">
+
+        <!--plane list-->
+        <ScrollViewer>
+            <Border CornerRadius="16"
+                    Margin="10"
+                    DockPanel.Dock="Left"
+                    MinWidth="300"
+                    Background="WhiteSmoke">
+                <StackPanel Orientation="Vertical"
+                            Spacing="20">
+                    <StackPanel  Orientation="Horizontal">
+                        <Button HorizontalAlignment="Right"
+                                Foreground="Black"
+                                Background="{StaticResource sectionColor}"
+                                CornerRadius="50"
+                                Height="50"
+                                Width="50"
+                                Margin="10,5">
+                            <TextBlock  FontSize="30"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Foreground="Black"
+                                        Text="+"/>
+                        </Button>
+                    </StackPanel>
+
+                    <!--plane card lister-->
+                    <ScrollViewer   Margin="10"
+                                    Name="planeLister">
+                        <ItemsControl   ItemsSource="{Binding PlaneList}"
+                                        Foreground="Black"
+										ItemTemplate="{StaticResource TemplateFilter}">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<WrapPanel ItemSpacing="10" Orientation="Vertical"/>
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        
+                    </ScrollViewer>
+
+                </StackPanel>
+            </Border>
+
+        </ScrollViewer>
+
+        <!--Plannification slot-->
+        <Border CornerRadius="16"
+                Margin="10"
+                DockPanel.Dock="Right"
+                MinWidth="100"
+                MaxWidth="500"
+                Background="WhiteSmoke">
+            <ScrollViewer>
+
+                <StackPanel 
+                            Orientation="Vertical">
+                    <!--Date Selector-->
+                    <Calendar   Background="{StaticResource PrimaryColor}"
+                                CornerRadius="20"
+                                BorderThickness="0"
+                                Foreground="{StaticResource accentColor}"
+                                SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                                Margin="20"/>
+                    <!--path-->
+                    <StackPanel Margin="10,20"
+                                VerticalAlignment="Top"
+                                Orientation="Vertical">
+                        <TextBlock  Foreground="{StaticResource accentColor}"
+                                    Text="Plannification de trajet"
+                                    FontSize="20"
+                                    Margin="5,10"/>
+                        
+                        <TextBlock  FontSize="13"
+                                    Foreground="Black"
+                                    Text="ville de depart :"
+                                    Margin="5"/>
+                        
+                        <ComboBox   HorizontalAlignment="Stretch"
+                                    PlaceholderText="Selectionner..."
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    Background="{StaticResource sectionColor}">
+        
+                            <!-- mock data  -->
+                            <x:String>Antananarivo</x:String>
+                            <x:String>Fianarantsoa</x:String>
+                            <x:String>Toamasina</x:String>
+        
+                        </ComboBox>
+                        
+                        <TextBlock  FontSize="13"
+                                    Foreground="Black"
+                                    Text="ville d'arrivee :"
+                                    Margin="5"/>
+        
+                        <ComboBox HorizontalAlignment="Stretch"
+                                PlaceholderText="Selectionner..."
+                                Foreground="White"
+                                FontWeight="Bold"
+                                Background="{StaticResource sectionColor}">
+                                
+        
+                            <!-- mock data  -->
+                            <x:String>Antananarivo</x:String>
+                            <x:String>Fianarantsoa</x:String>
+                            <x:String>Toamasina</x:String>
+        
+                        </ComboBox>
+        
+                        <Button Foreground="Black"
+                                Margin="10,8"
+                                Background="{StaticResource sectionColor}"
+                                HorizontalAlignment="Center"
+                                Content="Confirmer le trajet"/>
+                    </StackPanel>
+ 
+                    <StackPanel VerticalAlignment="Bottom"
+                                Margin="10,40,10,10"
+                                Orientation="Vertical">
+                        <TextBlock  Foreground="{StaticResource accentColor}"
+                                    Text="Nouveau trajet"
+                                    FontSize="20"
+                                    Margin="5,10"/>
+                        
+                        <TextBlock  Text="aeroport de :"
+                                    Margin="15,5"
+                                    Foreground="Black"
+                                    FontSize="15"/>
+                        
+                        <TextBox PlaceholderText="nom de l'aeroport"
+                                PlaceholderForeground="Black"
+                                Margin="15,5"
+                                CornerRadius="10"
+                                Background="{DynamicResource secondColor}"
+                                Foreground="Black"/>
+                        
+                    </StackPanel>
+    
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+        
+        <!--Plane overview (current state)-->
+        <ScrollViewer>
+            <Border CornerRadius="16"
+                    Margin="10"
+                    MinWidth="100"
+                    Background="WhiteSmoke">
+                
+                <ScrollViewer>
+                    <ContentControl Foreground="Black" Content="{Binding ViewPlane}">
+                        <ContentControl.DataTemplates>
+                            <DataTemplate  DataType="{x:Type vm:PlaneStatusViewModel}">
+                                <cards:PlaneStatus/>
+                            </DataTemplate>
+                        </ContentControl.DataTemplates>
+                    </ContentControl>
+                </ScrollViewer>
+
+            </Border>
+        </ScrollViewer>
+
+    </DockPanel>
+        
+</UserControl>
