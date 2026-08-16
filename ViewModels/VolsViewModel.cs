@@ -7,14 +7,12 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using Tmds.DBus.Protocol;
+using back.Models;
 
 namespace Gestion_avion.ViewModels;
 
 public partial class VolsViewModel : ViewModelBase
 {
-    private Flight? SelectedFlight;
-    private DateTime dt;
-
     [ObservableProperty]
     private bool _notify = false;
 
@@ -30,26 +28,44 @@ public partial class VolsViewModel : ViewModelBase
     [ObservableProperty]
     private TimeSpan? _departureTime;
 
-    [ObservableProperty]
-    private ObservableCollection<string> availablePorts = new ()
-    {
-        "Antananarivo",
-        "Toamasina",
-        "Allemagne",
-        "France",
-        "Fianarantsoa",
-        "Sambava"
-    };
+    private readonly Trajetfunc _trajetfunc = new();
+    private readonly Avionfunc _avionfunc = new();
 
     [ObservableProperty]
-    private ObservableCollection<string> availablePlanes = new()
+    private ObservableCollection<string> availablePorts = new();
+
+    [ObservableProperty]
+    private ObservableCollection<string> availablePlanes = new();
+
+    private async Task LoadAvailablePortsAsync()
     {
-        "A1",
-        "A2",
-        "A3",
-        "A4",
-        "A5"
-    };
+        var trajets = await _trajetfunc.ListerTrajet();
+
+        var villes = new List<string>();
+        foreach (var t in trajets)
+        {
+            if (!villes.Contains(t.lieu_depart))
+                villes.Add(t.lieu_depart);
+
+            if (!villes.Contains(t.destination))
+                villes.Add(t.destination);
+        }
+
+        AvailablePorts = new ObservableCollection<string>(villes);
+    }
+
+    private async Task LoadAvailablePlanesAsync()
+    {
+        var avions = await _avionfunc.ListerAvions();
+
+        var noms = new List<string>();
+        foreach (var av in avions)
+        {
+            noms.Add(av.nom_avion);
+        }
+
+        AvailablePlanes = new ObservableCollection<string>(noms);
+    }
 
     private bool IsEditing = false;
     class Flight

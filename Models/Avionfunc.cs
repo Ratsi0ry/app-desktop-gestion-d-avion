@@ -14,7 +14,7 @@ public class Avionfunc
         using (var bdd = new Contextedb())
         {
             return await bdd.Avion
-                .Include(av => av.fk_id_compagnie)
+                .Include(av => av.Compagnie)
                 .ToListAsync();
         }
     }
@@ -23,7 +23,7 @@ public class Avionfunc
         using (var bdd = new Contextedb())
         {
             return await bdd.Avion
-                .Include(av => av.fk_id_compagnie)
+                .Include(av => av.Compagnie)
                 .Where(propriete)
                 .ToListAsync();
         }
