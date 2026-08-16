@@ -16,4 +16,6 @@ public partial class ClientModel : ObservableObject
     [ObservableProperty] private string _date = "";
     [ObservableProperty] private string _heure = "";
     [ObservableProperty] private string _siege = "";
+    [ObservableProperty] private decimal _tarif = 0;
+    [ObservableProperty] private string _estPaye = "Non";
 }

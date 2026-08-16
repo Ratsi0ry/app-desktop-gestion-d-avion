@@ -16,6 +16,7 @@ using Gestion_avion.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.Linq;
 
 namespace Gestion_avion.ViewModels;
 
@@ -24,13 +25,16 @@ public partial class SiegeUiModel : ObservableObject
     public string Numero { get; set; } = string.Empty;
     public bool IsEspace { get; set; }
 public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeModificationClientMessage>
-{
+{   
+    //ref si en modification ou pas
+    private ClientModel? _clientEnCoursDeModification = null;
+
     // --- input 
     [ObservableProperty]
     private string _villeDepart = "", _villeArrivee = "", _dateVol = "", 
                    _heureVol = "", _nom = "", _prenom = "", _idPasseport = "",
                    _categoriePersonne = "", _classeAvion = "", _compagnieAerienne = "",
-                   _RechercheId = "";
+                   _rechercheId = "";
 
     [ObservableProperty] private bool _estReserve;
     [ObservableProperty] private bool _estSelectionne;
@@ -95,6 +99,15 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
 
         WeakReferenceMessenger.Default.Register(this);
         QuestPDF.Settings.License = LicenseType.Community;
+    [ObservableProperty]
+    private decimal _tarif = 0;
+
+    [ObservableProperty]
+    private string _estPaye = "Non";
+
+    [ObservableProperty]
+    private ObservableCollection<string> _estPayeDispo = new() { "Oui", "Non" };
+
     // liste choix
     [ObservableProperty]
     private ObservableCollection<string> _categoriePersonneDispo = new() { "Adulte", "Enfant", "Bébé" };
@@ -184,9 +197,12 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
     }
 
     // Méthode de réception des données du client à modifier
-    public void Receive(DemandeModificationClientMessage message)
+   public void Receive(DemandeModificationClientMessage message)
     {
         var client = message.Value;
+
+        //suavegarde de la reference
+        _clientEnCoursDeModification = client;
 
         IdPasseport = client.IdPasseport;
         Nom = client.Nom;
@@ -199,6 +215,16 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
         VilleArrivee = client.Destination;
         DateVol = client.Date;
         HeureVol = client.Heure;
+        Tarif = client.Tarif;
+        EstPaye = client.EstPaye;   
+        
+        //preselection siege
+         var siege = ListeSieges.FirstOrDefault(s => s.Numero == client.Siege);
+        if (siege != null)
+        {
+            siege.EstSelectionne = true;
+            SiegeSelectionne = siege;
+        }
     }
 
     private void ActualiserVillesArriveeEtDates()
@@ -326,6 +352,39 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
 
         siege.EstSelectionne = true;
         SiegeSelectionne = siege;
+        // recuperation donee atao amn ticket
+        TicketNom = $"{Nom} {Prenom}".ToUpper();
+        TicketTrajet = $"{VilleDepart} à {VilleArrivee}";
+        TicketDateHeure = $"{DateVol} - {HeureVol}";
+        TicketSiege = SiegeSelectionne.Numero ?? "N/A";
+        TicketClasse = ClasseAvion;
+        TicketCompagnie = CompagnieAerienne;
+
+         // AJOUT : écrire les données dans le client
+        var client = _clientEnCoursDeModification ?? new ClientModel();
+        bool estNouveau = _clientEnCoursDeModification == null;
+
+        client.IdPasseport = IdPasseport;
+        client.Nom = Nom;
+        client.Prenom = Prenom;
+        client.Categorie = CategoriePersonne;
+        client.Classe = ClasseAvion;
+        client.Compagnie = CompagnieAerienne;
+        client.TypeVol = TypeVol;
+        client.Depart = VilleDepart;
+        client.Destination = VilleArrivee;
+        client.Date = DateVol;
+        client.Heure = HeureVol;
+        client.Siege = SiegeSelectionne.Numero ?? "";
+        client.Tarif = Tarif;
+        client.EstPaye = EstPaye;
+
+        if (estNouveau)
+        WeakReferenceMessenger.Default.Send(new ClientEnregistreMessage(client));
+
+
+        // pop up ticket
+        IsTicketVisible = true;
     }
 
     [RelayCommand]
@@ -338,6 +397,24 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
         }
 
         try
+    [RelayCommand]
+    private void Annuler()
+    {   
+        _clientEnCoursDeModification = null;
+        IdPasseport = "";
+        Nom = "";
+        Prenom = "";
+        Sejour = 0;
+        CategoriePersonne = "";
+        ClasseAvion = "";
+        CompagnieAerienne = "";
+        TypeVol = "";
+        VilleDepart = "";
+        VilleArrivee = "";
+        DateVol = "";
+        HeureVol = "";
+
+        if (SiegeSelectionne != null)
         {
             var passager = await _context.Passager.FirstOrDefaultAsync(p => p.passeport == IdPasseport);
             if (passager == null)

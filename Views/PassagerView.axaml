@@ -81,7 +81,11 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="1.2*"/>
+
+
 
                 </Grid.ColumnDefinitions>
 
@@ -146,9 +150,20 @@
                             Foreground="Gray"/>
 
                 <TextBlock Grid.Column="12" 
+                            Text="Tarif" 
+                            FontWeight="Bold" 
+                            Foreground="Gray"/>
+
+                <TextBlock Grid.Column="13" 
+                            Text="Staut" 
+                            FontWeight="Bold" 
+                            Foreground="Gray"/>
+
+                <TextBlock Grid.Column="14" 
                             Text="Actions" 
                             FontWeight="Bold" 
                             Foreground="Gray"/>
+
 
             </Grid>
 
@@ -160,6 +175,8 @@
                     <DataTemplate>
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -235,8 +252,19 @@
                                         VerticalAlignment="Center" 
                                         Foreground="{DynamicResource accentColor}"/>
 
+                            <TextBlock Grid.Column="12" 
+                                        Text="{Binding Tarif, StringFormat={}{0} Ar}" 
+                                        VerticalAlignment="Center" 
+                                        Foreground="Black"/>
+
+                            <TextBlock Grid.Column="13" 
+                                        Text="{Binding EstPaye}" 
+                                        VerticalAlignment="Center" 
+                                        FontWeight="SemiBold"
+                                        Foreground="Black"/>
+
                             <!-- btn modifier  -->
-                            <StackPanel Grid.Column="12" 
+                            <StackPanel Grid.Column="14" 
                                         Orientation="Horizontal" 
                                         Spacing="5">
                                 <Button ToolTip.Tip="Modifier"
