@@ -1,9 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:Gestion_avion.ViewModels"
         xmlns:pages="using:Gestion_avion.Views.Pages"
-        x:Class="Gestion_avion.Views.MainWindow"
+        xmlns:vm="using:Gestion_avion.ViewModels"
         x:DataType="vm:MainViewModel"
+        x:Class="Gestion_avion.Views.MainWindow"
         Title="Fast Travel"
         Width="900" Height="600"
         WindowStartupLocation="CenterScreen">
@@ -15,8 +15,10 @@
             <Setter Property="Background" Value="{DynamicResource secondColor}"/> 
         </Style>
     </Window.Styles>
-
+    
     <Grid>
+        <!--toogle interface for login-->
+        <ContentControl  IsVisible="{Binding !IsLoading}" Content="{Binding CurrentInterface}"/>
         <!-- Interface principale -->
         <Grid IsVisible="{Binding !IsLoading}" Background="{DynamicResource accentColor}">
             <Grid.RowDefinitions>
@@ -126,5 +128,5 @@
 
         <!-- Loading -->
         <pages:WelcomeView IsVisible="{Binding IsLoading}"/>
-    </Grid>    
+    </Grid>
 </Window>
