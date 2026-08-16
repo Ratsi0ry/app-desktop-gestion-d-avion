@@ -223,7 +223,6 @@ public partial class VolsViewModel : ViewModelBase
 
         try
         {
-            // 1. Avion
             var avion = await _context.Avion.FirstOrDefaultAsync(a => a.nom_avion == Plane_);
             if (avion == null)
             {
@@ -234,7 +233,6 @@ public partial class VolsViewModel : ViewModelBase
                 _context.Avion.Add(avion);
             }
 
-            // 2. Trajet
             var trajet = await _context.Trajet.FirstOrDefaultAsync(t => t.lieu_depart == D && t.destination == A);
             if (trajet == null)
             {
@@ -242,7 +240,6 @@ public partial class VolsViewModel : ViewModelBase
                 _context.Trajet.Add(trajet);
             }
 
-            // 3. Date_vol (gestion de la clé étrangère Date_vol)
             DateTime fullDate = (DepartureDate?.Date ?? DateTime.Today).Add(DepartureTime ?? TimeSpan.Zero);
             string dateString = fullDate.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -255,7 +252,6 @@ public partial class VolsViewModel : ViewModelBase
 
             if (!IsEditing)
             {
-                // INSERTION
                 var newVol = new Vol
                 {
                     id_vol = $"VOL-{Guid.NewGuid().ToString()[..6]}",
@@ -274,7 +270,6 @@ public partial class VolsViewModel : ViewModelBase
             }
             else
             {
-                // MODIFICATION
                 if (_selectedVol != null)
                 {
                     _selectedVol.fk_date_depart = dateString;
