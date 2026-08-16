@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using back.Models;
 using back.Data;
 using Gestion_avion.Messages;
+using Gestion_avion.Messages;
+using Gestion_avion.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -21,6 +23,14 @@ public partial class SiegeUiModel : ObservableObject
 {
     public string Numero { get; set; } = string.Empty;
     public bool IsEspace { get; set; }
+public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeModificationClientMessage>
+{
+    // --- input 
+    [ObservableProperty]
+    private string _villeDepart = "", _villeArrivee = "", _dateVol = "", 
+                   _heureVol = "", _nom = "", _prenom = "", _idPasseport = "",
+                   _categoriePersonne = "", _classeAvion = "", _compagnieAerienne = "",
+                   _RechercheId = "";
 
     [ObservableProperty] private bool _estReserve;
     [ObservableProperty] private bool _estSelectionne;
@@ -85,6 +95,9 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
 
         WeakReferenceMessenger.Default.Register(this);
         QuestPDF.Settings.License = LicenseType.Community;
+    // liste choix
+    [ObservableProperty]
+    private ObservableCollection<string> _categoriePersonneDispo = new() { "Adulte", "Enfant", "Bébé" };
 
         _ = InitialiserViewModelAsync();
     }
@@ -139,6 +152,9 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
         VolsDispo = new ObservableCollection<Vol>(vols);
         
         MettreAJourListesFiltres();
+    // siege
+    [ObservableProperty]
+    private int _nbLignesGrille; 
 
         VolSelectionne = VolsDispo.FirstOrDefault();
     }
@@ -161,6 +177,28 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
     partial void OnVilleDepartChanged(string? value)
     {
         ActualiserVillesArriveeEtDates();
+        ChargerSieges("Classe Affaire");   
+        
+        // Enregistrement pour la réception du message
+        WeakReferenceMessenger.Default.Register(this);
+    }
+
+    // Méthode de réception des données du client à modifier
+    public void Receive(DemandeModificationClientMessage message)
+    {
+        var client = message.Value;
+
+        IdPasseport = client.IdPasseport;
+        Nom = client.Nom;
+        Prenom = client.Prenom;
+        CategoriePersonne = client.Categorie;
+        ClasseAvion = client.Classe;
+        CompagnieAerienne = client.Compagnie;
+        TypeVol = client.TypeVol;
+        VilleDepart = client.Depart;
+        VilleArrivee = client.Destination;
+        DateVol = client.Date;
+        HeureVol = client.Heure;
     }
 
     private void ActualiserVillesArriveeEtDates()
@@ -428,6 +466,25 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
         });
     }
 
+    public void ChargerClient(ClientModel client)
+    {
+        if (client == null) return;
+
+        IdPasseport = client.IdPasseport;
+        Nom = client.Nom;
+        Prenom = client.Prenom;
+        CategoriePersonne = client.Categorie;
+        ClasseAvion = client.Classe;
+        CompagnieAerienne = client.Compagnie;
+        TypeVol = client.TypeVol;
+        VilleDepart = client.Depart;
+        VilleArrivee = client.Destination;
+        DateVol = client.Date;
+        HeureVol = client.Heure;
+
+    }
+}
+
     [RelayCommand]
     private async Task AnnulerAsync()
     {
@@ -450,4 +507,6 @@ public partial class ReservationViewModel : ViewModelBase, IRecipient<DemandeMod
         CategoriePersonne = client.Categorie;
         ClasseAvion = client.Classe;
     }
+    [ObservableProperty]
+    private bool _estReserve, _estSelectionne, _isEspace;
 }

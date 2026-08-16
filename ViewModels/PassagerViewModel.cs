@@ -53,6 +53,8 @@ public partial class PassagerViewModel : ViewModelBase
 
         _appState = appState;
 
+    public PassagerViewModel()
+    {
         // Chargement des données dans la liste maîtresse
         _tousLesClients.Add(new ClientModel 
         { 
