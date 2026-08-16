@@ -18,6 +18,12 @@ public partial class MainViewModel : ViewModelBase, IRecipient<DemandeModificati
     [ObservableProperty]
     private string _loadingMessage = "Démarrage de Fast Travel...";
 
+    private readonly DashboardViewModel _dashboardVm = new();
+    private readonly OperationViewModel _operationVm = new();
+    private readonly VolsViewModel _volsVm = new();
+    private readonly ReservationViewModel _reservationVm = new();
+    private readonly PassagerViewModel _passagerVm = new();
+
     public MainViewModel()                                    
     {
         _ = InitializeAppAsync();
@@ -37,54 +43,29 @@ public partial class MainViewModel : ViewModelBase, IRecipient<DemandeModificati
         LoadingMessage = "Préparation de l'interface...";
         await Task.Delay(100);
 
-        CurrentPage = new DashboardViewModel();
+        CurrentPage = _dashboardVm;
 
         IsLoading = false;
     }
 
-    // au clic du btn modifier
     public void Receive(DemandeModificationClientMessage message)
     {
-        var client = message.Value;
-
-        // Instanciation de ReservationViewModel pré-remplie
-        var reservationVm = new ReservationViewModel
-        {
-            IdPasseport = client.IdPasseport,
-            Nom = client.Nom,
-            Prenom = client.Prenom,
-            CategoriePersonne = client.Categorie,
-            ClasseAvion = client.Classe,
-            CompagnieAerienne = client.Compagnie,
-            TypeVol = client.TypeVol,
-            VilleDepart = client.Depart,
-            VilleArrivee = client.Destination,
-            DateVol = client.Date,
-            HeureVol = client.Heure
-        };
-
-
-        if (string.IsNullOrWhiteSpace(client.Siege))
-        {
-            reservationVm.SiegeSelectionne = new Siege { Numero = client.Siege, EstSelectionne = true };
-        }
-        // redirection
-        CurrentPage = reservationVm;
+        CurrentPage = _reservationVm;
     }
 
     //nav
     [RelayCommand]
-    private void GoToDashboard() => CurrentPage = new DashboardViewModel();
+    private void GoToDashboard() => CurrentPage = _dashboardVm;
 
     [RelayCommand]
-    private void GoToOperation() => CurrentPage = new OperationViewModel();
+    private void GoToOperation() => CurrentPage = _operationVm;
 
     [RelayCommand]
-    private void GoToVols() => CurrentPage = new VolsViewModel();
+    private void GoToVols() => CurrentPage = _volsVm;
 
     [RelayCommand]
-    private void GoToReservation() => CurrentPage = new ReservationViewModel();
+    private void GoToReservation() => CurrentPage = _reservationVm;
 
     [RelayCommand]
-    private void GoToPassager() => CurrentPage = new PassagerViewModel();
+    private void GoToPassager() => CurrentPage = _passagerVm;
 }

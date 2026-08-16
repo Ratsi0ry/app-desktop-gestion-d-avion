@@ -9,7 +9,7 @@ using Gestion_avion.Messages;
 
 namespace Gestion_avion.ViewModels;
 
-public partial class PassagerViewModel : ViewModelBase
+public partial class PassagerViewModel : ViewModelBase, IRecipient<ClientEnregistreMessage>
 {
     // Source de données originale pour conserver l'état complet
     private readonly List<ClientModel> _tousLesClients = new();
@@ -48,43 +48,58 @@ public partial class PassagerViewModel : ViewModelBase
     public PassagerViewModel()
     {
         // Chargement des données dans la liste maîtresse
-        _tousLesClients.Add(new ClientModel 
-        { 
-            IdPasseport = "F4b937", 
-            Nom = "John", 
-            Prenom = "Doe", 
-            Categorie = "Adulte", 
-            Classe = "Economique", 
+        _tousLesClients.Add(new ClientModel
+        {
+            IdPasseport = "F4b937",
+            Nom = "John",
+            Prenom = "Doe",
+            Categorie = "Adulte",
+            Classe = "Economique",
             Compagnie = "Air France",
             TypeVol = "Aller simple",
-            Depart = "Antananarivo", 
-            Destination = "Nosy Be", 
-            Date = "06/08/2026", 
+            Depart = "Antananarivo",
+            Destination = "Nosy Be",
+            Date = "06/08/2026",
             Heure = "14:30",
-            Siege = "M1"
+            Siege = "M1",
+            Tarif = 1,
+            EstPaye = "Oui"
         });
 
-        _tousLesClients.Add(new ClientModel 
-        { 
-            IdPasseport = "A98765", 
-            Nom = "Jane", 
-            Prenom = "Dolph", 
-            Categorie = "Adulte", 
-            Classe = "Classe Affaire", 
+        _tousLesClients.Add(new ClientModel
+        {
+            IdPasseport = "A98765",
+            Nom = "Jane",
+            Prenom = "Dolph",
+            Categorie = "Adulte",
+            Classe = "Classe Affaire",
             Compagnie = "Madagascar Airlines",
             TypeVol = "Aller-retour",
-            Depart = "Antananarivo", 
-            Destination = "Toamasina", 
-            Date = "18/08/2026", 
+            Depart = "Antananarivo",
+            Destination = "Toamasina",
+            Date = "18/08/2026",
             Heure = "03:00",
-            Siege = "E3"
+            Siege = "E3",
+            Tarif = 2,
+            EstPaye = "Non"
         });
 
         // Affichage initial
         FiltrerClients();
+
+        //ajout
+        WeakReferenceMessenger.Default.Register(this);
+
+
     }
 
 
+      public void Receive(ClientEnregistreMessage message) // AJOUT
+    {
+        _tousLesClients.Add(message.Value);
+        FiltrerClients();
+    }
+    
     partial void OnRechercheIdChanged(string value)
     {
         FiltrerClients();
@@ -111,7 +126,8 @@ public partial class PassagerViewModel : ViewModelBase
             c.Depart.ToLower().Contains(filtre) ||
             c.Destination.ToLower().Contains(filtre) ||
             c.Date.ToLower().Contains(filtre) ||
-            c.Heure.ToLower().Contains(filtre) 
+            c.Heure.ToLower().Contains(filtre) ||
+            c.EstPaye.ToLower().Contains(filtre)
 
         );
 

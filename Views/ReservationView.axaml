@@ -153,6 +153,31 @@
                                      Foreground="Black"/>
                         </StackPanel>
 
+                        <!-- tarif -->
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Tarif"
+                                        FontWeight="SemiBold"
+                                        Foreground="{DynamicResource accentColor}"/>
+    
+                            <TextBlock Text="{Binding Tarif, StringFormat='{}{0} Ar', Mode=TwoWay}" 
+                                        Foreground="Black" 
+                                        Background = "WhiteSmoke"
+                                        FontWeight="Bold"/>
+                        </StackPanel>
+
+                        <!-- paiement -->
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Paiement effectué ?"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource accentColor}"/>
+                            <ComboBox HorizontalAlignment="Stretch"
+                                        PlaceholderText="Selectionner..."
+                                        Foreground="White"
+                                        FontWeight="Bold"
+                                        ItemsSource="{Binding EstPayeDispo}"
+                                        SelectedItem="{Binding EstPaye, Mode=TwoWay}"/>
+                        </StackPanel>
+
                         <!-- btn-->
                         <StackPanel Spacing="5">
                             <Grid ColumnSpacing="15">
