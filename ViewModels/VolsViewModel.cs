@@ -117,7 +117,7 @@ public partial class VolsViewModel : ViewModelBase
         }
     }
 
-    private void RefreshUI(IEnumerable<Vol> vols)
+
     {
         FlightList.Clear();
         foreach (var v in vols)
@@ -238,44 +238,6 @@ public partial class VolsViewModel : ViewModelBase
             var trajet = await _context.Trajet.FirstOrDefaultAsync(t => t.lieu_depart == D && t.destination == A);
             if (trajet == null)
             {
-                trajet = new Trajet { id_trajet = $"TRJ-{Guid.NewGuid().ToString()[..6]}", lieu_depart = D, destination = A };
-                _context.Trajet.Add(trajet);
-            }
-
-            // 3. Date_vol (gestion de la clé étrangère Date_vol)
-            DateTime fullDate = (DepartureDate?.Date ?? DateTime.Today).Add(DepartureTime ?? TimeSpan.Zero);
-            string dateString = fullDate.ToString("yyyy-MM-dd HH:mm:ss");
-
-            var dateVolExist = await _context.Date_vol.FirstOrDefaultAsync(d => d.date_depart == dateString);
-            if (dateVolExist == null)
-            {
-                dateVolExist = new Date_vol { date_depart = dateString };
-                _context.Date_vol.Add(dateVolExist);
-            }
-
-            if (!IsEditing)
-            {
-                // INSERTION
-                var newVol = new Vol
-                {
-                    id_vol = $"VOL-{Guid.NewGuid().ToString()[..6]}",
-                    status_vol = "Prevu",
-                    fk_date_depart = dateString,
-                    fk_id_avion = avion.id_avion,
-                    fk_id_trajet = trajet.id_trajet,
-                    Avion = avion,
-                    Trajet = trajet,
-                    Date_vol = dateVolExist
-                };
-
-                _context.Vol.Add(newVol);
-                await _context.SaveChangesAsync();
-                await ShowNotificationAsync("Vol inséré en BDD");
-            }
-            else
-            {
-                // MODIFICATION
-                if (_selectedVol != null)
                 {
                     _selectedVol.fk_date_depart = dateString;
                     _selectedVol.fk_id_avion = avion.id_avion;

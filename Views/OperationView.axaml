@@ -30,173 +30,401 @@
     <UserControl.Resources>
 		<selectors:TemplateFilter x:Key="TemplateFilter"/>
 	</UserControl.Resources>
+
+    <Panel>
+
+        <!--main-->
+        <DockPanel Margin="20">
     
-    <!--main-->
-    <DockPanel Margin="20">
-
-        <!--plane list-->
-        <ScrollViewer>
-            <Border CornerRadius="16"
-                    Margin="10"
-                    DockPanel.Dock="Left"
-                    MinWidth="300"
-                    Background="WhiteSmoke">
-                <StackPanel Orientation="Vertical"
-                            Spacing="20">
-                    <StackPanel  Orientation="Horizontal">
-                        <Button HorizontalAlignment="Right"
-                                Foreground="Black"
-                                Background="{StaticResource sectionColor}"
-                                CornerRadius="50"
-                                Height="50"
-                                Width="50"
-                                Margin="10,5">
-                            <TextBlock  FontSize="30"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontWeight="Bold"
-                                        Foreground="Black"
-                                        Text="+"/>
-                        </Button>
-                    </StackPanel>
-
-                    <!--plane card lister-->
-                    <ScrollViewer   Margin="10"
-                                    Name="planeLister">
-                        <ItemsControl   ItemsSource="{Binding PlaneList}"
-                                        Foreground="Black"
-										ItemTemplate="{StaticResource TemplateFilter}">
-								<ItemsControl.ItemsPanel>
-									<ItemsPanelTemplate>
-										<WrapPanel ItemSpacing="10" Orientation="Vertical"/>
-									</ItemsPanelTemplate>
-								</ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                        
-                    </ScrollViewer>
-
-                </StackPanel>
-            </Border>
-
-        </ScrollViewer>
-
-        <!--Plannification slot-->
-        <Border CornerRadius="16"
-                Margin="10"
-                DockPanel.Dock="Right"
-                MinWidth="100"
-                MaxWidth="500"
-                Background="WhiteSmoke">
+            <!--plane list-->
             <ScrollViewer>
-
-                <StackPanel 
-                            Orientation="Vertical">
-                    <!--Date Selector-->
-                    <Calendar   Background="{StaticResource PrimaryColor}"
-                                CornerRadius="20"
-                                BorderThickness="0"
-                                Foreground="{StaticResource accentColor}"
-                                SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
-                                Margin="20"/>
-                    <!--path-->
-                    <StackPanel Margin="10,20"
-                                VerticalAlignment="Top"
-                                Orientation="Vertical">
-                        <TextBlock  Foreground="{StaticResource accentColor}"
-                                    Text="Plannification de trajet"
-                                    FontSize="20"
-                                    Margin="5,10"/>
-                        
-                        <TextBlock  FontSize="13"
+                <Border CornerRadius="16"
+                        Margin="10"
+                        DockPanel.Dock="Left"
+                        MinWidth="300"
+                        Background="WhiteSmoke">
+                    <StackPanel Orientation="Vertical"
+                                Spacing="20">
+                        <StackPanel  Orientation="Horizontal">
+                            <Button HorizontalAlignment="Right"
                                     Foreground="Black"
-                                    Text="ville de depart :"
-                                    Margin="5"/>
-                        
-                        <ComboBox   HorizontalAlignment="Stretch"
-                                    PlaceholderText="Selectionner..."
-                                    Foreground="White"
-                                    FontWeight="Bold"
-                                    Background="{StaticResource sectionColor}">
-        
-                            <!-- mock data  -->
-                            <x:String>Antananarivo</x:String>
-                            <x:String>Fianarantsoa</x:String>
-                            <x:String>Toamasina</x:String>
-        
-                        </ComboBox>
-                        
-                        <TextBlock  FontSize="13"
-                                    Foreground="Black"
-                                    Text="ville d'arrivee :"
-                                    Margin="5"/>
-        
-                        <ComboBox HorizontalAlignment="Stretch"
-                                PlaceholderText="Selectionner..."
-                                Foreground="White"
-                                FontWeight="Bold"
-                                Background="{StaticResource sectionColor}">
-                                
-        
-                            <!-- mock data  -->
-                            <x:String>Antananarivo</x:String>
-                            <x:String>Fianarantsoa</x:String>
-                            <x:String>Toamasina</x:String>
-        
-                        </ComboBox>
-        
-                        <Button Foreground="Black"
-                                Margin="10,8"
-                                Background="{StaticResource sectionColor}"
-                                HorizontalAlignment="Center"
-                                Content="Confirmer le trajet"/>
-                    </StackPanel>
- 
-                    <StackPanel VerticalAlignment="Bottom"
-                                Margin="10,40,10,10"
-                                Orientation="Vertical">
-                        <TextBlock  Foreground="{StaticResource accentColor}"
-                                    Text="Nouveau trajet"
-                                    FontSize="20"
-                                    Margin="5,10"/>
-                        
-                        <TextBlock  Text="aeroport de :"
-                                    Margin="15,5"
-                                    Foreground="Black"
-                                    FontSize="15"/>
-                        
-                        <TextBox PlaceholderText="nom de l'aeroport"
-                                PlaceholderForeground="Black"
-                                Margin="15,5"
-                                CornerRadius="10"
-                                Background="{DynamicResource secondColor}"
-                                Foreground="Black"/>
-                        
-                    </StackPanel>
+                                    Background="{StaticResource sectionColor}"
+                                    Command="{Binding CreatePlaneCommand}"
+                                    CornerRadius="50"
+                                    Height="50"
+                                    Width="50"
+                                    Margin="10,5">
+                                <TextBlock  FontSize="30"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontWeight="Bold"
+                                            Foreground="Black"
+                                            Text="+"/>
+                            </Button>
+                        </StackPanel>
     
-                </StackPanel>
+                        <!--plane card lister-->
+                        <ScrollViewer   Margin="10"
+                                        Name="planeLister">
+                            <ItemsControl   ItemsSource="{Binding PlaneList}"
+                                            Foreground="Black"
+                                            ItemTemplate="{StaticResource TemplateFilter}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel ItemSpacing="10" Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            
+                        </ScrollViewer>
+    
+                    </StackPanel>
+                </Border>
+    
             </ScrollViewer>
-        </Border>
-        
-        <!--Plane overview (current state)-->
-        <ScrollViewer>
+    
+            <!--Plannification slot-->
             <Border CornerRadius="16"
+                    IsVisible="{Binding !IsCreating}"
                     Margin="10"
+                    DockPanel.Dock="Right"
                     MinWidth="100"
+                    MaxWidth="500"
                     Background="WhiteSmoke">
-                
                 <ScrollViewer>
-                    <ContentControl Foreground="Black" Content="{Binding ViewPlane}">
-                        <ContentControl.DataTemplates>
-                            <DataTemplate  DataType="{x:Type vm:PlaneStatusViewModel}">
-                                <cards:PlaneStatus/>
-                            </DataTemplate>
-                        </ContentControl.DataTemplates>
-                    </ContentControl>
+    
+                    <StackPanel 
+                                Orientation="Vertical">
+                        <!--operation on the current plane-->
+                        <!--Date Selector (view stats)-->
+                        <TextBlock HorizontalAlignment="Center"
+                                   Text="vue pour le jour de :"
+                                   Foreground="Black"
+                                   FontSize="20"
+                                   Margin="20,0"/>
+                        <Calendar   Background="{StaticResource PrimaryColor}"
+                                    CornerRadius="20"
+                                    BorderThickness="0"
+                                    Foreground="{StaticResource accentColor}"
+                                    SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                                    Margin="20,10,20,30"/>
+    
+                        <!--modif slot-->
+                        <TextBlock HorizontalAlignment="Center"
+                                   Text="modification pour l'avion"
+                                   Foreground="Black"
+                                   FontSize="20"
+                                   Margin="20,5,20,0"/>
+    
+                        <!--name-->
+                        <StackPanel Margin="10,8"
+                                    VerticalAlignment="Top"
+                                    Orientation="Vertical">
+                            <TextBlock Foreground="{StaticResource accentColor}"
+                                        Text="changer le nom de l'avion"
+                                        FontSize="15"
+                                        Margin="5,10"/>
+                            <TextBox PlaceholderText="nouveau nom"
+                                     PlaceholderForeground="Black"
+                                     Margin="15,5"
+                                     CornerRadius="10"
+                                     Text="{Binding UpName, Mode=TwoWay}"
+                                     Background="{DynamicResource secondColor}"
+                                     Foreground="Black"/>
+                        </StackPanel>
+    
+                        <!--company-->
+                        <StackPanel Margin="10,8"
+                                    VerticalAlignment="Top"
+                                    Orientation="Vertical">
+                            <TextBlock Foreground="{StaticResource accentColor}"
+                                        Text="Transferer vers un autre companie"
+                                        FontSize="15"
+                                        Margin="5,10"/>
+                            <ComboBox HorizontalAlignment="Stretch"
+                                        PlaceholderText="companie"
+                                        Foreground="Black"
+                                        SelectedItem="{Binding UpCompanie, Mode=TwoWay}"
+                                        FontWeight="Bold"
+                                        Background="{StaticResource secondColor}"/>
+                        </StackPanel>
+    
+                        <!--path-->
+                        <StackPanel Margin="10,8"
+                                    VerticalAlignment="Top"
+                                    Orientation="Vertical">
+                            <TextBlock  Foreground="{StaticResource accentColor}"
+                                        Text="Plannification de trajet"
+                                        FontSize="15"
+                                        Margin="5,10"/>
+                            
+                            <TextBlock  FontSize="13"
+                                        Foreground="Black"
+                                        Text="ville de depart :"
+                                        Margin="5"/>
+                            
+                            <ComboBox   HorizontalAlignment="Stretch"
+                                        PlaceholderText="Selectionner..."
+                                        Foreground="Black"
+                                        SelectedItem="{Binding UpPointA, Mode=TwoWay}"
+                                        FontWeight="Bold"
+                                        Background="{StaticResource secondColor}">
+            
+                                <!-- mock data  -->
+                                <x:String>Antananarivo</x:String>
+                                <x:String>Fianarantsoa</x:String>
+                                <x:String>Toamasina</x:String>
+            
+                            </ComboBox>
+                            
+                            <TextBlock  FontSize="13"
+                                        Foreground="Black"
+                                        Text="ville d'arrivee :"
+                                        Margin="5"/>
+            
+                            <ComboBox HorizontalAlignment="Stretch"
+                                    PlaceholderText="Selectionner..."
+                                    Foreground="Black"
+                                    FontWeight="Bold"
+                                    SelectedItem="{Binding UpPointB, Mode=TwoWay}"
+                                    Background="{StaticResource secondColor}">
+                                    
+            
+                                <!-- mock data  -->
+                                <x:String>Antananarivo</x:String>
+                                <x:String>Fianarantsoa</x:String>
+                                <x:String>Toamasina</x:String>
+            
+                            </ComboBox>
+            
+                                <Button Foreground="Black"
+                                    Margin="10,8"
+                                    Background="{StaticResource sectionColor}"
+                                    HorizontalAlignment="Center"
+                                    Content="Confirmer les modifications"
+                                    Command="{Binding ConfirmModifyCommand}"/>
+                        </StackPanel>
+    
+                        <!--new path-->
+     
+                        <StackPanel VerticalAlignment="Bottom"
+                                    Margin="10,40,10,10"
+                                    Orientation="Vertical">
+                            <TextBlock  Foreground="{StaticResource accentColor}"
+                                        Text="Nouvel aeroport"
+                                        FontSize="20"
+                                        Margin="5,10"/>
+                            
+                            <TextBlock  Text="aeroport de :"
+                                        Margin="15,5"
+                                        Foreground="Black"
+                                        FontSize="15"/>
+                            
+                            <TextBox PlaceholderText="nom de l'aeroport"
+                                    PlaceholderForeground="Black"
+                                    Margin="15,5"
+                                    CornerRadius="10"
+                                    Background="{DynamicResource secondColor}"
+                                    Foreground="Black"/>
+    
+                            <Button Foreground="Black"
+                                    Margin="10,8"
+                                    Background="{StaticResource sectionColor}"
+                                    HorizontalAlignment="Center"
+                                    Content="Confirmer l'insertion"/>
+                            
+                        </StackPanel>
+        
+                    </StackPanel>
                 </ScrollViewer>
-
             </Border>
-        </ScrollViewer>
+            
+            <!--Plane overview (current state)-->
+            <ScrollViewer>
+                <Border CornerRadius="16"
+                        Margin="10"
+                        MinWidth="100"
+                        Background="WhiteSmoke">
+                    
 
-    </DockPanel>
+                    <Panel>
+                        <ScrollViewer IsVisible="{Binding !IsCreating}">
+                            <ContentControl Foreground="Black" Content="{Binding ViewPlane}">
+                                <ContentControl.DataTemplates>
+                                    <DataTemplate  DataType="{x:Type vm:PlaneStatusViewModel}">
+                                        <cards:PlaneStatus/>
+                                    </DataTemplate>
+                                </ContentControl.DataTemplates>
+                            </ContentControl>
+                        </ScrollViewer>
+
+                        <StackPanel IsVisible="{Binding IsCreating}"
+                                    Orientation="Vertical"
+                                    Margin="20"
+                                    HorizontalAlignment="Center">
+                            <TextBlock Foreground="Black"
+                                       Text="informations du nouvel avion"
+                                       FontSize="20"/>
+                            <TextBox PlaceholderText="nom de l'avion"
+                                     PlaceholderForeground="Black"
+                                     Margin="15,5"
+                                     CornerRadius="10"
+                                     Background="{DynamicResource secondColor}"
+                                     Foreground="Black"/>
+
+                            <!--companie-->
+                            <TextBlock Text="companie proprietaire"
+                                       Foreground="Black"
+                                       FontSize="20"
+                                       Margin="10"/>
+                            <ComboBox HorizontalAlignment="Stretch"
+                                      PlaceholderText="companie"
+                                      Foreground="Black"
+                                      Background="{StaticResource secondColor}"/>
+                            
+                            <!--classes-->
+                            <TextBlock Margin="10"
+                                     Text="choisissez les classes"
+                                     Foreground="Black"
+                                     FontSize="20"/>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox Content="classe economique"
+                                          Foreground="Black"/>
+                                <TextBox PlaceholderText="nombre de sieges"
+                                         CornerRadius="10"
+                                         PlaceholderForeground="Black"
+                                         HorizontalAlignment="Right"
+                                         Background="{DynamicResource secondColor}"
+                                         Foreground="Black"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox Content="classe premium"
+                                          Foreground="Black"/>
+                                <TextBox PlaceholderText="nombre de sieges"
+                                         CornerRadius="10"
+                                         PlaceholderForeground="Black"
+                                         HorizontalAlignment="Right"
+                                         Background="{DynamicResource secondColor}"
+                                         Foreground="Black"/>
+                            </StackPanel>
+                            
+                            <StackPanel  Orientation="Horizontal">
+                                <CheckBox Content="classe affaire"
+                                          Foreground="Black"/>
+                                <TextBox PlaceholderText="nombre de sieges"
+                                         PlaceholderForeground="Black"
+                                         HorizontalAlignment="Right"
+                                         CornerRadius="10"
+                                         Background="{DynamicResource secondColor}"
+                                         Foreground="Black"/>
+                            </StackPanel>
+
+                            <!--linked ports-->
+                            <TextBlock Foreground="Black"
+                                       Text="aeroports reliees"
+                                       FontSize="20"
+                                       Margin="10,20"/>
+
+                            <TextBlock Foreground="Black"
+                                       Text="ville de depart :"
+                                       FontSize="15"
+                                       Margin="10,5"/>
+                            <ComboBox HorizontalAlignment="Stretch"
+                                      PlaceholderText="Selectionner..."
+                                      Background="{StaticResource secondColor}"
+                                      Foreground="Black"/>
+
+                            <TextBlock Foreground="Black"
+                                       Text="ville d'arrivee'"
+                                       FontSize="15"
+                                       Margin="10,5"/>
+                            <ComboBox HorizontalAlignment="Stretch"
+                                      PlaceholderText="Selectionner..."
+                                      Background="{StaticResource secondColor}"
+                                      Foreground="Black"/>
+                            
+                            <!--confirm creation-->
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        Margin="10,20">
+                                <Button Content="confirmer"
+                                        Command="{Binding ConfirmCreateCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Background="{DynamicResource accentColor}"
+                                        Foreground="White"
+                                        FontWeight="Bold"/>
+                                <Button Content="annuler"
+                                        Command="{Binding CancelCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Background="{DynamicResource accentColor}"
+                                        Foreground="White"
+                                        FontWeight="Bold"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Panel>
+    
+                </Border>
+            </ScrollViewer>
+    
+        </DockPanel>
+
+        <!--deletion confirmation pop up-->
+        <!--blur bg-->
+        <Border Background="Black"
+                IsVisible="{Binding ConfirmDelete}"
+                ZIndex="1"
+                Opacity="50"/>
+
+        <Border IsVisible="{Binding ConfirmDelete}"
+                ZIndex="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                CornerRadius="20"
+                Padding="0,0,0,10"
+                Background="WhiteSmoke">
+            <Grid RowDefinitions="2*,6*,2*">
+                <Border Background="{DynamicResource accentColor}"
+                        CornerRadius="18,18,0,0"
+                        Margin="0,0,0,10"
+                        Grid.Row="0">
+                        <TextBlock Text="Attention"
+                                    FontSize="20"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="10"
+                                    FontWeight="Bold"/>
+                </Border>
+                <TextBlock  Text="voulez vouz confirmer la suppression de l'avion??"
+                            FontSize="15"
+                            Background="Black"
+                            HorizontalAlignment="Center"
+                            Margin="10"
+                            Grid.Row="1"/>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Grid.Row="2">
+                    <Button Content="confirmer"
+                            Command="{Binding ConfirmDelete_Command}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Background="{DynamicResource accentColor}"
+                            Foreground="White"
+                            FontWeight="Bold"/>
+                    <Button Content="annuler"
+                            Command="{Binding CancelCommand}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Background="{DynamicResource accentColor}"
+                            Foreground="White"
+                            FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Panel>
+    
         
 </UserControl>

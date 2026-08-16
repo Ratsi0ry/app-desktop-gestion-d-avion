@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System;
 using System.Numerics;
 using Gestion_avion.state;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Gestion_avion.ViewModels;
 
@@ -25,42 +26,84 @@ public partial class OperationViewModel: ViewModelBase
     
     [ObservableProperty]
     private string? _selectedPlaneId;
+
+    [ObservableProperty]
+    private string? _upName, _upCompanie, _upPointA, _upPointB;
+
+    [ObservableProperty]
+    private bool _confirmDelete = false, _isCreating = false;
     
+    class Classes
+        {
+            public string CName;
+            public int Places;
+            public Classes(string n, int p)
+            {
+                CName = n;
+                Places = p;
+            }
+        }
+
     class Plane
     {
-        public string Name, Id, TotalPlace, PointA, PointB;
-        public Plane(string name,string id, string places, string A, string B)
+        
+        public List<Classes> PClasses;
+        public string Name, Id, TotalPlace, PointA, PointB, Companie;
+        public Plane(string name,string id, string places, string A, string B, List<Classes> cliste, string companie)
         {
             Name = name;
             Id = id;
             TotalPlace = places;
             PointA = A;
             PointB = B;
+            PClasses = cliste;
+            Companie = companie;
         }
     }
 
-    List<Plane> RegisteredPlane = [
-        new Plane("asterio", "p222", "222", "tana", "fianarantsoa"),
-        new Plane("alaal", "p222", "222", "tana", "fianarantsoa"),
-        new Plane("poopsocpa", "p222", "222", "tana", "fianarantsoa"),
-        new Plane("bIAWUBh", "p222", "222", "tana", "fianarantsoa")
-    ];
+    List<Plane> RegisteredPlane = new List<Plane>
+    {
+        new Plane("asterio", "p222", "220", "tana", "fianarantsoa", new List<Classes>
+        {
+            new Classes("economique", 200),
+            new Classes("VIP", 20)
+        }, "aaa"),
+        new Plane("alaal", "p282", "220", "tana", "fianarantsoa", new List<Classes>
+        {
+            new Classes("economique", 210),
+            new Classes("VIP", 10)
+        }, "bbb"),
+        new Plane("poopsocpa", "p262", "260", "tana", "fianarantsoa", new List<Classes>
+        {
+            new Classes("economique", 200),
+            new Classes("VIP", 60)
+        }, "ccc"),
+        new Plane("bIAWUBh", "p272", "270", "tana", "fianarantsoa", new List<Classes>
+        {
+            new Classes("economique", 200),
+            new Classes("VIP", 70)
+        }, "ddd")
+    };
 
     public ObservableCollection<CardViewModel> PlaneList { get; set; }
+    public ObservableCollection<TextBlock> Classlist {get; set;}
 
     public OperationViewModel(AppState appState)
     {
         _appState = appState;
         PlaneList = new ObservableCollection<CardViewModel>();
+        Classlist = new ObservableCollection<TextBlock>();
+        Classlist.Add(new TextBlock {Text = ""});
         foreach (Plane p in RegisteredPlane)
         {
             PlaneList.Add(new CardViewModel(p.Name, p.Id, "", "", "plane", OnPlaneSelected, appState));
         }
-        ViewPlane = new PlaneStatusViewModel(true);
+        ViewPlane = new PlaneStatusViewModel(true, Classlist, delete: OnPlaneDelete);
     }
 
     private void OnPlaneSelected(CardViewModel clickedCard)
     {
+        IsCreating = false;
         SelectedPlaneName = clickedCard.ItemName;
         SelectedPlaneId = clickedCard.ItemId;
         string arrivee, depart;
@@ -70,7 +113,19 @@ public partial class OperationViewModel: ViewModelBase
             {
                 depart = p.PointA;
                 arrivee = p.PointB;
-                ViewPlane = new PlaneStatusViewModel(false, SelectedPlaneName, SelectedPlaneId, depart, arrivee, "sora", DateTime.Now.ToString("yyyy-MM-dd"));
+                if (Classlist != null)
+                {
+                    Classlist.Clear();
+                    foreach(Classes c in p.PClasses)
+                    {
+                        Classlist.Add(new TextBlock {Text = c.CName + " :" + c.Places} );
+                    }
+                }
+                UpName = SelectedPlaneName;
+                UpCompanie = p.Companie;
+                UpPointA = depart;
+                UpPointB = arrivee;
+                ViewPlane = new PlaneStatusViewModel(false, Classlist, p.TotalPlace, SelectedPlaneName, SelectedPlaneId, depart, arrivee, p.Companie, DateTime.Now.ToString("yyyy-MM-dd"), delete: OnPlaneDelete);
                 break;
             } else
             {
@@ -80,12 +135,139 @@ public partial class OperationViewModel: ViewModelBase
 
     }
 
+    private void RefreshPlaneList()
+    {
+        PlaneList.Clear();
+        foreach (Plane p in RegisteredPlane)
+        {
+            PlaneList.Add(new CardViewModel(p.Name, p.Id, "plane", OnPlaneSelected));
+        }
+
+        if (RegisteredPlane.Count > 0)
+            ViewPlane = new PlaneStatusViewModel(true, Classlist, delete: OnPlaneDelete);
+        else
+        {
+            ViewPlane = new PlaneStatusViewModel(true, Classlist, delete: OnPlaneDelete);
+        }
+    }
+    private void OnPlaneDelete(PlaneStatusViewModel vm)
+    {
+        for (int i = 0; i < RegisteredPlane.Count; i++)
+        {
+            if (RegisteredPlane[i].Name == vm.PlaneName && RegisteredPlane[i].Id == vm.PlaneId)
+            {
+                SelectedPlaneName = vm.PlaneName;
+                SelectedPlaneId = vm.PlaneId;
+                ConfirmDelete = true;     
+                break;
+            }
+        }
+    }
+
     partial void OnSelectedDateChanged(DateTime? value)
     {
         if (value.HasValue)
         {
             string formattedDate = value.Value.ToString("yyyy-MM-dd");
             ViewPlane.ViewDate = formattedDate;
+        }
+    }
+
+    [RelayCommand]
+    private void CreatePlane()
+    {
+        IsCreating = true;
+    }
+
+    [RelayCommand]
+    private void ConfirmDelete_()
+    {
+        if (ViewPlane != null)
+        {
+            OnPlaneDelete(ViewPlane);
+        }
+
+        for (int i = 0; i < RegisteredPlane.Count; i++)
+        {
+            if (RegisteredPlane[i].Name == SelectedPlaneName && RegisteredPlane[i].Id == SelectedPlaneId)
+            {
+                RegisteredPlane.RemoveAt(i);
+                break;
+            }
+        }
+
+        RefreshPlaneList();
+        ConfirmDelete = false;
+    }
+
+    [RelayCommand]
+    private void Cancel()
+    {
+        ConfirmDelete = false;
+        IsCreating = false;
+        RefreshPlaneList();
+    }
+
+    [RelayCommand]
+    private void ConfirmCreate()
+    {
+        if (!string.IsNullOrEmpty(UpName) && !string.IsNullOrEmpty(UpCompanie) && !string.IsNullOrEmpty(UpPointA) && !string.IsNullOrEmpty(UpPointB))
+        {
+            List<Classes> newClasses = new List<Classes>
+            {
+                new Classes("economique", 200),
+                new Classes("VIP", 20)
+            };
+
+            RegisteredPlane.Add(new Plane(UpName, "p55", "220", UpPointA, UpPointB, newClasses, UpCompanie));
+            RefreshPlaneList();
+            IsCreating = false;
+        }
+    }
+
+    [RelayCommand]
+    private void ConfirmModify()
+    {
+        if (string.IsNullOrEmpty(SelectedPlaneId)) return;
+
+        for (int i = 0; i < RegisteredPlane.Count; i++)
+        {
+            if (RegisteredPlane[i].Id == SelectedPlaneId)
+            {
+                var p = RegisteredPlane[i];
+                // update fields only when provided to preserve existing values
+                if (!string.IsNullOrEmpty(UpName)) p.Name = UpName;
+                if (!string.IsNullOrEmpty(UpCompanie)) p.Companie = UpCompanie;
+                if (!string.IsNullOrEmpty(UpPointA)) p.PointA = UpPointA;
+                if (!string.IsNullOrEmpty(UpPointB)) p.PointB = UpPointB;
+
+                // refresh Classlist for the updated plane
+                if (Classlist != null)
+                {
+                    Classlist.Clear();
+                    foreach (Classes c in p.PClasses)
+                    {
+                        Classlist.Add(new TextBlock { Text = c.CName + " :" + c.Places });
+                    }
+                }
+
+                // keep SelectedPlaneName in sync if name changed
+                SelectedPlaneName = p.Name;
+                break;
+            }
+        }
+
+        RefreshPlaneList();
+
+        // update ViewPlane to reflect changes
+        for (int i = 0; i < RegisteredPlane.Count; i++)
+        {
+            if (RegisteredPlane[i].Id == SelectedPlaneId)
+            {
+                var q = RegisteredPlane[i];
+                ViewPlane = new PlaneStatusViewModel(false, Classlist, q.TotalPlace, q.Name, q.Id, q.PointA, q.PointB, q.Companie, DateTime.Now.ToString("yyyy-MM-dd"), delete: OnPlaneDelete);
+                break;
+            }
         }
     }
 }
