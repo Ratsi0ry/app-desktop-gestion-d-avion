@@ -167,7 +167,7 @@
 
                         <!-- paiement -->
                         <StackPanel Spacing="5">
-                            <TextBlock Text="Paiement effectué ?"
+                            <TextBlock Text="Paiement effectué "
                                 FontWeight="SemiBold"
                                 Foreground="{DynamicResource accentColor}"/>
                             <ComboBox HorizontalAlignment="Stretch"
