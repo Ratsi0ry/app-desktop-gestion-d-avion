@@ -269,21 +269,22 @@
                                      PlaceholderForeground="Black"
                                      Margin="15,5"
                                      CornerRadius="10"
+                                     Text="{Binding UpName, Mode=TwoWay}"
                                      Background="{DynamicResource secondColor}"
                                      Foreground="Black"/>
 
                             <!--companie-->
-                            <TextBlock Text="companie proprietaire"
+                            <!-- <TextBlock Text="companie proprietaire"
                                        Foreground="Black"
                                        FontSize="20"
                                        Margin="10"/>
                             <ComboBox HorizontalAlignment="Stretch"
                                       PlaceholderText="companie"
                                       Foreground="Black"
-                                      Background="{StaticResource secondColor}"/>
+                                      Background="{StaticResource secondColor}"/> -->
                             
                             <!--classes-->
-                            <TextBlock Margin="10"
+                            <!-- <TextBlock Margin="10"
                                      Text="choisissez les classes"
                                      Foreground="Black"
                                      FontSize="20"/>
@@ -318,10 +319,10 @@
                                          CornerRadius="10"
                                          Background="{DynamicResource secondColor}"
                                          Foreground="Black"/>
-                            </StackPanel>
+                            </StackPanel> -->
 
                             <!--linked ports-->
-                            <TextBlock Foreground="Black"
+                            <!-- <TextBlock Foreground="Black"
                                        Text="aeroports reliees"
                                        FontSize="20"
                                        Margin="10,20"/>
@@ -342,7 +343,7 @@
                             <ComboBox HorizontalAlignment="Stretch"
                                       PlaceholderText="Selectionner..."
                                       Background="{StaticResource secondColor}"
-                                      Foreground="Black"/>
+                                      Foreground="Black"/> -->
                             
                             <!--confirm creation-->
                             <StackPanel Orientation="Horizontal"

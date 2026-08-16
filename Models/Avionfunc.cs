@@ -28,4 +28,27 @@ public class Avionfunc
                 .ToListAsync();
         }
     }
+    public async Task<Avion> AjouterAvion(Avion avion)
+    {
+        using (var bdd = new Contextedb())
+        {
+            bdd.Avion.Add(avion);
+            await bdd.SaveChangesAsync();
+            return avion;
+        }
+    }
+
+    public async Task ModifierAvion(Avion avion)
+    {
+        using (var bdd = new Contextedb())
+        {
+            var existing = await bdd.Avion.FindAsync(avion.id_avion);
+            if (existing != null)
+            {
+                existing.nom_avion = avion.nom_avion;
+                existing.fk_id_compagnie = avion.fk_id_compagnie;
+                await bdd.SaveChangesAsync();
+            }
+        }
+    }
 }

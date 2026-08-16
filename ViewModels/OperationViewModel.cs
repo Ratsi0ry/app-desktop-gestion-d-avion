@@ -4,16 +4,27 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System;
 using System.Numerics;
 using Gestion_avion.state;
 using CommunityToolkit.Mvvm.Input;
+using back.Models;
 
 namespace Gestion_avion.ViewModels;
 
 public partial class OperationViewModel: ViewModelBase
 {
     private readonly AppState _appState;
+
+    private readonly Avionfunc _avionfunc = new();
+    private readonly Trajetfunc _trajetfunc = new();
+    private readonly Volfunc _volfunc = new();
+    private readonly Compagniefunc _compagniefunc = new();
+    private readonly Caracfunc _caracfunc = new();
+    private readonly Statut_avionfunc _statut_avionfunc = new();
+
+    private List<Avion> RegisteredPlane = new();
 
     [ObservableProperty]
     private DateTime? _selectedDate;
@@ -32,58 +43,6 @@ public partial class OperationViewModel: ViewModelBase
 
     [ObservableProperty]
     private bool _confirmDelete = false, _isCreating = false;
-    
-    class Classes
-        {
-            public string CName;
-            public int Places;
-            public Classes(string n, int p)
-            {
-                CName = n;
-                Places = p;
-            }
-        }
-
-    class Plane
-    {
-        
-        public List<Classes> PClasses;
-        public string Name, Id, TotalPlace, PointA, PointB, Companie;
-        public Plane(string name,string id, string places, string A, string B, List<Classes> cliste, string companie)
-        {
-            Name = name;
-            Id = id;
-            TotalPlace = places;
-            PointA = A;
-            PointB = B;
-            PClasses = cliste;
-            Companie = companie;
-        }
-    }
-
-    List<Plane> RegisteredPlane = new List<Plane>
-    {
-        new Plane("asterio", "p222", "220", "tana", "fianarantsoa", new List<Classes>
-        {
-            new Classes("economique", 200),
-            new Classes("VIP", 20)
-        }, "aaa"),
-        new Plane("alaal", "p282", "220", "tana", "fianarantsoa", new List<Classes>
-        {
-            new Classes("economique", 210),
-            new Classes("VIP", 10)
-        }, "bbb"),
-        new Plane("poopsocpa", "p262", "260", "tana", "fianarantsoa", new List<Classes>
-        {
-            new Classes("economique", 200),
-            new Classes("VIP", 60)
-        }, "ccc"),
-        new Plane("bIAWUBh", "p272", "270", "tana", "fianarantsoa", new List<Classes>
-        {
-            new Classes("economique", 200),
-            new Classes("VIP", 70)
-        }, "ddd")
-    };
 
     public ObservableCollection<CardViewModel> PlaneList { get; set; }
     public ObservableCollection<TextBlock> Classlist {get; set;}
@@ -94,71 +53,99 @@ public partial class OperationViewModel: ViewModelBase
         PlaneList = new ObservableCollection<CardViewModel>();
         Classlist = new ObservableCollection<TextBlock>();
         Classlist.Add(new TextBlock {Text = ""});
-        foreach (Plane p in RegisteredPlane)
-        {
-            PlaneList.Add(new CardViewModel(p.Name, p.Id, "", "", "plane", OnPlaneSelected, appState));
-        }
         ViewPlane = new PlaneStatusViewModel(true, Classlist, delete: OnPlaneDelete);
+        _ = InitializeAsync();
+
+        Console.WriteLine(_appState.currentCompanie?.id_compagnie ?? "Hello");
     }
 
-    private void OnPlaneSelected(CardViewModel clickedCard)
+    private async Task InitializeAsync()
+    {
+        await RefreshPlaneListAsync();
+    }
+
+    private async void OnPlaneSelected(CardViewModel clickedCard)
     {
         IsCreating = false;
         SelectedPlaneName = clickedCard.ItemName;
         SelectedPlaneId = clickedCard.ItemId;
-        string arrivee, depart;
-        foreach (Plane p in RegisteredPlane)
+
+        foreach (Avion av in RegisteredPlane)
         {
-            if (p.Name == SelectedPlaneName && p.Id == SelectedPlaneId)
+            if (av.nom_avion == SelectedPlaneName && av.id_avion == SelectedPlaneId)
             {
-                depart = p.PointA;
-                arrivee = p.PointB;
-                if (Classlist != null)
+                string depart = "";
+                string arrivee = "";
+
+                var vols = await _volfunc.RechercheVol(v => v.fk_id_avion == av.id_avion);
+                if (vols.Count > 0)
                 {
-                    Classlist.Clear();
-                    foreach(Classes c in p.PClasses)
-                    {
-                        Classlist.Add(new TextBlock {Text = c.CName + " :" + c.Places} );
-                    }
+                    depart = vols[0].Trajet.lieu_depart;
+                    arrivee = vols[0].Trajet.destination;
                 }
+
+                string companyName = "";
+                var compagnies = await _compagniefunc.RechercheCompagnie(c => c.id_compagnie == av.fk_id_compagnie);
+                if (compagnies.Count > 0)
+                {
+                    companyName = compagnies[0].nom_compagnie;
+                }
+
                 UpName = SelectedPlaneName;
-                UpCompanie = p.Companie;
+                UpCompanie = companyName;
                 UpPointA = depart;
                 UpPointB = arrivee;
-                ViewPlane = new PlaneStatusViewModel(false, Classlist, p.TotalPlace, SelectedPlaneName, SelectedPlaneId, depart, arrivee, p.Companie, DateTime.Now.ToString("yyyy-MM-dd"), delete: OnPlaneDelete);
+                ViewPlane = new PlaneStatusViewModel(false, Classlist, "", SelectedPlaneName, SelectedPlaneId, depart, arrivee, companyName, DateTime.Now.ToString("yyyy-MM-dd"), delete: OnPlaneDelete);
                 break;
-            } else
+            }
+        }
+    }
+
+    private async Task RefreshPlaneListAsync()
+    {
+        var avions = await _avionfunc.ListerAvions();
+
+        var actifs = new List<Avion>();
+        foreach (var av in avions)
+        {
+            var statuts = await _caracfunc.RechercheAvionStatut(c => c.fk_id_avion == av.id_avion);
+            bool estInactif = false;
+            foreach (var s in statuts)
             {
-                continue;
+                var stAvion = await _statut_avionfunc.RechercheStatutAvion(st => st.code_statut == s.fk_code_statut);
+                if (stAvion.Count > 0 && stAvion[0].libelle_statut == "Inactif")
+                {
+                    estInactif = true;
+                    break;
+                }
+            }
+
+            if (!estInactif)
+            {
+                actifs.Add(av);
             }
         }
 
-    }
+        RegisteredPlane = actifs;
 
-    private void RefreshPlaneList()
-    {
         PlaneList.Clear();
-        foreach (Plane p in RegisteredPlane)
+        foreach (Avion av in RegisteredPlane)
         {
-            PlaneList.Add(new CardViewModel(p.Name, p.Id, "plane", OnPlaneSelected));
+            PlaneList.Add(new CardViewModel(av.nom_avion, av.id_avion, "", "", "plane", OnPlaneSelected, _appState));
         }
 
-        if (RegisteredPlane.Count > 0)
-            ViewPlane = new PlaneStatusViewModel(true, Classlist, delete: OnPlaneDelete);
-        else
-        {
-            ViewPlane = new PlaneStatusViewModel(true, Classlist, delete: OnPlaneDelete);
-        }
+        ViewPlane = new PlaneStatusViewModel(true, Classlist, delete: OnPlaneDelete);
     }
+
     private void OnPlaneDelete(PlaneStatusViewModel vm)
     {
-        for (int i = 0; i < RegisteredPlane.Count; i++)
+        foreach (Avion av in RegisteredPlane)
         {
-            if (RegisteredPlane[i].Name == vm.PlaneName && RegisteredPlane[i].Id == vm.PlaneId)
+            if (av.nom_avion == vm.PlaneName && av.id_avion == vm.PlaneId)
             {
                 SelectedPlaneName = vm.PlaneName;
                 SelectedPlaneId = vm.PlaneId;
-                ConfirmDelete = true;     
+                ConfirmDelete = true;
                 break;
             }
         }
@@ -180,94 +167,122 @@ public partial class OperationViewModel: ViewModelBase
     }
 
     [RelayCommand]
-    private void ConfirmDelete_()
+    private async Task ConfirmDelete_()
     {
-        if (ViewPlane != null)
+        if (!string.IsNullOrEmpty(SelectedPlaneId))
         {
-            OnPlaneDelete(ViewPlane);
-        }
-
-        for (int i = 0; i < RegisteredPlane.Count; i++)
-        {
-            if (RegisteredPlane[i].Name == SelectedPlaneName && RegisteredPlane[i].Id == SelectedPlaneId)
+            var statuts = await _statut_avionfunc.RechercheStatutAvion(s => s.libelle_statut == "Inactif");
+            Statut_avion statutInactif;
+            if (statuts.Count > 0)
             {
-                RegisteredPlane.RemoveAt(i);
-                break;
+                statutInactif = statuts[0];
             }
+            else
+            {
+                statutInactif = new Statut_avion
+                {
+                    code_statut = "ST" + DateTime.Now.Ticks,
+                    libelle_statut = "Inactif"
+                };
+                statutInactif = await _statut_avionfunc.AjouterStatutAvion(statutInactif);
+            }
+
+            var anciens = await _caracfunc.RechercheAvionStatut(c => c.fk_id_avion == SelectedPlaneId);
+            foreach (var anc in anciens)
+            {
+                await _caracfunc.SupprimerAvionStatut(anc.fk_id_avion, anc.fk_code_statut);
+            }
+
+            var nouveau = new Caracteriser
+            {
+                fk_id_avion = SelectedPlaneId,
+                fk_code_statut = statutInactif.code_statut
+            };
+            await _caracfunc.AjouterAvionStatut(nouveau);
         }
 
-        RefreshPlaneList();
+        await RefreshPlaneListAsync();
         ConfirmDelete = false;
     }
 
     [RelayCommand]
-    private void Cancel()
+    private async Task Cancel()
     {
         ConfirmDelete = false;
         IsCreating = false;
-        RefreshPlaneList();
+        await RefreshPlaneListAsync();
     }
 
     [RelayCommand]
-    private void ConfirmCreate()
+    private async Task ConfirmCreate()
     {
-        if (!string.IsNullOrEmpty(UpName) && !string.IsNullOrEmpty(UpCompanie) && !string.IsNullOrEmpty(UpPointA) && !string.IsNullOrEmpty(UpPointB))
+        if (!string.IsNullOrEmpty(UpName) && _appState.currentCompanie != null)
         {
-            List<Classes> newClasses = new List<Classes>
+            var avion = new Avion
             {
-                new Classes("economique", 200),
-                new Classes("VIP", 20)
+                id_avion = "AV" + DateTime.Now.Ticks,
+                nom_avion = UpName,
+                fk_id_compagnie = _appState.currentCompanie.id_compagnie
             };
+            await _avionfunc.AjouterAvion(avion);
 
-            RegisteredPlane.Add(new Plane(UpName, "p55", "220", UpPointA, UpPointB, newClasses, UpCompanie));
-            RefreshPlaneList();
+            await RefreshPlaneListAsync();
             IsCreating = false;
         }
     }
 
     [RelayCommand]
-    private void ConfirmModify()
+    private async Task ConfirmModify()
     {
         if (string.IsNullOrEmpty(SelectedPlaneId)) return;
 
-        for (int i = 0; i < RegisteredPlane.Count; i++)
+        Avion? avionActuel = null;
+        foreach (var av in RegisteredPlane)
         {
-            if (RegisteredPlane[i].Id == SelectedPlaneId)
+            if (av.id_avion == SelectedPlaneId)
             {
-                var p = RegisteredPlane[i];
-                // update fields only when provided to preserve existing values
-                if (!string.IsNullOrEmpty(UpName)) p.Name = UpName;
-                if (!string.IsNullOrEmpty(UpCompanie)) p.Companie = UpCompanie;
-                if (!string.IsNullOrEmpty(UpPointA)) p.PointA = UpPointA;
-                if (!string.IsNullOrEmpty(UpPointB)) p.PointB = UpPointB;
-
-                // refresh Classlist for the updated plane
-                if (Classlist != null)
-                {
-                    Classlist.Clear();
-                    foreach (Classes c in p.PClasses)
-                    {
-                        Classlist.Add(new TextBlock { Text = c.CName + " :" + c.Places });
-                    }
-                }
-
-                // keep SelectedPlaneName in sync if name changed
-                SelectedPlaneName = p.Name;
+                avionActuel = av;
                 break;
             }
         }
+        if (avionActuel == null) return;
 
-        RefreshPlaneList();
+        string nom = !string.IsNullOrEmpty(UpName) ? UpName : avionActuel.nom_avion;
+        string fkCompagnie = avionActuel.fk_id_compagnie;
 
-        // update ViewPlane to reflect changes
-        for (int i = 0; i < RegisteredPlane.Count; i++)
+        if (!string.IsNullOrEmpty(UpCompanie))
         {
-            if (RegisteredPlane[i].Id == SelectedPlaneId)
+            var compagnies = await _compagniefunc.RechercheCompagnie(c => c.nom_compagnie == UpCompanie);
+            if (compagnies.Count > 0)
             {
-                var q = RegisteredPlane[i];
-                ViewPlane = new PlaneStatusViewModel(false, Classlist, q.TotalPlace, q.Name, q.Id, q.PointA, q.PointB, q.Companie, DateTime.Now.ToString("yyyy-MM-dd"), delete: OnPlaneDelete);
-                break;
+                fkCompagnie = compagnies[0].id_compagnie;
             }
         }
+
+        var avionModifie = new Avion
+        {
+            id_avion = SelectedPlaneId,
+            nom_avion = nom,
+            fk_id_compagnie = fkCompagnie
+        };
+        await _avionfunc.ModifierAvion(avionModifie);
+
+        SelectedPlaneName = nom;
+
+        await RefreshPlaneListAsync();
+
+        string depart = "";
+        string arrivee = "";
+        var vols = await _volfunc.RechercheVol(v => v.fk_id_avion == SelectedPlaneId);
+        if (vols.Count > 0)
+        {
+            depart = vols[0].Trajet.lieu_depart;
+            arrivee = vols[0].Trajet.destination;
+        }
+
+        var compagnieFinale = await _compagniefunc.RechercheCompagnie(c => c.id_compagnie == fkCompagnie);
+        string companyName = compagnieFinale.Count > 0 ? compagnieFinale[0].nom_compagnie : "";
+
+        ViewPlane = new PlaneStatusViewModel(false, Classlist, "", nom, SelectedPlaneId, depart, arrivee, companyName, DateTime.Now.ToString("yyyy-MM-dd"), delete: OnPlaneDelete);
     }
 }

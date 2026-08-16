@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using back.Data;
 using Gestion_avion.Messages;
 using Gestion_avion.state;
+using System.Threading.Tasks;
 
 namespace Gestion_avion.ViewModels;
 
@@ -58,7 +59,11 @@ public partial class InterfaceViewModel : ViewModelBase, IRecipient<DemandeModif
     private void GoToOperation() => CurrentPage = OperationVM;
 
     [RelayCommand]
-    private void GoToVols() => CurrentPage = VolsVM;
+    private async Task GoToVols()
+    {
+        CurrentPage = VolsVM;
+        await VolsVM.RefreshAvailablePlanesAsync();
+    }
 
     [RelayCommand]
     private void GoToReservation() => CurrentPage = ReservationVM;

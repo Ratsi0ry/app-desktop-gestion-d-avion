@@ -32,17 +32,17 @@ public partial class CardViewModel : ViewModelBase
     [RelayCommand]
     public void action()
     {   
-        Compagnie currentCompanie = new Compagnie
+        if (_cardType == "user")
         {
-            id_compagnie = ItemId,
-            nom_compagnie = ItemName,
-            tel_compagnie = ItemTel,
-            email_compagnie = itemEmail
-
-        };
-
-        _appState.currentCompanie = currentCompanie;
-
+            Compagnie currentCompanie = new Compagnie
+            {
+                id_compagnie = ItemId,
+                nom_compagnie = ItemName,
+                tel_compagnie = ItemTel,
+                email_compagnie = itemEmail
+            };
+            _appState.currentCompanie = currentCompanie;
+        }
         _isFocused?.Invoke(this);
     }
 }

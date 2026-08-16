@@ -25,4 +25,13 @@ public class Date_volfunc
                 .ToListAsync();
         }
     }
+    public async Task<Date_vol> AjouterDateVol(Date_vol date_vol)
+    {
+        using (var bdd = new Contextedb())
+        {
+            bdd.Date_vol.Add(date_vol);
+            await bdd.SaveChangesAsync();
+            return date_vol;
+        }
+    }
 }

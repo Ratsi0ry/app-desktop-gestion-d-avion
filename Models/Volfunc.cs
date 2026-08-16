@@ -32,4 +32,29 @@ public class Volfunc
             .ToListAsync();
         }
     }
+    public async Task<Vol> AjouterVol(Vol vol)
+    {
+        using (var bdd = new Contextedb())
+        {
+            bdd.Vol.Add(vol);
+            await bdd.SaveChangesAsync();
+            return vol;
+        }
+    }
+
+    public async Task ModifierVol(Vol vol)
+    {
+        using (var bdd = new Contextedb())
+        {
+            var existing = await bdd.Vol.FindAsync(vol.id_vol);
+            if (existing != null)
+            {
+                existing.status_vol = vol.status_vol;
+                existing.fk_date_depart = vol.fk_date_depart;
+                existing.fk_id_trajet = vol.fk_id_trajet;
+                existing.fk_id_avion = vol.fk_id_avion;
+                await bdd.SaveChangesAsync();
+            }
+        }
+    }
 }

@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using Tmds.DBus.Protocol;
 using back.Models;
+using Gestion_avion.state;
 
 namespace Gestion_avion.ViewModels;
 
 public partial class VolsViewModel : ViewModelBase
 {
+
+    private readonly AppState _appState;
+
     [ObservableProperty]
     private bool _notify = false;
 
@@ -30,6 +34,22 @@ public partial class VolsViewModel : ViewModelBase
 
     private readonly Trajetfunc _trajetfunc = new();
     private readonly Avionfunc _avionfunc = new();
+
+
+
+    public ObservableCollection<FlightCardViewModel> FlightList{get; set;}
+    
+    private Vol? SelectedVol;
+    private DateTime dt;
+
+    private readonly Volfunc _volfunc = new();
+    private readonly Compagniefunc _compagniefunc = new();
+    private readonly Date_volfunc _date_volfunc = new();
+
+    private List<Vol> allVols = new();
+
+
+    private bool IsEditing = false;
 
     [ObservableProperty]
     private ObservableCollection<string> availablePorts = new();
@@ -54,9 +74,18 @@ public partial class VolsViewModel : ViewModelBase
         AvailablePorts = new ObservableCollection<string>(villes);
     }
 
+
+    // CHARGEMENT DES AVIONS
     private async Task LoadAvailablePlanesAsync()
     {
-        var avions = await _avionfunc.ListerAvions();
+        if (_appState.currentCompanie == null)
+        {
+            AvailablePlanes = new ObservableCollection<string>();
+            return;
+        }
+
+        string companieId = _appState.currentCompanie.id_compagnie;
+        var avions = await _avionfunc.RechercheAvion(av => av.fk_id_compagnie == companieId);
 
         var noms = new List<string>();
         foreach (var av in avions)
@@ -67,67 +96,91 @@ public partial class VolsViewModel : ViewModelBase
         AvailablePlanes = new ObservableCollection<string>(noms);
     }
 
-    private bool IsEditing = false;
-    class Flight
-    {
-        public string Plane, Company, PortA, PortB;
-        public DateTime Departure;
 
-        public Flight(string plane, string company, DateTime departure, string A, string B)
-        {
-            Plane = plane;
-            Company = company;
-            Departure = departure;
-            PortA = A;
-            PortB = B;
-        }
+    //REFRESH CHARGEMENT DES AVIONS
+    public async Task RefreshAvailablePlanesAsync()
+    {
+        await LoadAvailablePlanesAsync();
     }
 
-        List<Flight> allFlights = new List<Flight>
+    private async Task LoadVolsAsync()
+    {
+        if (_appState.currentCompanie == null)
         {
-                new Flight("A1", "azaa", DateTime.Now, "Antananarivo", "Toamasina"),
-                new Flight("A2", "azaa", DateTime.Now, "France", "Toamasina"),
-                new Flight("A3", "azaa", DateTime.Now, "Antananarivo", "Allemagne"),
-                new Flight("A4", "azaa", DateTime.Now, "Sambava", "Toamasina"),
-                new Flight("A5", "azaa", DateTime.Now, "Fianarantsoa", "Toamasina"),
-        };
+            allVols = new List<Vol>();
+        }
+        else
+        {
+            string companieId = _appState.currentCompanie.id_compagnie;
 
-    public ObservableCollection<FlightCardViewModel> FlightList{get; set;}
-    private void Refresh(List<Flight> flights)
+            //allVols = await _volfunc.ListerVol();
+            allVols = await _volfunc.RechercheVol(v => v.Avion.fk_id_compagnie == companieId);
+        }
+        await RefreshAsync(allVols);
+    }
+
+    private async Task RefreshAsync(List<Vol> vols)
     {
         FlightList.Clear();
-        foreach (Flight f in flights)
+        foreach (Vol v in vols)
         {
-            FlightList.Add(new FlightCardViewModel( f.Plane,
-                                                    f.Company,
-                                                    f.PortA,
-                                                    f.PortB,
-                                                    f.Departure,
-                                                    OnDelay,
-                                                    OnDelete
-                                                    ));
+
+            if (v.status_vol == "Annule") continue;
+            
+            string company = "";
+            var compagnies = await _compagniefunc.RechercheCompagnie(c => c.id_compagnie == v.Avion.fk_id_compagnie);
+            if (compagnies.Count > 0)
+            {
+                company = compagnies[0].nom_compagnie;
+            }
+
+            DateTime depart = DateTime.TryParse(v.Date_vol.date_depart, out var d) ? d : DateTime.Now;
+
+            FlightList.Add(new FlightCardViewModel(
+                v.Avion.nom_avion,
+                company,
+                v.Trajet.lieu_depart,
+                v.Trajet.destination,
+                depart,
+                OnDelay,
+                OnDelete
+            ));
         }
     }
-    public VolsViewModel()
+
+
+    public VolsViewModel(AppState appState)
     {
+        _appState = appState;
         FlightList = new ObservableCollection<FlightCardViewModel>();
         Conf = "confirmer l'ajout";
         Sure = false;
-        Refresh(allFlights);
+        _ = InitializeAsync();
     }
 
+    private async Task InitializeAsync()
+    {
+        await LoadAvailablePortsAsync();
+        await LoadAvailablePlanesAsync();
+        await LoadVolsAsync();
+    }
+
+    
     private void OnDelay(FlightCardViewModel currflight)
     {
         Plane_ = currflight.Plane;
-        foreach (Flight f in allFlights)
+        foreach (Vol v in allVols)
         {
-            if (currflight.Plane == f.Plane)
+            if (currflight.Plane == v.Avion.nom_avion &&
+                currflight.PortA == v.Trajet.lieu_depart &&
+                currflight.PortB == v.Trajet.destination)
             {
-                DepartureTime = f.Departure.TimeOfDay;
-                DepartureDate = (DateTimeOffset)f.Departure;
-                D = f.PortA;
-                A = f.PortB;
+                DepartureTime = currflight.Depart.TimeOfDay;
+                DepartureDate = (DateTimeOffset)currflight.Depart;
+                D = v.Trajet.lieu_depart;
+                A = v.Trajet.destination;
                 Conf = "Confirmer les modifications";
+                SelectedVol = v;
             }
         }
         IsEditing = true;
@@ -137,8 +190,18 @@ public partial class VolsViewModel : ViewModelBase
     {
         Sure = true;
         IsEditing = false;
-        SelectedFlight = new Flight(currFlight.Plane, currFlight.Company, currFlight.Depart, currFlight.PortA, currFlight.PortB);
+        foreach (Vol v in allVols)
+        {
+            if (currFlight.Plane == v.Avion.nom_avion &&
+                currFlight.PortA == v.Trajet.lieu_depart &&
+                currFlight.PortB == v.Trajet.destination &&
+                currFlight.Depart == (DateTime.TryParse(v.Date_vol.date_depart, out var dd) ? dd : DateTime.MinValue))
+            {
+                SelectedVol = v;
+            }
+        }
     }
+
     
     private async Task NotificationAsync(string mess)
     {
@@ -165,61 +228,127 @@ public partial class VolsViewModel : ViewModelBase
     [RelayCommand]
     private async Task Confirm()
     {
+        if (DepartureDate.HasValue)
+        {
+            var date = DepartureDate.Value.Date;
+            var time = DepartureTime ?? TimeSpan.Zero;
+            dt = date.Add(time);
+        }
+        else
+        {
+            dt = DateTime.Now;
+        }
+
         if (!IsEditing)
         {
-            if (Plane_ != null && A != null && D !=null)
+            if (Plane_ != null && A != null && D != null)
             {
-                allFlights.Add(new Flight(Plane_, "me", DateTime.Now, A, D));
+                var avions = await _avionfunc.RechercheAvion(av => av.nom_avion == Plane_);
+                if (avions.Count > 0)
+                {
+                    var avion = avions[0];
+
+                    var trajets = await _trajetfunc.RechercheTrajet(t => t.lieu_depart == D && t.destination == A);
+                    Trajet trajet;
+                    if (trajets.Count > 0)
+                    {
+                        trajet = trajets[0];
+                    }
+                    else
+                    {
+                        trajet = new Trajet
+                        {
+                            id_trajet = "TRJ" + DateTime.Now.Ticks,
+                            lieu_depart = D,
+                            destination = A
+                        };
+                        trajet = await _trajetfunc.AjouterTrajet(trajet);
+                    }
+
+                    string dateStr = dt.ToString("yyyy-MM-dd HH:mm:ss");
+                    var dateVols = await _date_volfunc.RechercheDateVol(d => d.date_depart == dateStr);
+                    Date_vol date_vol;
+                    if (dateVols.Count > 0)
+                    {
+                        date_vol = dateVols[0];
+                    }
+                    else
+                    {
+                        date_vol = new Date_vol { date_depart = dateStr };
+                        date_vol = await _date_volfunc.AjouterDateVol(date_vol);
+                    }
+
+                    var vol = new Vol
+                    {
+                        id_vol = "V" + DateTime.Now.Ticks,
+                        status_vol = "Prevu",
+                        fk_date_depart = date_vol.date_depart,
+                        fk_id_trajet = trajet.id_trajet,
+                        fk_id_avion = avion.id_avion
+                    };
+                    await _volfunc.AjouterVol(vol);
+                }
             }
             await NotificationAsync("insertion effectuee");
-        } else
+        }
+        else
         {
-            if (SelectedFlight != null && DepartureDate != null && DepartureTime != null && A != null && D != null)
+            if (SelectedVol != null && DepartureDate != null && DepartureTime != null && A != null && D != null)
             {
-                // combine DateTimeOffset and TimeSpan into DateTime
-                if (DepartureDate.HasValue)
+                var trajets = await _trajetfunc.RechercheTrajet(t => t.lieu_depart == D && t.destination == A);
+                Trajet trajet;
+                if (trajets.Count > 0)
                 {
-                    var date = DepartureDate.Value.Date; // DateTime at 00:00
-                    var time = DepartureTime ?? TimeSpan.Zero;
-                    dt = date.Add(time);
+                    trajet = trajets[0];
                 }
                 else
                 {
-                    dt = DateTime.Now;
-                }
-                for (int i = 0; i < allFlights.Count; i++)
-                {
-                    if (allFlights[i].Plane == SelectedFlight.Plane)
+                    trajet = new Trajet
                     {
-                        allFlights.Add(new Flight(SelectedFlight.Plane, SelectedFlight.Company, dt,D,A));
-                        allFlights.RemoveAt(i);
-                        await NotificationAsync("modification effectuee");
-                        break;
-                    }
+                        id_trajet = "TRJ" + DateTime.Now.Ticks,
+                        lieu_depart = D,
+                        destination = A
+                    };
+                    trajet = await _trajetfunc.AjouterTrajet(trajet);
                 }
+
+                string dateStr = dt.ToString("yyyy-MM-dd HH:mm:ss");
+                var dateVols = await _date_volfunc.RechercheDateVol(d => d.date_depart == dateStr);
+
+                Date_vol date_vol;
+                if (dateVols.Count > 0)
+                {
+                    date_vol = dateVols[0];
+                }
+                else
+                {
+                    date_vol = new Date_vol { date_depart = dateStr };
+                    date_vol = await _date_volfunc.AjouterDateVol(date_vol);
+                }
+
+                SelectedVol.fk_date_depart = date_vol.date_depart;
+                SelectedVol.fk_id_trajet = trajet.id_trajet;
+
+                await _volfunc.ModifierVol(SelectedVol);
+
+                await NotificationAsync("modification effectuee");
             }
         }
-        Refresh(allFlights);
+        await LoadVolsAsync();
         Reset();
     }
 
     [RelayCommand]
     private async Task DelConfirm()
     {
-        if (SelectedFlight != null)
+        if (SelectedVol != null)
         {
-            for (int i = 0; i < allFlights.Count; i++)
-            {
-                if (allFlights[i].Plane == SelectedFlight.Plane &&
-                    allFlights[i].Departure == SelectedFlight.Departure)
-                {
-                    allFlights.RemoveAt(i);
-                }
-            }
+            SelectedVol.status_vol = "Annule";
+            await _volfunc.ModifierVol(SelectedVol);
         }
-        Refresh(allFlights);
-        Reset();
-        await NotificationAsync("suppression reussie");
 
+        await LoadVolsAsync();
+        Reset();
+        await NotificationAsync("annulation reussie");
     }
 }
