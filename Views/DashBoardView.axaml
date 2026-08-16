@@ -2,10 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:Gestion_avion.ViewModels"
              x:Class="Gestion_avion.Views.DashboardView"
-             x:DataType="vm:DashboardViewModel"
-             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
-             Loaded="DashboardView_OnLoaded">
+             x:DataType="vm:DashboardViewModel">
+
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Spacing="20" Margin="20">
@@ -151,30 +149,31 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="vol1" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="1" Text="id avion" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="2" Text="01/08/2026 08:30" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="3" Text="Tana" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="4" Text="En cours" Foreground="Green" FontWeight="Bold" VerticalAlignment="Center"/>
                     </Grid>
 
-                    <!-- data dynamique -->
-                    <ItemsControl ItemsSource="{Binding Vols}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
+                    <!-- mock data -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Text="{Binding id_vol}" VerticalAlignment="Center" Foreground="Black"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding fk_id_avion}" VerticalAlignment="Center" Foreground="Black"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding Date_vol.date_depart}" VerticalAlignment="Center" Foreground="Black"/>
-                                    <TextBlock Grid.Column="3" Text="{Binding Trajet.lieu_depart}" VerticalAlignment="Center" Foreground="Black"/>
-                                    <TextBlock Grid.Column="4" Text="En cours" Foreground="Green" FontWeight="Bold" VerticalAlignment="Center"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        <TextBlock Grid.Column="0" Text="vol2" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="1" Text="id avon 2" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="2" Text="01/08/2026 10:15" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="3" Text="Fianarantsoa" VerticalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="4" Text="Effectué" Foreground="Blue" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </Grid>
+
                 </StackPanel>
             </Border>
 

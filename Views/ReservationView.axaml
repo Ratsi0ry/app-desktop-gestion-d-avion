@@ -125,9 +125,8 @@
                                       PlaceholderText="Selectionner..."
                                       Foreground="White"
                                       FontWeight="Bold"
-                                      ItemsSource="{Binding CompagniesDispo}"
-                                      DisplayMemberBinding="{Binding nom_compagnie}"
-                                      SelectedItem="{Binding CompagnieSelectionnee, Mode=TwoWay}"/>
+                                      ItemsSource="{Binding CompagnieAerienneDispo}"
+                                      SelectedItem="{Binding CompagnieAerienne, Mode=TwoWay}"/>
                         </StackPanel>
 
                         <!-- type de vol  -->
@@ -525,7 +524,7 @@
                             <!-- Bouton fermer -->
                             <Button Grid.Column="0" 
                                     Content="Fermer"
-                                    Command="{Binding TelechargerEtFermerTicketCommand}"
+                                    Command="{Binding FermerTicketCommand}"
                                     HorizontalAlignment="Stretch"
                                     HorizontalContentAlignment="Center"
                                     Background="#ADADAD"
